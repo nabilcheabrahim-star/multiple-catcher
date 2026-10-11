@@ -64,6 +64,7 @@
         Score: <span id="score">0</span>
     </h2>
     <h2>Time: <span id="timer">60</span>s</h2>
+    <h2>Lives: <span id="lives">3</span> ❤️</h2>
 <h2 id="gameMessage"></h2>
 
     <div id="gameArea">
@@ -159,6 +160,7 @@ setInterval(createFallingNumber, 1500);
 
 let timeLeft = 60;
 let gameOver = false;
+let livse = 3;
 
 // KELAJUAN NOMBOR JATUH
 const fallSpeed = 2;
@@ -190,19 +192,38 @@ if (
     const value = Number(item.element.textContent);
 
     // GANDAAN SEPUNYA BAGI 2 DAN 3
-    if (value % 2 === 0 && value % 3 === 0) {
-        score += 10;
-    } else {
-        score = Math.max(0, score - 5);
-    }
+   if (value % 2 === 0 && value % 3 === 0) {
 
-    document.getElementById("score").textContent = score;
+    score += 10;
 
-    item.element.remove();
+} else {
 
-    fallingNumbers.splice(i, 1);
+    score = Math.max(0, score - 5);
 
-    continue;
+    lives--;
+
+    document.getElementById("lives").textContent = lives;
+
+}
+
+document.getElementById("score").textContent = score;
+
+if (lives <= 0) {
+
+    gameOver = true;
+
+    clearInterval(gameTimer);
+
+    gameMessage.textContent =
+        "GAME OVER! Final Score: " + score;
+
+}
+
+item.element.remove();
+
+fallingNumbers.splice(i, 1);
+
+continue;
 }
         
 
