@@ -77,6 +77,7 @@
             document.getElementById("player");
 
         let position = 50;
+        let score = 0;
 
         document.addEventListener(
             "keydown",
@@ -166,6 +167,35 @@ function moveFallingNumbers() {
         item.position += fallSpeed;
 
         item.element.style.top = item.position + "px";
+
+// PERIKSA SAMA ADA CATCHER MENANGKAP NOMBOR
+const numberRect = item.element.getBoundingClientRect();
+const playerRect = player.getBoundingClientRect();
+
+if (
+    numberRect.bottom >= playerRect.top &&
+    numberRect.top <= playerRect.bottom &&
+    numberRect.right >= playerRect.left &&
+    numberRect.left <= playerRect.right
+) {
+    const value = Number(item.element.textContent);
+
+    // GANDAAN SEPUNYA BAGI 2 DAN 3
+    if (value % 2 === 0 && value % 3 === 0) {
+        score += 10;
+    } else {
+        score = Math.max(0, score - 5);
+    }
+
+    document.getElementById("score").textContent = score;
+
+    item.element.remove();
+
+    fallingNumbers.splice(i, 1);
+
+    continue;
+}
+        
 
         // BUANG NOMBOR JIKA SUDAH SAMPAI KE BAWAH
         if (item.position > gameArea.clientHeight) {
