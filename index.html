@@ -1,337 +1,476 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="ms">
 <head>
-    <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>Multiple Catcher</title>
-
-    <style>
-        body {
-    font-family: Arial, sans-serif;
-    background-color: #e8f0e5;
-    color: #26382a;
-    text-align: center;
-    margin: 0;
-    padding: 20px;
-}
-
-        h1 {
-    color: #245c38;
-    text-shadow: 2px 2px 0px #c5d8b8;
-}
-
-      #gameArea {
-    width: 800px;
-    max-width: 95%;
-    height: 400px;
-    margin: 20px auto;
-    background-color: #245c38;
-    border: 8px solid #8b5e3c;
-    border-radius: 8px;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 6px 0 #5b3a24;
-}
-        #player {
-            width: 100px;
-            height: 35px;
-           background-color: #f4d35e;
-            color: #26382a;
-            font-weight: bold;
-            position: absolute;
-            bottom: 15px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 10px;
-        }
-    </style>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multiple Catcher — Matematik</title>
+  <style>
+    :root {
+      --green: #176b45;
+      --green-dark: #0d4d31;
+      --gold: #ffd447;
+      --cream: #fff9e9;
+      --ink: #173126;
+      --red: #d94141;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 24px 14px;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(135deg, #f6f3e8, #e4f0e5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .app { width: min(960px, 100%); }
+    .card {
+      background: rgba(255,255,255,.94);
+      border: 1px solid #d6e4d8;
+      border-radius: 22px;
+      padding: clamp(18px, 4vw, 34px);
+      box-shadow: 0 14px 36px rgba(15, 65, 42, .13);
+    }
+    h1 {
+      margin: 0;
+      text-align: center;
+      color: var(--green-dark);
+      letter-spacing: 1.5px;
+      font-size: clamp(1.7rem, 5vw, 2.5rem);
+    }
+    .subtitle { text-align: center; margin: 8px 0 22px; line-height: 1.5; }
+    .menu { text-align: center; }
+    button {
+      border: 0;
+      border-radius: 12px;
+      padding: 12px 20px;
+      background: var(--gold);
+      color: #2e2a13;
+      font-weight: 800;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #d7ad24;
+      transition: transform .08s ease, filter .15s ease;
+    }
+    button:hover { filter: brightness(1.04); }
+    button:active { transform: translateY(2px); box-shadow: 0 2px 0 #d7ad24; }
+    button:focus-visible { outline: 3px solid #247b56; outline-offset: 3px; }
+    .secondary { background: #e4efe6; box-shadow: 0 4px 0 #c0d7c5; }
+    .instructions {
+      display: none;
+      margin: 18px auto 0;
+      padding: 16px 20px;
+      max-width: 620px;
+      text-align: left;
+      border-radius: 14px;
+      background: #f0f7ef;
+      line-height: 1.65;
+    }
+    .instructions.show { display: block; }
+    .hud {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin: 20px 0 14px;
+    }
+    .stat {
+      background: #f0f7ef;
+      border: 1px solid #d6e6d7;
+      border-radius: 13px;
+      padding: 11px 8px;
+      text-align: center;
+    }
+    .stat span { display: block; font-size: .82rem; color: #557063; margin-bottom: 5px; }
+    .stat strong { font-size: clamp(1.1rem, 3vw, 1.5rem); }
+    #gameArea {
+      position: relative;
+      width: 100%;
+      height: clamp(330px, 55vh, 490px);
+      overflow: hidden;
+      background: linear-gradient(#176b45, #0d5635);
+      border: 7px solid #8d674b;
+      border-radius: 14px;
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,.12);
+      touch-action: none;
+    }
+    #gameArea::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(0deg, transparent 0 48px, rgba(255,255,255,.035) 49px 50px);
+    }
+    .number {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: var(--gold);
+      color: #3c3210;
+      font-weight: 900;
+      font-size: 1.05rem;
+      border: 2px solid rgba(255,255,255,.5);
+      box-shadow: 0 3px 8px rgba(0,0,0,.25);
+      user-select: none;
+      pointer-events: none;
+    }
+    #catcher {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      width: 92px;
+      height: 34px;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--gold);
+      color: #3c3210;
+      border: 3px solid #e8b92d;
+      border-radius: 9px 9px 13px 13px;
+      font-weight: 900;
+      font-size: .78rem;
+      box-shadow: 0 4px 0 rgba(0,0,0,.18);
+      user-select: none;
+    }
+    .game-message {
+      min-height: 30px;
+      text-align: center;
+      font-weight: 700;
+      margin: 12px 0 0;
+      line-height: 1.4;
+    }
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .controls button { min-width: 74px; font-size: 1.25rem; padding: 10px 18px; }
+    .hidden { display: none !important; }
+    .note { text-align: center; color: #5e7468; font-size: .86rem; margin: 14px 0 0; }
+    @media (max-width: 560px) {
+      body { padding: 10px; align-items: flex-start; }
+      .card { padding: 16px 12px; border-radius: 16px; }
+      .hud { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      #gameArea { height: 55vh; min-height: 300px; border-width: 5px; }
+      .number { width: 38px; height: 38px; }
+      #catcher { width: 82px; }
+    }
+  </style>
 </head>
-
 <body>
+  <main class="app">
+    <section class="card">
+      <h1>MULTIPLE CATCHER</h1>
+      <p class="subtitle">Tangkap nombor yang merupakan gandaan sepunya bagi <strong>2 dan 3</strong>!</p>
 
-    <h1>MULTIPLE CATCHER</h1>
-    <div id="mainMenu">
-    <h2>🏫 Jom Belajar Matematik!</h2>
+      <div id="mainMenu" class="menu">
+        <button id="playButton">▶ MULA BERMAIN</button>
+        <button id="helpButton" class="secondary" type="button">CARA BERMAIN</button>
+        <div id="instructions" class="instructions">
+          <strong>Cara bermain</strong>
+          <ol>
+            <li>Gerakkan CATCHER menggunakan anak panah <strong>←</strong> dan <strong>→</strong>.</li>
+            <li>Tangkap gandaan sepunya 2 dan 3. Contoh: <strong>6, 12, 18, 24, 30</strong>.</li>
+            <li>Jawapan betul: <strong>+10 mata</strong>.</li>
+            <li>Tangkap nombor yang salah: <strong>-5 mata</strong> dan hilang satu nyawa.</li>
+            <li>Jika nombor yang betul terlepas, satu nyawa akan hilang.</li>
+            <li>Kumpulkan mata sebanyak mungkin dalam masa <strong>60 saat</strong>.</li>
+            <li>Setiap level baharu menjadikan nombor jatuh lebih laju.</li>
+          </ol>
+        </div>
+      </div>
 
-    <p>Tangkap gandaan sepunya bagi 2 dan 3.</p>
-
-    <button id="playButton">▶ PLAY GAME</button>
-
-    <br><br>
-
-    <button id="helpButton">📘 HOW TO PLAY</button>
-
-    <div id="instructions" style="display:none;">
-        <h3>Cara Bermain</h3>
-        <p>1. Gunakan anak panah kiri dan kanan untuk bergerak.</p>
-        <p>2. Tangkap gandaan sepunya bagi 2 dan 3.</p>
-        <p>3. Jawapan betul: +10 mata.</p>
-        <p>4. Jawapan salah: -5 mata dan hilang satu nyawa.</p>
-        <p>5. Kumpulkan mata sebanyak mungkin dalam 60 saat!</p>
-    </div>
-</div>
-
-   <p>Catch the common multiples of 2 and 3!</p>
-<p>Correct answer: +10 points | Wrong answer: -5 points</p>
-<p>Use the LEFT and RIGHT arrow keys to move.</p>
-
-    <h2>
-        Score: <span id="score">0</span>
-    </h2>
-    <h2>Time: <span id="timer">60</span>s</h2>
-    <h2>Lives: <span id="lives">3</span> ❤️</h2>
-<h2 id="gameMessage"></h2>
-
-    <div id="gameArea">
-
-        <div id="player">
-            CATCHER
+      <div id="gameScreen" class="hidden">
+        <div class="hud">
+          <div class="stat"><span>MARKAH</span><strong id="score">0</strong></div>
+          <div class="stat"><span>MASA</span><strong><span id="timer">60</span>s</strong></div>
+          <div class="stat"><span>NYAWA</span><strong id="lives">3 ❤️</strong></div>
+          <div class="stat"><span>LEVEL</span><strong id="level">1 / 5</strong></div>
         </div>
 
-    </div>
-
-    <script>
-        const player =
-            document.getElementById("player");
-
-        let position = 50;
-        let score = 0;
-
-        document.addEventListener(
-            "keydown",
-            function(event) {
-
-                if (event.key === "ArrowLeft") {
-                    position -= 5;
-                }
-
-                if (event.key === "ArrowRight") {
-                    position += 5;
-                }
-
-                position = Math.max(
-                    8,
-                    Math.min(92, position)
-                );
-
-                player.style.left = position + "%";
-
-            }
-        );
-
-        // TEMPAT UNTUK PAPAR NOMBOR
-const fallingNumbers = [];
-
-// SENARAI NOMBOR
-const numberList = [2, 3, 4, 6, 8, 9, 12, 15];
-
-// HASILKAN NOMBOR BAHARU
-function createFallingNumber() {
-   
-
-    const number = document.createElement("div");
-
-    number.className = "falling-number";
-
-    number.textContent =
-        numberList[Math.floor(Math.random() * numberList.length)];
-
-    number.style.position = "absolute";
-
-    number.style.top = "0px";
-
-    number.style.left = (10 + Math.random() * 80) + "%";
-
-    number.style.backgroundColor = "#f4d35e";
-
-    number.style.color = "#26382a";
-    
-    number.style.padding = "12px";
-
-    number.style.borderRadius = "50%";
-
-    number.style.fontWeight = "bold";
-    number.style.fontSize = "18px";
-    number.style.boxShadow = "0 2px 5px rgba(0,0,0,0.3)";
-
-    number.style.width = "25px";
-
-    number.style.height = "25px";
-
-    number.style.display = "flex";
-
-    number.style.alignItems = "center";
-
-    number.style.justifyContent = "center";
-
-    gameArea.appendChild(number);
-
-    fallingNumbers.push({
-        element: number,
-        position: 0
-    });
-}
-
-// HASILKAN NOMBOR SETIAP 1.5 SAAT
-// NOMBOR AKAN BERMULA APABILA PLAY GAME DITEKAN
-let timeLeft = 60;
-let gameOver = false;
-let lives = 3;
-
-// KELAJUAN NOMBOR JATUH
-const fallSpeed = 2;
-
-// GERAKKAN NOMBOR KE BAWAH
-function moveFallingNumbers() {
-    if (gameOver) {
-    return;
-}
-
-    for (let i = fallingNumbers.length - 1; i >= 0; i--) {
-
-        const item = fallingNumbers[i];
-
-        item.position += fallSpeed;
-
-        item.element.style.top = item.position + "px";
-
-// PERIKSA SAMA ADA CATCHER MENANGKAP NOMBOR
-const numberRect = item.element.getBoundingClientRect();
-const playerRect = player.getBoundingClientRect();
-
-if (
-    numberRect.bottom >= playerRect.top &&
-    numberRect.top <= playerRect.bottom &&
-    numberRect.right >= playerRect.left &&
-    numberRect.left <= playerRect.right
-) {
-    const value = Number(item.element.textContent);
-
-    // GANDAAN SEPUNYA BAGI 2 DAN 3
-   if (value % 2 === 0 && value % 3 === 0) {
-
-    score += 10;
-
-} else {
-
-    score = Math.max(0, score - 5);
-
-    lives = Math.max(0, Number(lives) - 1);
-
-document.getElementById("lives").textContent = lives;
-}
-
-document.getElementById("score").textContent = score;
-
-if (lives <= 0) {
-
-    gameOver = true;
-
-    clearInterval(gameTimer);
-
-    gameMessage.textContent =
-        "GAME OVER! Final Score: " + score;
-
-}
-
-item.element.remove();
-
-fallingNumbers.splice(i, 1);
-
-continue;
-}
-        
-
-        // BUANG NOMBOR JIKA SUDAH SAMPAI KE BAWAH
-        if (item.position > gameArea.clientHeight) {
-
-            item.element.remove();
-
-            fallingNumbers.splice(i, 1);
-
-        }
-
-    }
-
-    requestAnimationFrame(moveFallingNumbers);
-
-}
-
-// MULAKAN ANIMASI
-// MULAKAN ANIMASI
-let numberInterval = null;
-
-function startGameAnimation() {
-    moveFallingNumbers();
-
-    if (numberInterval !== null) {
-        clearInterval(numberInterval);
-    }
-
-    numberInterval = setInterval(function () {
-        if (!gameOver) {
-            createFallingNumber();
-        }
-    }, 1500);
-}
-
-// TIMER PERMAINAN
-
-
-const timerDisplay = document.getElementById("timer");
-const gameMessage = document.getElementById("gameMessage");
-
-let gameTimer = null;
-
-function startTimer() {
-    gameTimer = setInterval(function () {
-        if (gameOver) {
-            clearInterval(gameTimer);
-            return;
-        }
-
-        timeLeft--;
+        <div id="gameArea" aria-label="Kawasan permainan">
+          <div id="catcher">CATCHER</div>
+        </div>
+        <p id="gameMessage" class="game-message" aria-live="polite">Bersedia!</p>
+        <div class="controls" aria-label="Kawalan sentuh">
+          <button id="leftButton" class="secondary" type="button" aria-label="Gerak kiri">←</button>
+          <button id="rightButton" class="secondary" type="button" aria-label="Gerak kanan">→</button>
+        </div>
+        <div class="menu" style="margin-top:16px">
+          <button id="restartButton" class="secondary" type="button">MULA SEMULA</button>
+          <button id="menuButton" class="secondary" type="button">MENU UTAMA</button>
+        </div>
+      </div>
+      <p class="note">Dibina untuk latihan Matematik • Boleh dimainkan menggunakan laptop atau skrin sentuh</p>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      const mainMenu = document.getElementById("mainMenu");
+      const gameScreen = document.getElementById("gameScreen");
+      const playButton = document.getElementById("playButton");
+      const helpButton = document.getElementById("helpButton");
+      const instructions = document.getElementById("instructions");
+      const restartButton = document.getElementById("restartButton");
+      const menuButton = document.getElementById("menuButton");
+      const gameArea = document.getElementById("gameArea");
+      const catcher = document.getElementById("catcher");
+      const scoreDisplay = document.getElementById("score");
+      const timerDisplay = document.getElementById("timer");
+      const livesDisplay = document.getElementById("lives");
+      const levelDisplay = document.getElementById("level");
+      const gameMessage = document.getElementById("gameMessage");
+      const leftButton = document.getElementById("leftButton");
+      const rightButton = document.getElementById("rightButton");
+
+      const GAME_SECONDS = 60;
+      const MAX_LEVEL = 5;
+      const LEVEL_SCORE_STEP = 50;
+      const NUMBER_SIZE = 38;
+
+      let score = 0;
+      let timeLeft = GAME_SECONDS;
+      let lives = 3;
+      let level = 1;
+      let gameOver = true;
+      let catcherX = 0;
+      let numbers = [];
+      let spawnTimer = null;
+      let gameTimer = null;
+      let animationFrame = null;
+      let lastSpawn = 0;
+      let lastFrame = 0;
+      let keyLeft = false;
+      let keyRight = false;
+      let touchDirection = 0;
+
+      function currentLevel() {
+        return Math.min(MAX_LEVEL, Math.floor(score / LEVEL_SCORE_STEP) + 1);
+      }
+
+      function updateHUD() {
+        level = currentLevel();
+        scoreDisplay.textContent = score;
         timerDisplay.textContent = timeLeft;
+        livesDisplay.textContent = lives + " ❤️";
+        levelDisplay.textContent = level + " / " + MAX_LEVEL;
+      }
 
-        if (timeLeft <= 0) {
-            clearInterval(gameTimer);
-            gameOver = true;
+      function setMessage(text) {
+        gameMessage.textContent = text;
+      }
 
-            gameMessage.textContent =
-                "GAME OVER! Final Score: " + score;
+      function clearNumbers() {
+        numbers.forEach(item => item.element.remove());
+        numbers = [];
+      }
+
+      function placeCatcher() {
+        const maxX = Math.max(0, gameArea.clientWidth - catcher.offsetWidth);
+        catcherX = Math.max(0, Math.min(catcherX, maxX));
+        catcher.style.left = catcherX + "px";
+        catcher.style.transform = "none";
+      }
+
+      function moveCatcher(delta) {
+        if (gameOver) return;
+        catcherX += delta;
+        placeCatcher();
+      }
+
+      function spawnNumber() {
+        if (gameOver) return;
+        const areaWidth = gameArea.clientWidth;
+        const maxLeft = Math.max(0, areaWidth - NUMBER_SIZE);
+        const element = document.createElement("div");
+        element.className = "number";
+        // Include both useful target numbers and distractors.
+        const value = Math.floor(Math.random() * 30) + 1;
+        element.textContent = value;
+        const x = Math.random() * maxLeft;
+        element.style.left = x + "px";
+        element.style.top = "0px";
+        gameArea.appendChild(element);
+        numbers.push({ element, value, x, y: 0 });
+      }
+
+      function loseLife(reason) {
+        lives = Math.max(0, lives - 1);
+        updateHUD();
+        setMessage(reason + " Nyawa tinggal " + lives + ".");
+        if (lives <= 0) endGame("Nyawa habis!");
+      }
+
+      function isCommonMultipleOf2And3(value) {
+        return value % 2 === 0 && value % 3 === 0;
+      }
+
+      function handleCatch(item, index) {
+        const correct = isCommonMultipleOf2And3(item.value);
+        if (correct) {
+          score += 10;
+          setMessage("Betul! " + item.value + " ialah gandaan sepunya. +10 mata!");
+        } else {
+          score = Math.max(0, score - 5);
+          lives = Math.max(0, lives - 1);
+          setMessage("Belum tepat! " + item.value + " bukan gandaan sepunya. -5 mata.");
         }
-    }, 1000);
-}       
+        item.element.remove();
+        numbers.splice(index, 1);
+        updateHUD();
+        if (lives <= 0) endGame("Nyawa habis!");
+      }
 
-  // FUNGSI BUTANG PLAY GAME
-document.getElementById("playButton").addEventListener("click", function () {
-    document.getElementById("mainMenu").style.display = "none";
+      function rectanglesOverlap(a, b) {
+        return a.left < b.right && a.right > b.left &&
+               a.top < b.bottom && a.bottom > b.top;
+      }
 
-    gameOver = false;
-    timeLeft = 60;
-    lives = 3;
-    score = 0;
+      function animate(timestamp) {
+        if (gameOver) return;
+        if (!lastFrame) lastFrame = timestamp;
+        const deltaSeconds = Math.min((timestamp - lastFrame) / 1000, 0.05);
+        lastFrame = timestamp;
 
-    document.getElementById("score").textContent = score;
-    document.getElementById("timer").textContent = timeLeft;
-    document.getElementById("lives").textContent = lives;
-    document.getElementById("gameMessage").textContent = "";
+        const moveSpeed = 340;
+        if (keyLeft) moveCatcher(-moveSpeed * deltaSeconds);
+        if (keyRight) moveCatcher(moveSpeed * deltaSeconds);
+        if (touchDirection !== 0) moveCatcher(touchDirection * moveSpeed * deltaSeconds);
 
-    startTimer();
-    startGameAnimation();
-});
-    </script>
+        const catcherRect = catcher.getBoundingClientRect();
+        const areaRect = gameArea.getBoundingClientRect();
+        const speed = 95 + (level - 1) * 27;
+        for (let i = numbers.length - 1; i >= 0; i--) {
+          const item = numbers[i];
+          item.y += speed * deltaSeconds;
+          item.element.style.top = item.y + "px";
+          const numberRect = item.element.getBoundingClientRect();
 
+          if (rectanglesOverlap(numberRect, catcherRect)) {
+            handleCatch(item, i);
+            if (gameOver) break;
+            continue;
+          }
+
+          if (item.y + item.element.offsetHeight >= gameArea.clientHeight) {
+            const missedCorrect = isCommonMultipleOf2And3(item.value);
+            item.element.remove();
+            numbers.splice(i, 1);
+            if (missedCorrect) {
+              loseLife("Terlepas nombor " + item.value + " yang betul!");
+              if (gameOver) break;
+            }
+          }
+        }
+
+        if (!gameOver) animationFrame = requestAnimationFrame(animate);
+      }
+
+      function startSpawning() {
+        if (spawnTimer) clearInterval(spawnTimer);
+        spawnTimer = setInterval(() => {
+          if (!gameOver) spawnNumber();
+        }, Math.max(550, 1450 - (level - 1) * 170));
+      }
+
+      function startGameTimer() {
+        if (gameTimer) clearInterval(gameTimer);
+        gameTimer = setInterval(() => {
+          if (gameOver) return;
+          timeLeft--;
+          updateHUD();
+          if (timeLeft <= 0) endGame("Masa tamat!");
+        }, 1000);
+      }
+
+      function startGame() {
+        stopGameLoops();
+        clearNumbers();
+        mainMenu.classList.add("hidden");
+        gameScreen.classList.remove("hidden");
+        score = 0;
+        timeLeft = GAME_SECONDS;
+        lives = 3;
+        level = 1;
+        gameOver = false;
+        keyLeft = false;
+        keyRight = false;
+        touchDirection = 0;
+        lastFrame = 0;
+        catcherX = (gameArea.clientWidth - catcher.offsetWidth) / 2;
+        placeCatcher();
+        updateHUD();
+        setMessage("Tangkap gandaan sepunya bagi 2 dan 3!");
+        spawnNumber();
+        lastSpawn = performance.now();
+        startSpawning();
+        startGameTimer();
+        animationFrame = requestAnimationFrame(animate);
+      }
+
+      function stopGameLoops() {
+        if (spawnTimer) clearInterval(spawnTimer);
+        if (gameTimer) clearInterval(gameTimer);
+        if (animationFrame) cancelAnimationFrame(animationFrame);
+        spawnTimer = null;
+        gameTimer = null;
+        animationFrame = null;
+      }
+
+      function endGame(reason) {
+        if (gameOver) return;
+        gameOver = true;
+        stopGameLoops();
+        setMessage(reason + " Markah akhir: " + score + ". Level dicapai: " + level + ".");
+      }
+
+      function showMenu() {
+        gameOver = true;
+        stopGameLoops();
+        clearNumbers();
+        gameScreen.classList.add("hidden");
+        mainMenu.classList.remove("hidden");
+        setMessage("");
+      }
+
+      playButton.addEventListener("click", startGame);
+      restartButton.addEventListener("click", startGame);
+      menuButton.addEventListener("click", showMenu);
+      helpButton.addEventListener("click", () => instructions.classList.toggle("show"));
+
+      document.addEventListener("keydown", event => {
+        if (["ArrowLeft", "ArrowRight"].includes(event.key)) event.preventDefault();
+        if (event.key === "ArrowLeft" || event.key.toLowerCase() === "a") keyLeft = true;
+        if (event.key === "ArrowRight" || event.key.toLowerCase() === "d") keyRight = true;
+      });
+      document.addEventListener("keyup", event => {
+        if (event.key === "ArrowLeft" || event.key.toLowerCase() === "a") keyLeft = false;
+        if (event.key === "ArrowRight" || event.key.toLowerCase() === "d") keyRight = false;
+      });
+
+      function bindHold(button, direction) {
+        const start = event => { event.preventDefault(); touchDirection = direction; };
+        const stop = () => { if (touchDirection === direction) touchDirection = 0; };
+        button.addEventListener("pointerdown", start);
+        button.addEventListener("pointerup", stop);
+        button.addEventListener("pointerleave", stop);
+        button.addEventListener("pointercancel", stop);
+      }
+      bindHold(leftButton, -1);
+      bindHold(rightButton, 1);
+
+      window.addEventListener("resize", placeCatcher);
+    })();
+  </script>
 </body>
-
 </html>
-
-<!-- Check GitHub Pages deployment -->
