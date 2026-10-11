@@ -152,6 +152,38 @@ function createFallingNumber() {
 
 // HASILKAN NOMBOR SETIAP 1.5 SAAT
 setInterval(createFallingNumber, 1500);
+
+        // KELAJUAN NOMBOR JATUH
+const fallSpeed = 2;
+
+// GERAKKAN NOMBOR KE BAWAH
+function moveFallingNumbers() {
+
+    for (let i = fallingNumbers.length - 1; i >= 0; i--) {
+
+        const item = fallingNumbers[i];
+
+        item.position += fallSpeed;
+
+        item.element.style.top = item.position + "px";
+
+        // BUANG NOMBOR JIKA SUDAH SAMPAI KE BAWAH
+        if (item.position > gameArea.clientHeight) {
+
+            item.element.remove();
+
+            fallingNumbers.splice(i, 1);
+
+        }
+
+    }
+
+    requestAnimationFrame(moveFallingNumbers);
+
+}
+
+// MULAKAN ANIMASI
+moveFallingNumbers();
     </script>
 
 </body>
