@@ -157,6 +157,9 @@ function createFallingNumber() {
 // HASILKAN NOMBOR SETIAP 1.5 SAAT
 setInterval(createFallingNumber, 1500);
 
+let timeLeft = 60;
+let gameOver = false;
+
 // KELAJUAN NOMBOR JATUH
 const fallSpeed = 2;
 
@@ -222,8 +225,7 @@ if (
 moveFallingNumbers();
 
 // TIMER PERMAINAN
-let timeLeft = 60;
-let gameOver = false;
+
 
 const timerDisplay = document.getElementById("timer");
 const gameMessage = document.getElementById("gameMessage");
