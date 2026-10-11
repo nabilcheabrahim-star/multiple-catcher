@@ -99,6 +99,59 @@
 
             }
         );
+
+        // TEMPAT UNTUK PAPAR NOMBOR
+const fallingNumbers = [];
+
+// SENARAI NOMBOR
+const numberList = [2, 3, 4, 6, 8, 9, 12, 15];
+
+// HASILKAN NOMBOR BAHARU
+function createFallingNumber() {
+
+    const number = document.createElement("div");
+
+    number.className = "falling-number";
+
+    number.textContent =
+        numberList[Math.floor(Math.random() * numberList.length)];
+
+    number.style.position = "absolute";
+
+    number.style.top = "0px";
+
+    number.style.left = (10 + Math.random() * 80) + "%";
+
+    number.style.backgroundColor = "#ffd166";
+
+    number.style.color = "#101a35";
+
+    number.style.padding = "12px";
+
+    number.style.borderRadius = "50%";
+
+    number.style.fontWeight = "bold";
+
+    number.style.width = "25px";
+
+    number.style.height = "25px";
+
+    number.style.display = "flex";
+
+    number.style.alignItems = "center";
+
+    number.style.justifyContent = "center";
+
+    gameArea.appendChild(number);
+
+    fallingNumbers.push({
+        element: number,
+        position: 0
+    });
+}
+
+// HASILKAN NOMBOR SETIAP 1.5 SAAT
+setInterval(createFallingNumber, 1500);
     </script>
 
 </body>
