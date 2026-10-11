@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Multiple Catcher</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #101a35;
+            color: white;
+            text-align: center;
+        }
+
+        h1 {
+            color: #64f0e4;
+        }
+
+        #gameArea {
+            width: 800px;
+            max-width: 95%;
+            height: 400px;
+            margin: 20px auto;
+            background-color: #172644;
+            border: 3px solid #64f0e4;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #player {
+            width: 100px;
+            height: 35px;
+            background-color: #64f0e4;
+            color: #101a35;
+            font-weight: bold;
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h1>MULTIPLE CATCHER</h1>
+
+    <p>
+        Catch the common multiples of 2 and 3!
+    </p>
+
+    <h2>
+        Score: <span id="score">0</span>
+    </h2>
+
+    <div id="gameArea">
+
+        <div id="player">
+            CATCHER
+        </div>
+
+    </div>
+
+    <script>
+        const player =
+            document.getElementById("player");
+
+        let position = 50;
+
+        document.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (event.key === "ArrowLeft") {
+                    position -= 5;
+                }
+
+                if (event.key === "ArrowRight") {
+                    position += 5;
+                }
+
+                position = Math.max(
+                    8,
+                    Math.min(92, position)
+                );
+
+                player.style.left = position + "%";
+
+            }
+        );
+    </script>
+
+</body>
+
+</html>
