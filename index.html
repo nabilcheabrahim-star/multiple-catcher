@@ -11,33 +11,36 @@
 
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #101a35;
-            color: white;
-            text-align: center;
-        }
+    font-family: Arial, sans-serif;
+    background-color: #e8f0e5;
+    color: #26382a;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+}
 
         h1 {
-            color: #64f0e4;
-        }
+    color: #245c38;
+    text-shadow: 2px 2px 0px #c5d8b8;
+}
 
-        #gameArea {
-            width: 800px;
-            max-width: 95%;
-            height: 400px;
-            margin: 20px auto;
-            background-color: #172644;
-            border: 3px solid #64f0e4;
-            border-radius: 15px;
-            position: relative;
-            overflow: hidden;
-        }
-
+      #gameArea {
+    width: 800px;
+    max-width: 95%;
+    height: 400px;
+    margin: 20px auto;
+    background-color: #245c38;
+    border: 8px solid #8b5e3c;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 6px 0 #5b3a24;
+}
         #player {
             width: 100px;
             height: 35px;
-            background-color: #64f0e4;
-            color: #101a35;
+           background-color: #f4d35e;
+            color: #26382a;
             font-weight: bold;
             position: absolute;
             bottom: 15px;
@@ -127,15 +130,17 @@ function createFallingNumber() {
 
     number.style.left = (10 + Math.random() * 80) + "%";
 
-    number.style.backgroundColor = "#ffd166";
+    number.style.backgroundColor = "#f4d35e";
 
-    number.style.color = "#101a35";
-
+    number.style.color = "#26382a";
+    
     number.style.padding = "12px";
 
     number.style.borderRadius = "50%";
 
     number.style.fontWeight = "bold";
+    number.style.fontSize = "18px";
+    number.style.boxShadow = "0 2px 5px rgba(0,0,0,0.3)";
 
     number.style.width = "25px";
 
