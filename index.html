@@ -205,10 +205,9 @@ if (
 
     score = Math.max(0, score - 5);
 
-    lives--;
+    lives = Math.max(0, Number(lives) - 1);
 
-    document.getElementById("lives").textContent = lives;
-
+document.getElementById("lives").textContent = lives;
 }
 
 document.getElementById("score").textContent = score;
