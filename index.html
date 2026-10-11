@@ -58,6 +58,26 @@
 <body>
 
     <h1>MULTIPLE CATCHER</h1>
+    <div id="mainMenu">
+    <h2>🏫 Jom Belajar Matematik!</h2>
+
+    <p>Tangkap gandaan sepunya bagi 2 dan 3.</p>
+
+    <button id="playButton">▶ PLAY GAME</button>
+
+    <br><br>
+
+    <button id="helpButton">📘 HOW TO PLAY</button>
+
+    <div id="instructions" style="display:none;">
+        <h3>Cara Bermain</h3>
+        <p>1. Gunakan anak panah kiri dan kanan untuk bergerak.</p>
+        <p>2. Tangkap gandaan sepunya bagi 2 dan 3.</p>
+        <p>3. Jawapan betul: +10 mata.</p>
+        <p>4. Jawapan salah: -5 mata dan hilang satu nyawa.</p>
+        <p>5. Kumpulkan mata sebanyak mungkin dalam 60 saat!</p>
+    </div>
+</div>
 
    <p>Catch the common multiples of 2 and 3!</p>
 <p>Correct answer: +10 points | Wrong answer: -5 points</p>
@@ -161,8 +181,7 @@ function createFallingNumber() {
 }
 
 // HASILKAN NOMBOR SETIAP 1.5 SAAT
-setInterval(createFallingNumber, 1500);
-
+// NOMBOR AKAN BERMULA APABILA PLAY GAME DITEKAN
 let timeLeft = 60;
 let gameOver = false;
 let lives = 3;
@@ -247,7 +266,22 @@ continue;
 }
 
 // MULAKAN ANIMASI
-moveFallingNumbers();
+// MULAKAN ANIMASI
+let numberInterval = null;
+
+function startGameAnimation() {
+    moveFallingNumbers();
+
+    if (numberInterval !== null) {
+        clearInterval(numberInterval);
+    }
+
+    numberInterval = setInterval(function () {
+        if (!gameOver) {
+            createFallingNumber();
+        }
+    }, 1500);
+}
 
 // TIMER PERMAINAN
 
@@ -255,18 +289,45 @@ moveFallingNumbers();
 const timerDisplay = document.getElementById("timer");
 const gameMessage = document.getElementById("gameMessage");
 
-const gameTimer = setInterval(function () {
-    timeLeft--;
-    timerDisplay.textContent = timeLeft;
+let gameTimer = null;
 
-    if (timeLeft <= 0) {
-        clearInterval(gameTimer);
-        gameOver = true;
+function startTimer() {
+    gameTimer = setInterval(function () {
+        if (gameOver) {
+            clearInterval(gameTimer);
+            return;
+        }
 
-        gameMessage.textContent =
-            "GAME OVER! Final Score: " + score;
-    }
-}, 1000);        
+        timeLeft--;
+        timerDisplay.textContent = timeLeft;
+
+        if (timeLeft <= 0) {
+            clearInterval(gameTimer);
+            gameOver = true;
+
+            gameMessage.textContent =
+                "GAME OVER! Final Score: " + score;
+        }
+    }, 1000);
+}       
+
+  // FUNGSI BUTANG PLAY GAME
+document.getElementById("playButton").addEventListener("click", function () {
+    document.getElementById("mainMenu").style.display = "none";
+
+    gameOver = false;
+    timeLeft = 60;
+    lives = 3;
+    score = 0;
+
+    document.getElementById("score").textContent = score;
+    document.getElementById("timer").textContent = timeLeft;
+    document.getElementById("lives").textContent = lives;
+    document.getElementById("gameMessage").textContent = "";
+
+    startTimer();
+    startGameAnimation();
+});
     </script>
 
 </body>
