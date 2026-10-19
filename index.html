@@ -1,476 +1,469 @@
+
 <!DOCTYPE html>
 <html lang="ms">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Multiple Catcher — Matematik</title>
-  <style>
-    :root {
-      --green: #176b45;
-      --green-dark: #0d4d31;
-      --gold: #ffd447;
-      --cream: #fff9e9;
-      --ink: #173126;
-      --red: #d94141;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      padding: 24px 14px;
-      font-family: Arial, Helvetica, sans-serif;
-      color: var(--ink);
-      background: linear-gradient(135deg, #f6f3e8, #e4f0e5);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .app { width: min(960px, 100%); }
-    .card {
-      background: rgba(255,255,255,.94);
-      border: 1px solid #d6e4d8;
-      border-radius: 22px;
-      padding: clamp(18px, 4vw, 34px);
-      box-shadow: 0 14px 36px rgba(15, 65, 42, .13);
-    }
-    h1 {
-      margin: 0;
-      text-align: center;
-      color: var(--green-dark);
-      letter-spacing: 1.5px;
-      font-size: clamp(1.7rem, 5vw, 2.5rem);
-    }
-    .subtitle { text-align: center; margin: 8px 0 22px; line-height: 1.5; }
-    .menu { text-align: center; }
-    button {
-      border: 0;
-      border-radius: 12px;
-      padding: 12px 20px;
-      background: var(--gold);
-      color: #2e2a13;
-      font-weight: 800;
-      font-size: 1rem;
-      cursor: pointer;
-      box-shadow: 0 4px 0 #d7ad24;
-      transition: transform .08s ease, filter .15s ease;
-    }
-    button:hover { filter: brightness(1.04); }
-    button:active { transform: translateY(2px); box-shadow: 0 2px 0 #d7ad24; }
-    button:focus-visible { outline: 3px solid #247b56; outline-offset: 3px; }
-    .secondary { background: #e4efe6; box-shadow: 0 4px 0 #c0d7c5; }
-    .instructions {
-      display: none;
-      margin: 18px auto 0;
-      padding: 16px 20px;
-      max-width: 620px;
-      text-align: left;
-      border-radius: 14px;
-      background: #f0f7ef;
-      line-height: 1.65;
-    }
-    .instructions.show { display: block; }
-    .hud {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 10px;
-      margin: 20px 0 14px;
-    }
-    .stat {
-      background: #f0f7ef;
-      border: 1px solid #d6e6d7;
-      border-radius: 13px;
-      padding: 11px 8px;
-      text-align: center;
-    }
-    .stat span { display: block; font-size: .82rem; color: #557063; margin-bottom: 5px; }
-    .stat strong { font-size: clamp(1.1rem, 3vw, 1.5rem); }
-    #gameArea {
-      position: relative;
-      width: 100%;
-      height: clamp(330px, 55vh, 490px);
-      overflow: hidden;
-      background: linear-gradient(#176b45, #0d5635);
-      border: 7px solid #8d674b;
-      border-radius: 14px;
-      box-shadow: inset 0 0 0 2px rgba(255,255,255,.12);
-      touch-action: none;
-    }
-    #gameArea::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background: repeating-linear-gradient(0deg, transparent 0 48px, rgba(255,255,255,.035) 49px 50px);
-    }
-    .number {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 42px;
-      height: 42px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      background: var(--gold);
-      color: #3c3210;
-      font-weight: 900;
-      font-size: 1.05rem;
-      border: 2px solid rgba(255,255,255,.5);
-      box-shadow: 0 3px 8px rgba(0,0,0,.25);
-      user-select: none;
-      pointer-events: none;
-    }
-    #catcher {
-      position: absolute;
-      bottom: 12px;
-      left: 50%;
-      width: 92px;
-      height: 34px;
-      transform: translateX(-50%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--gold);
-      color: #3c3210;
-      border: 3px solid #e8b92d;
-      border-radius: 9px 9px 13px 13px;
-      font-weight: 900;
-      font-size: .78rem;
-      box-shadow: 0 4px 0 rgba(0,0,0,.18);
-      user-select: none;
-    }
-    .game-message {
-      min-height: 30px;
-      text-align: center;
-      font-weight: 700;
-      margin: 12px 0 0;
-      line-height: 1.4;
-    }
-    .controls {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 12px;
-    }
-    .controls button { min-width: 74px; font-size: 1.25rem; padding: 10px 18px; }
-    .hidden { display: none !important; }
-    .note { text-align: center; color: #5e7468; font-size: .86rem; margin: 14px 0 0; }
-    @media (max-width: 560px) {
-      body { padding: 10px; align-items: flex-start; }
-      .card { padding: 16px 12px; border-radius: 16px; }
-      .hud { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      #gameArea { height: 55vh; min-height: 300px; border-width: 5px; }
-      .number { width: 38px; height: 38px; }
-      #catcher { width: 82px; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galaxy Mission | Matematik Tingkatan 1</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Nunito:wght@400;600;700;800;900&display=swap');
+
+:root {
+  --cyan:#57f5ff;
+  --purple:#a78bfa;
+  --pink:#ff75d8;
+  --gold:#ffe477;
+  --bg:#07091d;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;color:#f6f5ff;
+  font-family:Nunito,Arial,sans-serif;
+  background:radial-gradient(ellipse at 50% 0%,#27205c 0%,#10132f 42%,#050713 100%);
+  overflow-x:hidden;
+}
+button,select{font:inherit}
+button{cursor:pointer;transition:.2s}
+button:hover{filter:brightness(1.18);transform:translateY(-2px)}
+button:focus-visible,select:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
+button:disabled{opacity:.35;cursor:not-allowed}
+#stars{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.app{position:relative;z-index:1;width:min(1000px,100%);margin:auto;padding:22px 16px 30px}
+header{text-align:center;margin-bottom:22px}
+.eyebrow{font-family:Orbitron,monospace;color:var(--cyan);font-size:.7rem;letter-spacing:4px}
+h1{font:900 clamp(1.8rem,6vw,3.5rem) Orbitron,monospace;line-height:1.2;margin:10px 0;
+background:linear-gradient(90deg,#fff,var(--cyan),#c9a4ff,var(--pink));
+color:transparent;background-clip:text;-webkit-background-clip:text}
+.subtitle{color:#b8b8df;margin:8px 0}
+.panel{background:linear-gradient(145deg,rgba(25,29,72,.94),rgba(10,14,39,.96));
+border:1px solid rgba(143,143,255,.3);border-radius:24px;
+padding:clamp(16px,4vw,30px);box-shadow:0 20px 70px #0005,inset 0 1px #ffffff12}
+.hidden{display:none!important}
+.menu{text-align:center}
+.planet-art{font-size:clamp(4rem,14vw,7.5rem);margin:14px 0;filter:drop-shadow(0 0 25px #9a83ff88);animation:float 3s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-10px) rotate(3deg)}}
+.menu h2,.result h2{font-family:Orbitron,monospace;color:var(--cyan)}
+.menu p{color:#c5c8e9;line-height:1.7}
+.btn{border:1px solid #ffffff25;border-radius:13px;padding:12px 18px;color:white;font-weight:900;background:#262b5b}
+.primary{background:linear-gradient(100deg,#168fbb,#7055dd);box-shadow:0 5px 20px #7358e955}
+.gold{background:linear-gradient(100deg,#ffe99b,#ffba53);color:#21173b}
+.pink{background:linear-gradient(100deg,#bd65ec,#e866bc)}
+.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.formrow{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:16px 0}
+select{background:#151a40;color:white;border:1px solid #6269b5;padding:12px;border-radius:12px;max-width:100%}
+.label{display:block;color:#aeb8e9;font-size:.8rem;font-weight:800;margin-bottom:6px}
+.hud{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}
+.stat{background:#ffffff08;border:1px solid #8e8aff35;border-radius:15px;text-align:center;padding:12px 5px}
+.stat span{display:block;color:#afb6df;font-size:.73rem;font-weight:800;letter-spacing:1px}
+.stat strong{display:block;font:700 clamp(1rem,3vw,1.55rem) Orbitron,monospace;color:white;margin-top:7px}
+#score{color:var(--gold)}#timer{color:var(--cyan)}#lives{color:#ff92bc}#level{color:#c3a6ff}
+.missionbar{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:.83rem;color:#cbd0f6;margin:8px 2px}
+.progress{height:7px;border-radius:10px;background:#ffffff14;overflow:hidden;margin-bottom:14px}
+#progressFill{height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--purple),var(--pink));transition:width .25s}
+#gameArea{height:clamp(340px,57vh,510px);position:relative;overflow:hidden;
+border:1px solid #8e8aff60;border-radius:18px;isolation:isolate;touch-action:pan-y;
+background:radial-gradient(ellipse at 50% 85%,#28296d 0%,#13173f 35%,#080c26 75%)}
+#gameArea:before{content:"";position:absolute;inset:0;pointer-events:none;
+background:repeating-linear-gradient(0deg,transparent 0 38px,#ffffff05 39px 40px),
+repeating-linear-gradient(90deg,transparent 0 38px,#ffffff04 39px 40px)}
+.planet{position:absolute;border-radius:50%;pointer-events:none;opacity:.75}
+.p1{width:65px;height:65px;right:8%;top:15%;background:radial-gradient(circle at 30% 30%,#ffb2f3,#a24ddd 55%,#34216b);box-shadow:0 0 28px #a24ddd45}
+.p2{width:35px;height:35px;left:9%;top:45%;background:radial-gradient(circle at 30% 30%,#fff0b1,#e28b49 65%,#6c2e58)}
+.asteroid{position:absolute;top:0;left:0;width:42px;height:42px;display:grid;place-items:center;
+border-radius:50%;font:900 1rem Orbitron,monospace;color:#171333;
+background:radial-gradient(circle at 30% 25%,#fff4c4,#ffc857 50%,#e47c66);
+border:2px solid #ffffff80;box-shadow:0 0 17px #ffcb6255,0 4px 10px #0005;
+pointer-events:none;z-index:3}
+.asteroid.bad{background:radial-gradient(circle at 30% 25%,#ffd6fb,#fa83cf 50%,#9458e8);box-shadow:0 0 17px #f37aff55}
+.asteroid.bonus{background:radial-gradient(circle at 30% 25%,white,#65f5ff 50%,#5874ed);box-shadow:0 0 22px #57f5ff88}
+#ship{position:absolute;bottom:12px;left:0;width:84px;height:53px;z-index:5;
+display:flex;flex-direction:column;align-items:center;justify-content:center;
+font-size:2.4rem;filter:drop-shadow(0 0 12px #58eaff99);user-select:none;touch-action:none}
+#ship .shiplabel{font:700 8px Orbitron,monospace;color:var(--cyan);margin-top:-4px}
+#ship.hit{animation:hit .3s}
+@keyframes hit{50%{filter:brightness(3);transform:translateX(6px)}}
+#effects{position:absolute;inset:0;pointer-events:none;z-index:8}
+.pop{position:absolute;font:900 1rem Orbitron,monospace;animation:pop .8s forwards;white-space:nowrap}
+@keyframes pop{to{transform:translateY(-45px);opacity:0}}
+#message{min-height:48px;text-align:center;display:grid;place-items:center;color:#d7d9ff;font-weight:800;line-height:1.5;padding:9px 2px}
+.controls{display:flex;gap:14px;justify-content:center;align-items:center}
+.movebtn{width:76px;height:48px;font-size:1.4rem;background:#222957;border:1px solid #747bc5;border-radius:14px;color:white;touch-action:none;user-select:none}
+.smallnote{text-align:center;color:#9da5d5;font-size:.8rem;line-height:1.6;margin-top:12px}
+.overlay{position:absolute;inset:0;background:#07091de8;backdrop-filter:blur(7px);z-index:10;display:grid;place-items:center;padding:20px}
+.overlaybox{text-align:center;width:min(380px,100%);background:#191d46;border:1px solid #777ce0;border-radius:22px;padding:25px}
+.overlaybox h2{font-family:Orbitron,monospace;color:var(--cyan)}
+.result{text-align:center}
+.finalscore{font:900 clamp(2.5rem,10vw,4rem) Orbitron,monospace;color:var(--gold);margin:12px}
+.result p{color:#c9ccee;line-height:1.7}
+.review{background:#ffffff08;border-radius:14px;padding:14px;margin:16px 0;text-align:left;line-height:1.8}
+footer{text-align:center;color:#858bb8;font-size:.76rem;margin-top:18px}
+@media(max-width:520px){
+ .app{padding:16px 10px 24px}
+ .hud{gap:6px}.stat{padding:10px 2px}.stat span{font-size:.63rem;letter-spacing:0}
+ #gameArea{height:53vh;min-height:320px}
+ .panel{border-radius:19px}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
 </head>
 <body>
-  <main class="app">
-    <section class="card">
-      <h1>MULTIPLE CATCHER</h1>
-      <p class="subtitle">Tangkap nombor yang merupakan gandaan sepunya bagi <strong>2 dan 3</strong>!</p>
+<canvas id="stars"></canvas>
+<main class="app">
+<header>
+ <div class="eyebrow">✦ AKADEMI ANGKASA MATEMATIK ✦</div>
+ <h1>GALAXY MISSION</h1>
+ <p class="subtitle">Misi menyelamatkan galaksi dengan kuasa Matematik!</p>
+</header>
 
-      <div id="mainMenu" class="menu">
-        <button id="playButton">▶ MULA BERMAIN</button>
-        <button id="helpButton" class="secondary" type="button">CARA BERMAIN</button>
-        <div id="instructions" class="instructions">
-          <strong>Cara bermain</strong>
-          <ol>
-            <li>Gerakkan CATCHER menggunakan anak panah <strong>←</strong> dan <strong>→</strong>.</li>
-            <li>Tangkap gandaan sepunya 2 dan 3. Contoh: <strong>6, 12, 18, 24, 30</strong>.</li>
-            <li>Jawapan betul: <strong>+10 mata</strong>.</li>
-            <li>Tangkap nombor yang salah: <strong>-5 mata</strong> dan hilang satu nyawa.</li>
-            <li>Jika nombor yang betul terlepas, satu nyawa akan hilang.</li>
-            <li>Kumpulkan mata sebanyak mungkin dalam masa <strong>60 saat</strong>.</li>
-            <li>Setiap level baharu menjadikan nombor jatuh lebih laju.</li>
-          </ol>
-        </div>
-      </div>
+<section class="panel menu" id="menu">
+ <div class="planet-art">🪐</div>
+ <h2>ANGKASAWAN, ANDA DIPERLUKAN!</h2>
+ <p>Galaksi sedang diserang asteroid nombor.<br>
+ Tangkap nombor sasaran yang betul untuk menyelamatkan misi!</p>
+ <div class="formrow">
+  <div>
+   <label class="label" for="topic">PILIH MISI MATEMATIK</label>
+   <select id="topic">
+    <option value="common">Gandaan sepunya 2 dan 3</option>
+    <option value="multiple">Gandaan bagi 4</option>
+    <option value="factor">Faktor bagi 12</option>
+    <option value="prime">Nombor perdana</option>
+   </select>
+  </div>
+  <div>
+   <label class="label" for="difficulty">TAHAP MISI</label>
+   <select id="difficulty">
+    <option value="cadet">Kadet 🚀</option>
+    <option value="pilot">Juruterbang 🛸</option>
+    <option value="commander">Komander 🌌</option>
+   </select>
+  </div>
+ </div>
+ <div class="actions">
+  <button class="btn primary" id="play">🚀 MULAKAN MISI</button>
+  <button class="btn" id="help">📡 CARA BERMAIN</button>
+ </div>
+ <p class="smallnote">Sesuai untuk Matematik Tingkatan 1 · Komputer & telefon</p>
+</section>
 
-      <div id="gameScreen" class="hidden">
-        <div class="hud">
-          <div class="stat"><span>MARKAH</span><strong id="score">0</strong></div>
-          <div class="stat"><span>MASA</span><strong><span id="timer">60</span>s</strong></div>
-          <div class="stat"><span>NYAWA</span><strong id="lives">3 ❤️</strong></div>
-          <div class="stat"><span>LEVEL</span><strong id="level">1 / 5</strong></div>
-        </div>
+<section class="panel hidden" id="gameScreen">
+ <div class="hud">
+  <div class="stat"><span>⭐ MARKAH</span><strong id="score">0</strong></div>
+  <div class="stat"><span>⏱ MASA</span><strong id="timer">60</strong></div>
+  <div class="stat"><span>💗 NYAWA</span><strong id="lives">3</strong></div>
+  <div class="stat"><span>🌌 LEVEL</span><strong id="level">1</strong></div>
+ </div>
+ <div class="missionbar"><span id="missionName">MISI 01</span><span id="targetLabel">Sasaran: gandaan sepunya</span></div>
+ <div class="progress"><div id="progressFill"></div></div>
+ <div id="gameArea" aria-label="Kawasan permainan angkasa">
+  <div class="planet p1"></div><div class="planet p2"></div>
+  <div id="ship" aria-label="Kapal angkasa pemain"><span>🚀</span><span class="shiplabel">PILOT</span></div>
+  <div id="effects"></div>
+  <div class="overlay hidden" id="pauseOverlay">
+   <div class="overlaybox"><h2>⏸ MISI DIJEDA</h2><p>Masa berhenti sementara.</p>
+   <button class="btn primary" id="resume">▶ SAMBUNG</button>
+   <button class="btn" id="quitPause">KELUAR</button></div>
+  </div>
+ </div>
+ <div id="message" aria-live="polite">Bersedia, angkasawan!</div>
+ <div class="controls">
+  <button class="btn movebtn" id="left" aria-label="Gerak ke kiri">◀</button>
+  <button class="btn gold" id="pause">Ⅱ JEDA</button>
+  <button class="btn movebtn" id="right" aria-label="Gerak ke kanan">▶</button>
+ </div>
+ <div class="smallnote">Gerakkan kapal dengan ← → atau A / D. Pada telefon, tahan butang arah atau seret kapal.</div>
+</section>
 
-        <div id="gameArea" aria-label="Kawasan permainan">
-          <div id="catcher">CATCHER</div>
-        </div>
-        <p id="gameMessage" class="game-message" aria-live="polite">Bersedia!</p>
-        <div class="controls" aria-label="Kawalan sentuh">
-          <button id="leftButton" class="secondary" type="button" aria-label="Gerak kiri">←</button>
-          <button id="rightButton" class="secondary" type="button" aria-label="Gerak kanan">→</button>
-        </div>
-        <div class="menu" style="margin-top:16px">
-          <button id="restartButton" class="secondary" type="button">MULA SEMULA</button>
-          <button id="menuButton" class="secondary" type="button">MENU UTAMA</button>
-        </div>
-      </div>
-      <p class="note">Dibina untuk latihan Matematik • Boleh dimainkan menggunakan laptop atau skrin sentuh</p>
-    </section>
-  </main>
+<section class="panel hidden result" id="result">
+ <div class="planet-art" id="resultIcon">🏆</div>
+ <h2 id="resultTitle">MISI SELESAI!</h2>
+ <p id="resultText">Galaksi berjaya diselamatkan.</p>
+ <div class="finalscore" id="finalScore">0</div>
+ <p>MARKAH AKHIR</p>
+ <div class="review" id="review"></div>
+ <div class="actions">
+  <button class="btn primary" id="again">🚀 MAIN LAGI</button>
+  <button class="btn" id="home">🏠 MENU UTAMA</button>
+ </div>
+</section>
+<footer>GALAXY MISSION · PEMBELAJARAN MATEMATIK SECARA INTERAKTIF</footer>
+</main>
 
-  <script>
-    (() => {
-      const mainMenu = document.getElementById("mainMenu");
-      const gameScreen = document.getElementById("gameScreen");
-      const playButton = document.getElementById("playButton");
-      const helpButton = document.getElementById("helpButton");
-      const instructions = document.getElementById("instructions");
-      const restartButton = document.getElementById("restartButton");
-      const menuButton = document.getElementById("menuButton");
-      const gameArea = document.getElementById("gameArea");
-      const catcher = document.getElementById("catcher");
-      const scoreDisplay = document.getElementById("score");
-      const timerDisplay = document.getElementById("timer");
-      const livesDisplay = document.getElementById("lives");
-      const levelDisplay = document.getElementById("level");
-      const gameMessage = document.getElementById("gameMessage");
-      const leftButton = document.getElementById("leftButton");
-      const rightButton = document.getElementById("rightButton");
+<script>
+(() => {
+"use strict";
+const $ = id => document.getElementById(id);
+const menu=$("menu"), screen=$("gameScreen"), result=$("result");
+const area=$("gameArea"), ship=$("ship"), effects=$("effects");
+const scoreEl=$("score"), timerEl=$("timer"), livesEl=$("lives"), levelEl=$("level");
+const message=$("message"), fill=$("progressFill");
+const GAME_TIME=60, MAX_LIVES=3, SHIP_W=84, BALL=42;
 
-      const GAME_SECONDS = 60;
-      const MAX_LEVEL = 5;
-      const LEVEL_SCORE_STEP = 50;
-      const NUMBER_SIZE = 38;
+const topics={
+ common:{name:"Gandaan sepunya 2 dan 3",target:"Gandaan sepunya 2 & 3",
+  good:n=>n%2===0&&n%3===0, max:36,example:"6, 12, 18, 24, 30, 36"},
+ multiple:{name:"Gandaan bagi 4",target:"Gandaan 4",
+  good:n=>n%4===0,max:40,example:"4, 8, 12, 16, 20"},
+ factor:{name:"Faktor bagi 12",target:"Faktor 12",
+  good:n=>12%n===0,max:36,example:"1, 2, 3, 4, 6, 12"},
+ prime:{name:"Nombor perdana",target:"Nombor perdana",
+  good:n=>{if(n<2)return false;for(let i=2;i*i<=n;i++)if(n%i===0)return false;return true;},max:40,example:"2, 3, 5, 7, 11, 13"}
+};
+let running=false,paused=false,score=0,timeLeft=GAME_TIME,lives=MAX_LIVES,level=1;
+let shipX=0,held=0,keys={left:false,right:false},balls=[];
+let last=0,lastSpawn=0,raf=0,clock=0,spawnClock=0,combo=0,bestCombo=0;
+let caught=0,missed=0,correctCaught=0,wrongCaught=0;
+let audioCtx=null, best=0;
+try{best=Number(localStorage.getItem("galaxyBest")||0)}catch(e){}
+const reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-      let score = 0;
-      let timeLeft = GAME_SECONDS;
-      let lives = 3;
-      let level = 1;
-      let gameOver = true;
-      let catcherX = 0;
-      let numbers = [];
-      let spawnTimer = null;
-      let gameTimer = null;
-      let animationFrame = null;
-      let lastSpawn = 0;
-      let lastFrame = 0;
-      let keyLeft = false;
-      let keyRight = false;
-      let touchDirection = 0;
+function sound(freq=550,duration=.08){
+ try{
+  audioCtx ||= new (window.AudioContext||window.webkitAudioContext)();
+  if(audioCtx.state==="suspended")audioCtx.resume();
+  const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+  o.type="sine";o.frequency.value=freq;g.gain.value=.045;
+  o.connect(g);g.connect(audioCtx.destination);o.start();
+  g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+duration);
+  o.stop(audioCtx.currentTime+duration);
+ }catch(e){}
+}
+function rand(n){return Math.floor(Math.random()*n)}
+function currentTopic(){return topics[$("topic").value]||topics.common}
+function currentLevel(){return Math.min(5,1+Math.floor(score/60))}
+function setMsg(t){message.textContent=t}
+function updateHUD(){
+ level=currentLevel();
+ scoreEl.textContent=score;
+ timerEl.textContent=timeLeft;
+ livesEl.textContent="❤️ ".repeat(lives)||"0";
+ levelEl.textContent=level;
+ $("missionName").textContent="MISI "+String(level).padStart(2,"0");
+ $("targetLabel").textContent=currentTopic().target;
+ fill.style.width=Math.min(100,score%60/60*100)+"%";
+}
+function placeShip(){
+ const max=Math.max(0,area.clientWidth-SHIP_W);
+ shipX=Math.max(0,Math.min(max,shipX));
+ ship.style.left=shipX+"px";
+}
+function moveShip(dx){shipX+=dx;placeShip()}
+function popup(x,y,text,color){
+ const el=document.createElement("div");
+ el.className="pop";el.textContent=text;el.style.left=x+"px";el.style.top=y+"px";
+ el.style.color=color;effects.appendChild(el);
+ setTimeout(()=>el.remove(),850);
+}
+function overlap(a,b){
+ return a.left<b.right&&a.right>b.left&&a.top<b.bottom&&a.bottom>b.top;
+}
+function spawn(){
+ if(!running||paused)return;
+ const t=currentTopic();
+ let value=1+rand(t.max);
+ // Mix correct answers and distractors so the game remains educational.
+ if(Math.random()<.64){
+  const good=[];
+  for(let n=1;n<=t.max;n++)if(t.good(n))good.push(n);
+  value=good[rand(good.length)];
+ }else{
+  let tries=0;
+  while(t.good(value)&&tries++<50)value=1+rand(t.max);
+ }
+ const el=document.createElement("div");
+ el.className="asteroid"+(Math.random()<.12?" bonus":Math.random()<.5?" bad":"");
+ el.textContent=value;
+ el.style.left=rand(Math.max(1,area.clientWidth-BALL))+"px";
+ el.style.top="-46px";
+ area.appendChild(el);
+ balls.push({el,value,x:parseFloat(el.style.left),y:-46,
+ speed:(75+level*16+rand(30))*({cadet:.78,pilot:1,commander:1.24}[$("difficulty").value]||1)});
+}
+function catchBall(b,i){
+ const t=currentTopic(),good=t.good(b.value);
+ const rect=b.el.getBoundingClientRect(),ar=area.getBoundingClientRect();
+ const x=rect.left-ar.left,y=rect.top-ar.top;
+ b.el.remove();balls.splice(i,1);caught++;
+ if(good){
+  combo++;bestCombo=Math.max(combo,bestCombo);
+  const bonus=b.el?.classList.contains("bonus");
+  const points=10+Math.min(combo-1,5)*2+(bonus?10:0);
+  score+=points;correctCaught++;
+  setMsg("✨ Tepat! "+b.value+" ialah "+t.target+". +"+points+" mata!");
+  popup(x,y,"+"+points,bonus?"#57f5ff":"#ffe477");sound(700+combo*30);
+ }else{
+  combo=0;wrongCaught++;lives=Math.max(0,lives-1);
+  setMsg("💥 "+b.value+" bukan jawapan sasaran. Hilang 1 nyawa!");
+  popup(x,y,"- NYAWA","#ff75b7");sound(180,.16);
+  ship.classList.remove("hit");void ship.offsetWidth;ship.classList.add("hit");
+ }
+ updateHUD();
+ if(lives<=0)endGame("Kapal angkasa kehabisan tenaga!");
+}
+function loseMiss(b,i){
+ const good=currentTopic().good(b.value);
+ b.el.remove();balls.splice(i,1);
+ if(good){
+  lives=Math.max(0,lives-1);missed++;combo=0;
+  setMsg("☄️ Terlepas nombor "+b.value+" yang betul! -1 nyawa.");
+  sound(200,.12);updateHUD();
+  if(lives<=0)endGame("Kapal angkasa kehabisan tenaga!");
+ }
+}
+function animate(ts){
+ if(!running||paused)return;
+ if(!last)last=ts;
+ const dt=Math.min((ts-last)/1000,.04);last=ts;
+ if(keys.left)moveShip(-330*dt);
+ if(keys.right)moveShip(330*dt);
+ if(held)moveShip(330*dt*held);
+ spawnClock+=dt*1000;
+ const interval=Math.max(420,1150-(level-1)*125);
+ if(spawnClock>=interval){spawnClock=0;spawn()}
+ const sr=ship.getBoundingClientRect();
+ for(let i=balls.length-1;i>=0;i--){
+  const b=balls[i];b.y+=b.speed*dt;b.el.style.top=b.y+"px";
+  const br=b.el.getBoundingClientRect();
+  if(overlap(br,sr)){catchBall(b,i);if(!running)break;continue}
+  if(b.y>=area.clientHeight-BALL){loseMiss(b,i);if(!running)break}
+ }
+ if(running)raf=requestAnimationFrame(animate);
+}
+function stopLoops(){
+ cancelAnimationFrame(raf);clearInterval(clock);
+ raf=0;clock=0;
+}
+function clearBalls(){balls.forEach(b=>b.el.remove());balls=[];effects.innerHTML=""}
+function startGame(){
+ stopLoops();clearBalls();
+ menu.classList.add("hidden");result.classList.add("hidden");screen.classList.remove("hidden");
+ score=0;timeLeft=GAME_TIME;lives=MAX_LIVES;level=1;combo=0;bestCombo=0;
+ caught=0;missed=0;correctCaught=0;wrongCaught=0;
+ running=true;paused=false;keys={left:false,right:false};held=0;last=0;spawnClock=0;
+ $("pauseOverlay").classList.add("hidden");$("pause").textContent="Ⅱ JEDA";
+ shipX=(area.clientWidth-SHIP_W)/2;placeShip();updateHUD();
+ setMsg("🚀 Misi bermula! Tangkap "+currentTopic().target+".");
+ spawn();
+ raf=requestAnimationFrame(animate);
+ clock=setInterval(()=>{
+  if(!running||paused)return;
+  timeLeft--;updateHUD();
+  if(timeLeft<=0)endGame("Masa misi telah tamat!");
+ },1000);
+}
+function endGame(reason){
+ if(!running)return;
+ running=false;paused=false;stopLoops();clearBalls();
+ try{
+  if(score>best){best=score;localStorage.setItem("galaxyBest",String(best))}
+ }catch(e){}
+ screen.classList.add("hidden");result.classList.remove("hidden");
+ $("resultIcon").textContent=score>=150?"🏆":score>=70?"🌟":"🪐";
+ $("resultTitle").textContent=score>=150?"PENEROKA GALAKSI HEBAT!":score>=70?"MISI BERJAYA!":"MISI TAMAT!";
+ $("resultText").textContent=reason+" "+(score>=70?"Syabas, angkasawan! Teruskan latihan.":"Cuba lagi untuk meningkatkan kemahiran Matematik.");
+ $("finalScore").textContent=score;
+ const accuracy=caught?Math.round(correctCaught/caught*100):0;
+ $("review").innerHTML=
+  "<b>📡 LAPORAN MISI</b><br>"+
+  "🎯 Jawapan betul ditangkap: "+correctCaught+"<br>"+
+  "💥 Jawapan salah ditangkap: "+wrongCaught+"<br>"+
+  "☄️ Sasaran betul terlepas: "+missed+"<br>"+
+  "🎯 Ketepatan tangkapan: "+accuracy+"%<br>"+
+  "🔥 Kombo terbaik: "+bestCombo+"<br>"+
+  "🏅 Rekod terbaik: "+best;
+ sound(score>=70?780:350,.2);
+}
+function pauseGame(){
+ if(!running)return;
+ paused=!paused;
+ $("pauseOverlay").classList.toggle("hidden",!paused);
+ $("pause").textContent=paused?"▶ SAMBUNG":"Ⅱ JEDA";
+ if(paused){cancelAnimationFrame(raf);keys={left:false,right:false};held=0}
+ else{last=0;raf=requestAnimationFrame(animate)}
+}
+function goHome(){
+ running=false;paused=false;stopLoops();clearBalls();
+ screen.classList.add("hidden");result.classList.add("hidden");menu.classList.remove("hidden");
+ $("pauseOverlay").classList.add("hidden");
+}
+$("play").addEventListener("click",startGame);
+$("again").addEventListener("click",startGame);
+$("home").addEventListener("click",goHome);
+$("quitPause").addEventListener("click",goHome);
+$("pause").addEventListener("click",pauseGame);
+$("resume").addEventListener("click",pauseGame);
+$("help").addEventListener("click",()=>{
+ alert("🚀 CARA BERMAIN\n\n1. Pilih misi Matematik.\n2. Gerakkan kapal dengan ← → atau A / D.\n3. Telefon: tahan butang kiri/kanan atau seret kapal.\n4. Tangkap nombor yang memenuhi syarat misi.\n5. Jawapan betul: +10 mata atau lebih dengan kombo.\n6. Jawapan salah: hilang 1 nyawa.\n7. Terlepas nombor betul: hilang 1 nyawa.\n8. Kumpulkan markah tertinggi dalam 60 saat!\n\nContoh gandaan sepunya 2 dan 3: "+topics.common.example+".");
+});
+document.addEventListener("keydown",e=>{
+ if(["ArrowLeft","ArrowRight"," "].includes(e.key))e.preventDefault();
+ if(e.key==="ArrowLeft"||e.key.toLowerCase()==="a")keys.left=true;
+ if(e.key==="ArrowRight"||e.key.toLowerCase()==="d")keys.right=true;
+ if(e.key==="Escape"&&running)pauseGame();
+ if(e.key===" "&&running&&!e.repeat)pauseGame();
+});
+document.addEventListener("keyup",e=>{
+ if(e.key==="ArrowLeft"||e.key.toLowerCase()==="a")keys.left=false;
+ if(e.key==="ArrowRight"||e.key.toLowerCase()==="d")keys.right=false;
+});
+function bindHold(id,dir){
+ const el=$(id);
+ el.addEventListener("pointerdown",e=>{
+  e.preventDefault();held=dir;
+  try{el.setPointerCapture(e.pointerId)}catch(err){}
+ });
+ const stop=()=>{if(held===dir)held=0};
+ el.addEventListener("pointerup",stop);
+ el.addEventListener("pointercancel",stop);
+ el.addEventListener("lostpointercapture",stop);
+ el.addEventListener("pointerleave",stop);
+}
+bindHold("left",-1);bindHold("right",1);
+let dragging=false;
+ship.addEventListener("pointerdown",e=>{
+ if(!running||paused)return;
+ dragging=true;ship.setPointerCapture(e.pointerId);
+});
+ship.addEventListener("pointermove",e=>{
+ if(!dragging||!running||paused)return;
+ const r=area.getBoundingClientRect();
+ shipX=e.clientX-r.left-SHIP_W/2;placeShip();
+});
+ship.addEventListener("pointerup",()=>dragging=false);
+ship.addEventListener("pointercancel",()=>dragging=false);
+window.addEventListener("resize",placeShip);
 
-      function currentLevel() {
-        return Math.min(MAX_LEVEL, Math.floor(score / LEVEL_SCORE_STEP) + 1);
-      }
-
-      function updateHUD() {
-        level = currentLevel();
-        scoreDisplay.textContent = score;
-        timerDisplay.textContent = timeLeft;
-        livesDisplay.textContent = lives + " ❤️";
-        levelDisplay.textContent = level + " / " + MAX_LEVEL;
-      }
-
-      function setMessage(text) {
-        gameMessage.textContent = text;
-      }
-
-      function clearNumbers() {
-        numbers.forEach(item => item.element.remove());
-        numbers = [];
-      }
-
-      function placeCatcher() {
-        const maxX = Math.max(0, gameArea.clientWidth - catcher.offsetWidth);
-        catcherX = Math.max(0, Math.min(catcherX, maxX));
-        catcher.style.left = catcherX + "px";
-        catcher.style.transform = "none";
-      }
-
-      function moveCatcher(delta) {
-        if (gameOver) return;
-        catcherX += delta;
-        placeCatcher();
-      }
-
-      function spawnNumber() {
-        if (gameOver) return;
-        const areaWidth = gameArea.clientWidth;
-        const maxLeft = Math.max(0, areaWidth - NUMBER_SIZE);
-        const element = document.createElement("div");
-        element.className = "number";
-        // Include both useful target numbers and distractors.
-        const value = Math.floor(Math.random() * 30) + 1;
-        element.textContent = value;
-        const x = Math.random() * maxLeft;
-        element.style.left = x + "px";
-        element.style.top = "0px";
-        gameArea.appendChild(element);
-        numbers.push({ element, value, x, y: 0 });
-      }
-
-      function loseLife(reason) {
-        lives = Math.max(0, lives - 1);
-        updateHUD();
-        setMessage(reason + " Nyawa tinggal " + lives + ".");
-        if (lives <= 0) endGame("Nyawa habis!");
-      }
-
-      function isCommonMultipleOf2And3(value) {
-        return value % 2 === 0 && value % 3 === 0;
-      }
-
-      function handleCatch(item, index) {
-        const correct = isCommonMultipleOf2And3(item.value);
-        if (correct) {
-          score += 10;
-          setMessage("Betul! " + item.value + " ialah gandaan sepunya. +10 mata!");
-        } else {
-          score = Math.max(0, score - 5);
-          lives = Math.max(0, lives - 1);
-          setMessage("Belum tepat! " + item.value + " bukan gandaan sepunya. -5 mata.");
-        }
-        item.element.remove();
-        numbers.splice(index, 1);
-        updateHUD();
-        if (lives <= 0) endGame("Nyawa habis!");
-      }
-
-      function rectanglesOverlap(a, b) {
-        return a.left < b.right && a.right > b.left &&
-               a.top < b.bottom && a.bottom > b.top;
-      }
-
-      function animate(timestamp) {
-        if (gameOver) return;
-        if (!lastFrame) lastFrame = timestamp;
-        const deltaSeconds = Math.min((timestamp - lastFrame) / 1000, 0.05);
-        lastFrame = timestamp;
-
-        const moveSpeed = 340;
-        if (keyLeft) moveCatcher(-moveSpeed * deltaSeconds);
-        if (keyRight) moveCatcher(moveSpeed * deltaSeconds);
-        if (touchDirection !== 0) moveCatcher(touchDirection * moveSpeed * deltaSeconds);
-
-        const catcherRect = catcher.getBoundingClientRect();
-        const areaRect = gameArea.getBoundingClientRect();
-        const speed = 95 + (level - 1) * 27;
-        for (let i = numbers.length - 1; i >= 0; i--) {
-          const item = numbers[i];
-          item.y += speed * deltaSeconds;
-          item.element.style.top = item.y + "px";
-          const numberRect = item.element.getBoundingClientRect();
-
-          if (rectanglesOverlap(numberRect, catcherRect)) {
-            handleCatch(item, i);
-            if (gameOver) break;
-            continue;
-          }
-
-          if (item.y + item.element.offsetHeight >= gameArea.clientHeight) {
-            const missedCorrect = isCommonMultipleOf2And3(item.value);
-            item.element.remove();
-            numbers.splice(i, 1);
-            if (missedCorrect) {
-              loseLife("Terlepas nombor " + item.value + " yang betul!");
-              if (gameOver) break;
-            }
-          }
-        }
-
-        if (!gameOver) animationFrame = requestAnimationFrame(animate);
-      }
-
-      function startSpawning() {
-        if (spawnTimer) clearInterval(spawnTimer);
-        spawnTimer = setInterval(() => {
-          if (!gameOver) spawnNumber();
-        }, Math.max(550, 1450 - (level - 1) * 170));
-      }
-
-      function startGameTimer() {
-        if (gameTimer) clearInterval(gameTimer);
-        gameTimer = setInterval(() => {
-          if (gameOver) return;
-          timeLeft--;
-          updateHUD();
-          if (timeLeft <= 0) endGame("Masa tamat!");
-        }, 1000);
-      }
-
-      function startGame() {
-        stopGameLoops();
-        clearNumbers();
-        mainMenu.classList.add("hidden");
-        gameScreen.classList.remove("hidden");
-        score = 0;
-        timeLeft = GAME_SECONDS;
-        lives = 3;
-        level = 1;
-        gameOver = false;
-        keyLeft = false;
-        keyRight = false;
-        touchDirection = 0;
-        lastFrame = 0;
-        catcherX = (gameArea.clientWidth - catcher.offsetWidth) / 2;
-        placeCatcher();
-        updateHUD();
-        setMessage("Tangkap gandaan sepunya bagi 2 dan 3!");
-        spawnNumber();
-        lastSpawn = performance.now();
-        startSpawning();
-        startGameTimer();
-        animationFrame = requestAnimationFrame(animate);
-      }
-
-      function stopGameLoops() {
-        if (spawnTimer) clearInterval(spawnTimer);
-        if (gameTimer) clearInterval(gameTimer);
-        if (animationFrame) cancelAnimationFrame(animationFrame);
-        spawnTimer = null;
-        gameTimer = null;
-        animationFrame = null;
-      }
-
-      function endGame(reason) {
-        if (gameOver) return;
-        gameOver = true;
-        stopGameLoops();
-        setMessage(reason + " Markah akhir: " + score + ". Level dicapai: " + level + ".");
-      }
-
-      function showMenu() {
-        gameOver = true;
-        stopGameLoops();
-        clearNumbers();
-        gameScreen.classList.add("hidden");
-        mainMenu.classList.remove("hidden");
-        setMessage("");
-      }
-
-      playButton.addEventListener("click", startGame);
-      restartButton.addEventListener("click", startGame);
-      menuButton.addEventListener("click", showMenu);
-      helpButton.addEventListener("click", () => instructions.classList.toggle("show"));
-
-      document.addEventListener("keydown", event => {
-        if (["ArrowLeft", "ArrowRight"].includes(event.key)) event.preventDefault();
-        if (event.key === "ArrowLeft" || event.key.toLowerCase() === "a") keyLeft = true;
-        if (event.key === "ArrowRight" || event.key.toLowerCase() === "d") keyRight = true;
-      });
-      document.addEventListener("keyup", event => {
-        if (event.key === "ArrowLeft" || event.key.toLowerCase() === "a") keyLeft = false;
-        if (event.key === "ArrowRight" || event.key.toLowerCase() === "d") keyRight = false;
-      });
-
-      function bindHold(button, direction) {
-        const start = event => { event.preventDefault(); touchDirection = direction; };
-        const stop = () => { if (touchDirection === direction) touchDirection = 0; };
-        button.addEventListener("pointerdown", start);
-        button.addEventListener("pointerup", stop);
-        button.addEventListener("pointerleave", stop);
-        button.addEventListener("pointercancel", stop);
-      }
-      bindHold(leftButton, -1);
-      bindHold(rightButton, 1);
-
-      window.addEventListener("resize", placeCatcher);
-    })();
-  </script>
+// Animated starfield, drawn on canvas without external dependencies.
+const canvas=$("stars"),ctx=canvas.getContext("2d");
+let stars=[];
+function initStars(){
+ const dpr=Math.min(window.devicePixelRatio||1,2);
+ canvas.width=innerWidth*dpr;canvas.height=innerHeight*dpr;
+ canvas.style.width=innerWidth+"px";canvas.style.height=innerHeight+"px";
+ ctx.setTransform(dpr,0,0,dpr,0,0);
+ stars=Array.from({length:Math.min(150,Math.floor(innerWidth/7))},()=>({
+  x:Math.random()*innerWidth,y:Math.random()*innerHeight,
+  r:Math.random()*1.5+.3,a:Math.random()*.7+.2,s:Math.random()*.25+.04
+ }));
+}
+function drawStars(){
+ ctx.clearRect(0,0,innerWidth,innerHeight);
+ for(const s of stars){
+  ctx.globalAlpha=s.a;
+  ctx.fillStyle="#d8e5ff";ctx.beginPath();
+  ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();
+  if(!reduced){s.y+=s.s;if(s.y>innerHeight){s.y=0;s.x=Math.random()*innerWidth}}
+ }
+ ctx.globalAlpha=1;
+ if(!reduced)requestAnimationFrame(drawStars);
+}
+initStars();drawStars();
+window.addEventListener("resize",()=>{
+ initStars();
+ if(running)placeShip();
+ if(!reduced)drawStars();
+});
+})();
+</script>
 </body>
 </html>
