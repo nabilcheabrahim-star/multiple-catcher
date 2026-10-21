@@ -4,466 +4,463 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Galaxy Mission | Matematik Tingkatan 1</title>
+<title>Multiple Catcher | Space Academy</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Nunito:wght@400;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root {
-  --cyan:#57f5ff;
-  --purple:#a78bfa;
-  --pink:#ff75d8;
-  --gold:#ffe477;
-  --bg:#07091d;
+  --cyan:#4df4ff;
+  --blue:#3678ff;
+  --purple:#a855f7;
+  --pink:#ff4db8;
+  --gold:#ffe66d;
+  --panel:rgba(12,23,66,.82);
 }
 *{box-sizing:border-box}
 body{
-  margin:0;min-height:100vh;color:#f6f5ff;
-  font-family:Nunito,Arial,sans-serif;
-  background:radial-gradient(ellipse at 50% 0%,#27205c 0%,#10132f 42%,#050713 100%);
-  overflow-x:hidden;
+  margin:0;min-height:100vh;color:white;font-family:Nunito,sans-serif;
+  background:#05091f;
+  background-image:radial-gradient(ellipse at 50% 0%,#193a82 0%,#090e30 48%,#030511 100%);
+  overflow-x:hidden
 }
-button,select{font:inherit}
-button{cursor:pointer;transition:.2s}
-button:hover{filter:brightness(1.18);transform:translateY(-2px)}
-button:focus-visible,select:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
-button:disabled{opacity:.35;cursor:not-allowed}
-#stars{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
-.app{position:relative;z-index:1;width:min(1000px,100%);margin:auto;padding:22px 16px 30px}
-header{text-align:center;margin-bottom:22px}
-.eyebrow{font-family:Orbitron,monospace;color:var(--cyan);font-size:.7rem;letter-spacing:4px}
-h1{font:900 clamp(1.8rem,6vw,3.5rem) Orbitron,monospace;line-height:1.2;margin:10px 0;
-background:linear-gradient(90deg,#fff,var(--cyan),#c9a4ff,var(--pink));
-color:transparent;background-clip:text;-webkit-background-clip:text}
-.subtitle{color:#b8b8df;margin:8px 0}
-.panel{background:linear-gradient(145deg,rgba(25,29,72,.94),rgba(10,14,39,.96));
-border:1px solid rgba(143,143,255,.3);border-radius:24px;
-padding:clamp(16px,4vw,30px);box-shadow:0 20px 70px #0005,inset 0 1px #ffffff12}
-.hidden{display:none!important}
-.menu{text-align:center}
-.planet-art{font-size:clamp(4rem,14vw,7.5rem);margin:14px 0;filter:drop-shadow(0 0 25px #9a83ff88);animation:float 3s ease-in-out infinite}
-@keyframes float{50%{transform:translateY(-10px) rotate(3deg)}}
-.menu h2,.result h2{font-family:Orbitron,monospace;color:var(--cyan)}
-.menu p{color:#c5c8e9;line-height:1.7}
-.btn{border:1px solid #ffffff25;border-radius:13px;padding:12px 18px;color:white;font-weight:900;background:#262b5b}
-.primary{background:linear-gradient(100deg,#168fbb,#7055dd);box-shadow:0 5px 20px #7358e955}
-.gold{background:linear-gradient(100deg,#ffe99b,#ffba53);color:#21173b}
-.pink{background:linear-gradient(100deg,#bd65ec,#e866bc)}
-.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px}
-.formrow{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:16px 0}
-select{background:#151a40;color:white;border:1px solid #6269b5;padding:12px;border-radius:12px;max-width:100%}
-.label{display:block;color:#aeb8e9;font-size:.8rem;font-weight:800;margin-bottom:6px}
-.hud{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}
-.stat{background:#ffffff08;border:1px solid #8e8aff35;border-radius:15px;text-align:center;padding:12px 5px}
-.stat span{display:block;color:#afb6df;font-size:.73rem;font-weight:800;letter-spacing:1px}
-.stat strong{display:block;font:700 clamp(1rem,3vw,1.55rem) Orbitron,monospace;color:white;margin-top:7px}
-#score{color:var(--gold)}#timer{color:var(--cyan)}#lives{color:#ff92bc}#level{color:#c3a6ff}
-.missionbar{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:.83rem;color:#cbd0f6;margin:8px 2px}
-.progress{height:7px;border-radius:10px;background:#ffffff14;overflow:hidden;margin-bottom:14px}
-#progressFill{height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--purple),var(--pink));transition:width .25s}
-#gameArea{height:clamp(340px,57vh,510px);position:relative;overflow:hidden;
-border:1px solid #8e8aff60;border-radius:18px;isolation:isolate;touch-action:pan-y;
-background:radial-gradient(ellipse at 50% 85%,#28296d 0%,#13173f 35%,#080c26 75%)}
-#gameArea:before{content:"";position:absolute;inset:0;pointer-events:none;
-background:repeating-linear-gradient(0deg,transparent 0 38px,#ffffff05 39px 40px),
-repeating-linear-gradient(90deg,transparent 0 38px,#ffffff04 39px 40px)}
-.planet{position:absolute;border-radius:50%;pointer-events:none;opacity:.75}
-.p1{width:65px;height:65px;right:8%;top:15%;background:radial-gradient(circle at 30% 30%,#ffb2f3,#a24ddd 55%,#34216b);box-shadow:0 0 28px #a24ddd45}
-.p2{width:35px;height:35px;left:9%;top:45%;background:radial-gradient(circle at 30% 30%,#fff0b1,#e28b49 65%,#6c2e58)}
-.asteroid{position:absolute;top:0;left:0;width:42px;height:42px;display:grid;place-items:center;
-border-radius:50%;font:900 1rem Orbitron,monospace;color:#171333;
-background:radial-gradient(circle at 30% 25%,#fff4c4,#ffc857 50%,#e47c66);
-border:2px solid #ffffff80;box-shadow:0 0 17px #ffcb6255,0 4px 10px #0005;
-pointer-events:none;z-index:3}
-.asteroid.bad{background:radial-gradient(circle at 30% 25%,#ffd6fb,#fa83cf 50%,#9458e8);box-shadow:0 0 17px #f37aff55}
-.asteroid.bonus{background:radial-gradient(circle at 30% 25%,white,#65f5ff 50%,#5874ed);box-shadow:0 0 22px #57f5ff88}
-#ship{position:absolute;bottom:12px;left:0;width:84px;height:53px;z-index:5;
-display:flex;flex-direction:column;align-items:center;justify-content:center;
-font-size:2.4rem;filter:drop-shadow(0 0 12px #58eaff99);user-select:none;touch-action:none}
-#ship .shiplabel{font:700 8px Orbitron,monospace;color:var(--cyan);margin-top:-4px}
-#ship.hit{animation:hit .3s}
-@keyframes hit{50%{filter:brightness(3);transform:translateX(6px)}}
-#effects{position:absolute;inset:0;pointer-events:none;z-index:8}
-.pop{position:absolute;font:900 1rem Orbitron,monospace;animation:pop .8s forwards;white-space:nowrap}
-@keyframes pop{to{transform:translateY(-45px);opacity:0}}
-#message{min-height:48px;text-align:center;display:grid;place-items:center;color:#d7d9ff;font-weight:800;line-height:1.5;padding:9px 2px}
-.controls{display:flex;gap:14px;justify-content:center;align-items:center}
-.movebtn{width:76px;height:48px;font-size:1.4rem;background:#222957;border:1px solid #747bc5;border-radius:14px;color:white;touch-action:none;user-select:none}
-.smallnote{text-align:center;color:#9da5d5;font-size:.8rem;line-height:1.6;margin-top:12px}
-.overlay{position:absolute;inset:0;background:#07091de8;backdrop-filter:blur(7px);z-index:10;display:grid;place-items:center;padding:20px}
-.overlaybox{text-align:center;width:min(380px,100%);background:#191d46;border:1px solid #777ce0;border-radius:22px;padding:25px}
-.overlaybox h2{font-family:Orbitron,monospace;color:var(--cyan)}
-.result{text-align:center}
-.finalscore{font:900 clamp(2.5rem,10vw,4rem) Orbitron,monospace;color:var(--gold);margin:12px}
-.result p{color:#c9ccee;line-height:1.7}
-.review{background:#ffffff08;border-radius:14px;padding:14px;margin:16px 0;text-align:left;line-height:1.8}
-footer{text-align:center;color:#858bb8;font-size:.76rem;margin-top:18px}
-@media(max-width:520px){
- .app{padding:16px 10px 24px}
- .hud{gap:6px}.stat{padding:10px 2px}.stat span{font-size:.63rem;letter-spacing:0}
- #gameArea{height:53vh;min-height:320px}
- .panel{border-radius:19px}
+button{font:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid white;outline-offset:3px}
+#stars{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:-1}
+header{
+  text-align:center;padding:24px 12px 12px;
 }
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+.logo{
+  font:900 clamp(32px,7vw,66px) Orbitron,sans-serif;
+  letter-spacing:-2px;line-height:1.08;
+  color:var(--gold);
+  text-shadow:3px 4px 0 #ff4c87,0 0 32px #427dff;
+}
+.logo span{display:block;color:#fff;font-size:.65em;letter-spacing:5px}
+.tagline{color:#a8c9ff;font-weight:800;letter-spacing:3px;font-size:12px;margin-top:12px}
+.wrap{max-width:1100px;margin:auto;padding:12px}
+.panel{
+  background:linear-gradient(145deg,rgba(21,40,95,.92),rgba(8,13,43,.94));
+  border:1px solid rgba(104,202,255,.3);
+  border-radius:22px;padding:20px;
+  box-shadow:0 12px 35px #0005,inset 0 1px #ffffff12;
+}
+.screen{display:none}
+.screen.active{display:block;animation:appear .35s ease}
+@keyframes appear{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+h2{font:700 20px Orbitron,sans-serif;color:var(--cyan);margin:0 0 15px}
+p{line-height:1.6;color:#dce6ff}
+.menu-hero{text-align:center;padding:clamp(22px,5vw,55px) 15px}
+.planet{font-size:78px;filter:drop-shadow(0 0 25px #7b8dff);animation:float 3s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-12px) rotate(5deg)}}
+.menu-hero h1{font:900 clamp(28px,5vw,48px) Orbitron,sans-serif;margin:10px 0;color:white}
+.menu-hero h1 em{font-style:normal;color:var(--gold)}
+.btn{
+  border:0;border-radius:14px;padding:13px 22px;font-weight:900;
+  color:white;background:linear-gradient(135deg,#397bff,#823eff);
+  box-shadow:0 5px 0 #222c70,0 0 18px #467aff55;
+  transition:.18s;display:inline-block;margin:5px;
+}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.15)}
+.btn:active{transform:translateY(2px);box-shadow:none}
+.btn.green{background:linear-gradient(135deg,#00d8a2,#00a9d7);box-shadow:0 5px 0 #075a75}
+.btn.pink{background:linear-gradient(135deg,#ff4da6,#a343ff);box-shadow:0 5px 0 #5b247c}
+.btn.gold{background:linear-gradient(135deg,#ffca49,#ff8039);box-shadow:0 5px 0 #894422}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:14px 0}
+.stat{text-align:center;padding:12px 5px;background:#080e2d;border:1px solid #273b7a;border-radius:14px}
+.stat small{display:block;color:#91a9e8;font-weight:800;font-size:10px;letter-spacing:1px}
+.stat strong{display:block;font:700 clamp(17px,3vw,25px) Orbitron,sans-serif;margin-top:6px}
+#score{color:var(--gold)}#lives{color:#ff629f}#time{color:var(--cyan)}
+.game-shell{position:relative}
+canvas{
+  display:block;width:100%;height:min(54vh,480px);min-height:300px;
+  background:#06122c;border:2px solid #436dcb;border-radius:15px;
+  touch-action:none;
+}
+.game-overlay{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  background:#05091dcc;border-radius:15px;text-align:center;padding:20px;
+}
+.game-overlay.hidden{display:none}
+.overlay-card{max-width:360px}
+.overlay-card h2{font-size:25px}
+.hud-row{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin:12px 0}
+.pill{border:1px solid #344c8e;background:#101c48;padding:9px 13px;border-radius:99px;font-size:12px;font-weight:900}
+#question{font:900 clamp(18px,3.5vw,27px) Orbitron,sans-serif;color:var(--gold);text-align:center;margin:16px 0}
+#answers{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:15px 0}
+.answer{
+ min-width:78px;border:2px solid #4968bb;border-radius:13px;
+ background:#16285b;color:white;padding:12px 18px;font:900 20px Orbitron,sans-serif;
+}
+.answer:hover{border-color:var(--cyan);background:#253c81}
+.answer:disabled{opacity:.45;cursor:default}
+.feedback{text-align:center;min-height:25px;font-weight:900}
+.feedback.good{color:#52ffbd}.feedback.bad{color:#ff779e}
+.progress{height:7px;background:#131c46;border-radius:20px;overflow:hidden;margin:12px 0}
+#progress{height:100%;width:100%;background:linear-gradient(90deg,#36e9ff,#a35cff);transition:width .2s}
+.instructions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.info{background:#0b1439;border:1px solid #263c79;padding:15px;border-radius:14px}
+.info b{color:var(--gold)}
+.controls{display:flex;justify-content:center;gap:12px;margin-top:12px}
+.move{width:90px;height:53px;border-radius:14px;border:1px solid #5476ca;background:#162758;color:white;font-size:25px}
+footer{text-align:center;padding:22px 10px;color:#667bb3;font-size:12px}
+@media(max-width:650px){
+ .wrap{padding:9px}.panel{padding:13px;border-radius:17px}
+ .grid{gap:7px}.stat{padding:10px 2px}
+ .instructions{grid-template-columns:1fr}
+ canvas{min-height:310px;height:43vh}
+ .logo{letter-spacing:-1px}
+ .tagline{letter-spacing:1px}
+ .answer{min-width:65px;padding:12px}
+}
 </style>
 </head>
 <body>
 <canvas id="stars"></canvas>
-<main class="app">
 <header>
- <div class="eyebrow">✦ AKADEMI ANGKASA MATEMATIK ✦</div>
- <h1>GALAXY MISSION</h1>
- <p class="subtitle">Misi menyelamatkan galaksi dengan kuasa Matematik!</p>
+  <div class="logo">MULTIPLE <span>CATCHER</span></div>
+  <div class="tagline">✦ SPACE ACADEMY · TANGKAP GANDAAN, JADI JUARA ✦</div>
 </header>
 
-<section class="panel menu" id="menu">
- <div class="planet-art">🪐</div>
- <h2>ANGKASAWAN, ANDA DIPERLUKAN!</h2>
- <p>Galaksi sedang diserang asteroid nombor.<br>
- Tangkap nombor sasaran yang betul untuk menyelamatkan misi!</p>
- <div class="formrow">
-  <div>
-   <label class="label" for="topic">PILIH MISI MATEMATIK</label>
-   <select id="topic">
-    <option value="common">Gandaan sepunya 2 dan 3</option>
-    <option value="multiple">Gandaan bagi 4</option>
-    <option value="factor">Faktor bagi 12</option>
-    <option value="prime">Nombor perdana</option>
-   </select>
+<main class="wrap">
+<section id="home" class="screen active panel">
+  <div class="menu-hero">
+    <div class="planet">🪐</div>
+    <h1>MISSION <em>MULTIPLE</em></h1>
+    <p>Jadilah angkasawan matematik! Tangkap nombor yang merupakan gandaan bagi nombor sasaran sebelum masa tamat.</p>
+    <button class="btn green" onclick="startGame()">🚀 MULA MISI</button>
+    <button class="btn pink" onclick="showScreen('guide')">📖 CARA BERMAIN</button>
+    <div class="grid">
+      <div class="stat"><small>LEVEL</small><strong>1–5</strong></div>
+      <div class="stat"><small>MASA MISI</small><strong>60s</strong></div>
+      <div class="stat"><small>GANJARAN BETUL</small><strong style="color:#54ffbc">+10</strong></div>
+    </div>
   </div>
-  <div>
-   <label class="label" for="difficulty">TAHAP MISI</label>
-   <select id="difficulty">
-    <option value="cadet">Kadet 🚀</option>
-    <option value="pilot">Juruterbang 🛸</option>
-    <option value="commander">Komander 🌌</option>
-   </select>
-  </div>
- </div>
- <div class="actions">
-  <button class="btn primary" id="play">🚀 MULAKAN MISI</button>
-  <button class="btn" id="help">📡 CARA BERMAIN</button>
- </div>
- <p class="smallnote">Sesuai untuk Matematik Tingkatan 1 · Komputer & telefon</p>
 </section>
 
-<section class="panel hidden" id="gameScreen">
- <div class="hud">
-  <div class="stat"><span>⭐ MARKAH</span><strong id="score">0</strong></div>
-  <div class="stat"><span>⏱ MASA</span><strong id="timer">60</strong></div>
-  <div class="stat"><span>💗 NYAWA</span><strong id="lives">3</strong></div>
-  <div class="stat"><span>🌌 LEVEL</span><strong id="level">1</strong></div>
- </div>
- <div class="missionbar"><span id="missionName">MISI 01</span><span id="targetLabel">Sasaran: gandaan sepunya</span></div>
- <div class="progress"><div id="progressFill"></div></div>
- <div id="gameArea" aria-label="Kawasan permainan angkasa">
-  <div class="planet p1"></div><div class="planet p2"></div>
-  <div id="ship" aria-label="Kapal angkasa pemain"><span>🚀</span><span class="shiplabel">PILOT</span></div>
-  <div id="effects"></div>
-  <div class="overlay hidden" id="pauseOverlay">
-   <div class="overlaybox"><h2>⏸ MISI DIJEDA</h2><p>Masa berhenti sementara.</p>
-   <button class="btn primary" id="resume">▶ SAMBUNG</button>
-   <button class="btn" id="quitPause">KELUAR</button></div>
+<section id="guide" class="screen panel">
+  <h2>📡 ARAHAN MISI</h2>
+  <div class="instructions">
+    <div class="info"><h3>🎯 01 — SASARAN</h3><p>Lihat nombor sasaran. Contoh: gandaan 3 ialah 3, 6, 9, 12 dan seterusnya.</p></div>
+    <div class="info"><h3>🛸 02 — TANGKAP</h3><p>Gerakkan kapal ke kiri dan kanan untuk menangkap nombor yang betul.</p></div>
+    <div class="info"><h3>⚡ 03 — SKOR</h3><p>Jawapan betul +10 mata. Nombor salah −5 mata dan hilang satu nyawa.</p></div>
   </div>
- </div>
- <div id="message" aria-live="polite">Bersedia, angkasawan!</div>
- <div class="controls">
-  <button class="btn movebtn" id="left" aria-label="Gerak ke kiri">◀</button>
-  <button class="btn gold" id="pause">Ⅱ JEDA</button>
-  <button class="btn movebtn" id="right" aria-label="Gerak ke kanan">▶</button>
- </div>
- <div class="smallnote">Gerakkan kapal dengan ← → atau A / D. Pada telefon, tahan butang arah atau seret kapal.</div>
+  <p>💻 Komputer: guna kekunci ← → atau A / D. Telefon: sentuh butang kiri dan kanan atau seret kapal pada skrin.</p>
+  <p>❤️ Kamu bermula dengan 3 nyawa. Selesaikan 5 level untuk menamatkan misi!</p>
+  <button class="btn green" onclick="startGame()">🚀 FAHAM, MULA!</button>
+  <button class="btn" onclick="showScreen('home')">KEMBALI</button>
 </section>
 
-<section class="panel hidden result" id="result">
- <div class="planet-art" id="resultIcon">🏆</div>
- <h2 id="resultTitle">MISI SELESAI!</h2>
- <p id="resultText">Galaksi berjaya diselamatkan.</p>
- <div class="finalscore" id="finalScore">0</div>
- <p>MARKAH AKHIR</p>
- <div class="review" id="review"></div>
- <div class="actions">
-  <button class="btn primary" id="again">🚀 MAIN LAGI</button>
-  <button class="btn" id="home">🏠 MENU UTAMA</button>
- </div>
+<section id="game" class="screen panel">
+  <div class="grid">
+    <div class="stat"><small>MARKAH</small><strong id="score">0</strong></div>
+    <div class="stat"><small>NYAWA</small><strong id="lives">❤️❤️❤️</strong></div>
+    <div class="stat"><small>MASA</small><strong id="time">60</strong></div>
+  </div>
+  <div class="hud-row">
+    <span class="pill" id="level">🌌 LEVEL 1 / 5</span>
+    <span class="pill" id="caught">TANGKAPAN: 0</span>
+    <span class="pill" id="combo">COMBO ×1</span>
+  </div>
+  <div id="question">TANGKAP GANDAAN 3</div>
+  <div class="progress"><div id="progress"></div></div>
+  <div class="game-shell">
+    <canvas id="gameCanvas" aria-label="Permainan tangkap nombor gandaan"></canvas>
+    <div id="overlay" class="game-overlay hidden">
+      <div class="overlay-card">
+        <h2 id="overlayTitle">BERSIAP SEDIA!</h2>
+        <p id="overlayText">Misi bermula sekarang.</p>
+        <button id="overlayBtn" class="btn green" onclick="resumeGame()">TERUSKAN</button>
+      </div>
+    </div>
+  </div>
+  <div class="controls">
+    <button class="move" id="left" aria-label="Gerak kiri">◀</button>
+    <button class="move" id="right" aria-label="Gerak kanan">▶</button>
+  </div>
+  <p class="feedback" id="feedback">🚀 Bersedia, angkasawan!</p>
+  <div style="text-align:center">
+    <button class="btn" onclick="pauseGame()">⏸ JEDA</button>
+    <button class="btn pink" onclick="quitGame()">🏠 MENU</button>
+  </div>
 </section>
-<footer>GALAXY MISSION · PEMBELAJARAN MATEMATIK SECARA INTERAKTIF</footer>
+
+<section id="result" class="screen panel" style="text-align:center">
+  <div class="planet" id="resultIcon">🏆</div>
+  <h2 id="resultTitle">MISI SELESAI!</h2>
+  <p id="resultText">Tahniah, angkasawan!</p>
+  <div class="grid">
+    <div class="stat"><small>SKOR AKHIR</small><strong id="finalScore">0</strong></div>
+    <div class="stat"><small>BETUL</small><strong id="finalCorrect">0</strong></div>
+    <div class="stat"><small>TAHAP</small><strong id="finalLevel">1/5</strong></div>
+  </div>
+  <button class="btn green" onclick="startGame()">🔄 CUBA LAGI</button>
+  <button class="btn" onclick="showScreen('home')">🏠 MENU UTAMA</button>
+</section>
 </main>
+<footer>SPACE ACADEMY © MULTIPLE CATCHER · BELAJAR SAMBIL BERMAIN ✦</footer>
 
 <script>
-(() => {
-"use strict";
-const $ = id => document.getElementById(id);
-const menu=$("menu"), screen=$("gameScreen"), result=$("result");
-const area=$("gameArea"), ship=$("ship"), effects=$("effects");
-const scoreEl=$("score"), timerEl=$("timer"), livesEl=$("lives"), levelEl=$("level");
-const message=$("message"), fill=$("progressFill");
-const GAME_TIME=60, MAX_LIVES=3, SHIP_W=84, BALL=42;
-
-const topics={
- common:{name:"Gandaan sepunya 2 dan 3",target:"Gandaan sepunya 2 & 3",
-  good:n=>n%2===0&&n%3===0, max:36,example:"6, 12, 18, 24, 30, 36"},
- multiple:{name:"Gandaan bagi 4",target:"Gandaan 4",
-  good:n=>n%4===0,max:40,example:"4, 8, 12, 16, 20"},
- factor:{name:"Faktor bagi 12",target:"Faktor 12",
-  good:n=>12%n===0,max:36,example:"1, 2, 3, 4, 6, 12"},
- prime:{name:"Nombor perdana",target:"Nombor perdana",
-  good:n=>{if(n<2)return false;for(let i=2;i*i<=n;i++)if(n%i===0)return false;return true;},max:40,example:"2, 3, 5, 7, 11, 13"}
-};
-let running=false,paused=false,score=0,timeLeft=GAME_TIME,lives=MAX_LIVES,level=1;
-let shipX=0,held=0,keys={left:false,right:false},balls=[];
-let last=0,lastSpawn=0,raf=0,clock=0,spawnClock=0,combo=0,bestCombo=0;
-let caught=0,missed=0,correctCaught=0,wrongCaught=0;
-let audioCtx=null, best=0;
-try{best=Number(localStorage.getItem("galaxyBest")||0)}catch(e){}
-const reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-function sound(freq=550,duration=.08){
- try{
-  audioCtx ||= new (window.AudioContext||window.webkitAudioContext)();
-  if(audioCtx.state==="suspended")audioCtx.resume();
-  const o=audioCtx.createOscillator(),g=audioCtx.createGain();
-  o.type="sine";o.frequency.value=freq;g.gain.value=.045;
-  o.connect(g);g.connect(audioCtx.destination);o.start();
-  g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+duration);
-  o.stop(audioCtx.currentTime+duration);
- }catch(e){}
-}
-function rand(n){return Math.floor(Math.random()*n)}
-function currentTopic(){return topics[$("topic").value]||topics.common}
-function currentLevel(){return Math.min(5,1+Math.floor(score/60))}
-function setMsg(t){message.textContent=t}
-function updateHUD(){
- level=currentLevel();
- scoreEl.textContent=score;
- timerEl.textContent=timeLeft;
- livesEl.textContent="❤️ ".repeat(lives)||"0";
- levelEl.textContent=level;
- $("missionName").textContent="MISI "+String(level).padStart(2,"0");
- $("targetLabel").textContent=currentTopic().target;
- fill.style.width=Math.min(100,score%60/60*100)+"%";
-}
-function placeShip(){
- const max=Math.max(0,area.clientWidth-SHIP_W);
- shipX=Math.max(0,Math.min(max,shipX));
- ship.style.left=shipX+"px";
-}
-function moveShip(dx){shipX+=dx;placeShip()}
-function popup(x,y,text,color){
- const el=document.createElement("div");
- el.className="pop";el.textContent=text;el.style.left=x+"px";el.style.top=y+"px";
- el.style.color=color;effects.appendChild(el);
- setTimeout(()=>el.remove(),850);
-}
-function overlap(a,b){
- return a.left<b.right&&a.right>b.left&&a.top<b.bottom&&a.bottom>b.top;
-}
-function spawn(){
- if(!running||paused)return;
- const t=currentTopic();
- let value=1+rand(t.max);
- // Mix correct answers and distractors so the game remains educational.
- if(Math.random()<.64){
-  const good=[];
-  for(let n=1;n<=t.max;n++)if(t.good(n))good.push(n);
-  value=good[rand(good.length)];
- }else{
-  let tries=0;
-  while(t.good(value)&&tries++<50)value=1+rand(t.max);
- }
- const el=document.createElement("div");
- el.className="asteroid"+(Math.random()<.12?" bonus":Math.random()<.5?" bad":"");
- el.textContent=value;
- el.style.left=rand(Math.max(1,area.clientWidth-BALL))+"px";
- el.style.top="-46px";
- area.appendChild(el);
- balls.push({el,value,x:parseFloat(el.style.left),y:-46,
- speed:(75+level*16+rand(30))*({cadet:.78,pilot:1,commander:1.24}[$("difficulty").value]||1)});
-}
-function catchBall(b,i){
- const t=currentTopic(),good=t.good(b.value);
- const rect=b.el.getBoundingClientRect(),ar=area.getBoundingClientRect();
- const x=rect.left-ar.left,y=rect.top-ar.top;
- b.el.remove();balls.splice(i,1);caught++;
- if(good){
-  combo++;bestCombo=Math.max(combo,bestCombo);
-  const bonus=b.el?.classList.contains("bonus");
-  const points=10+Math.min(combo-1,5)*2+(bonus?10:0);
-  score+=points;correctCaught++;
-  setMsg("✨ Tepat! "+b.value+" ialah "+t.target+". +"+points+" mata!");
-  popup(x,y,"+"+points,bonus?"#57f5ff":"#ffe477");sound(700+combo*30);
- }else{
-  combo=0;wrongCaught++;lives=Math.max(0,lives-1);
-  setMsg("💥 "+b.value+" bukan jawapan sasaran. Hilang 1 nyawa!");
-  popup(x,y,"- NYAWA","#ff75b7");sound(180,.16);
-  ship.classList.remove("hit");void ship.offsetWidth;ship.classList.add("hit");
- }
- updateHUD();
- if(lives<=0)endGame("Kapal angkasa kehabisan tenaga!");
-}
-function loseMiss(b,i){
- const good=currentTopic().good(b.value);
- b.el.remove();balls.splice(i,1);
- if(good){
-  lives=Math.max(0,lives-1);missed++;combo=0;
-  setMsg("☄️ Terlepas nombor "+b.value+" yang betul! -1 nyawa.");
-  sound(200,.12);updateHUD();
-  if(lives<=0)endGame("Kapal angkasa kehabisan tenaga!");
- }
-}
-function animate(ts){
- if(!running||paused)return;
- if(!last)last=ts;
- const dt=Math.min((ts-last)/1000,.04);last=ts;
- if(keys.left)moveShip(-330*dt);
- if(keys.right)moveShip(330*dt);
- if(held)moveShip(330*dt*held);
- spawnClock+=dt*1000;
- const interval=Math.max(420,1150-(level-1)*125);
- if(spawnClock>=interval){spawnClock=0;spawn()}
- const sr=ship.getBoundingClientRect();
- for(let i=balls.length-1;i>=0;i--){
-  const b=balls[i];b.y+=b.speed*dt;b.el.style.top=b.y+"px";
-  const br=b.el.getBoundingClientRect();
-  if(overlap(br,sr)){catchBall(b,i);if(!running)break;continue}
-  if(b.y>=area.clientHeight-BALL){loseMiss(b,i);if(!running)break}
- }
- if(running)raf=requestAnimationFrame(animate);
-}
-function stopLoops(){
- cancelAnimationFrame(raf);clearInterval(clock);
- raf=0;clock=0;
-}
-function clearBalls(){balls.forEach(b=>b.el.remove());balls=[];effects.innerHTML=""}
-function startGame(){
- stopLoops();clearBalls();
- menu.classList.add("hidden");result.classList.add("hidden");screen.classList.remove("hidden");
- score=0;timeLeft=GAME_TIME;lives=MAX_LIVES;level=1;combo=0;bestCombo=0;
- caught=0;missed=0;correctCaught=0;wrongCaught=0;
- running=true;paused=false;keys={left:false,right:false};held=0;last=0;spawnClock=0;
- $("pauseOverlay").classList.add("hidden");$("pause").textContent="Ⅱ JEDA";
- shipX=(area.clientWidth-SHIP_W)/2;placeShip();updateHUD();
- setMsg("🚀 Misi bermula! Tangkap "+currentTopic().target+".");
- spawn();
- raf=requestAnimationFrame(animate);
- clock=setInterval(()=>{
-  if(!running||paused)return;
-  timeLeft--;updateHUD();
-  if(timeLeft<=0)endGame("Masa misi telah tamat!");
- },1000);
-}
-function endGame(reason){
- if(!running)return;
- running=false;paused=false;stopLoops();clearBalls();
- try{
-  if(score>best){best=score;localStorage.setItem("galaxyBest",String(best))}
- }catch(e){}
- screen.classList.add("hidden");result.classList.remove("hidden");
- $("resultIcon").textContent=score>=150?"🏆":score>=70?"🌟":"🪐";
- $("resultTitle").textContent=score>=150?"PENEROKA GALAKSI HEBAT!":score>=70?"MISI BERJAYA!":"MISI TAMAT!";
- $("resultText").textContent=reason+" "+(score>=70?"Syabas, angkasawan! Teruskan latihan.":"Cuba lagi untuk meningkatkan kemahiran Matematik.");
- $("finalScore").textContent=score;
- const accuracy=caught?Math.round(correctCaught/caught*100):0;
- $("review").innerHTML=
-  "<b>📡 LAPORAN MISI</b><br>"+
-  "🎯 Jawapan betul ditangkap: "+correctCaught+"<br>"+
-  "💥 Jawapan salah ditangkap: "+wrongCaught+"<br>"+
-  "☄️ Sasaran betul terlepas: "+missed+"<br>"+
-  "🎯 Ketepatan tangkapan: "+accuracy+"%<br>"+
-  "🔥 Kombo terbaik: "+bestCombo+"<br>"+
-  "🏅 Rekod terbaik: "+best;
- sound(score>=70?780:350,.2);
-}
-function pauseGame(){
- if(!running)return;
- paused=!paused;
- $("pauseOverlay").classList.toggle("hidden",!paused);
- $("pause").textContent=paused?"▶ SAMBUNG":"Ⅱ JEDA";
- if(paused){cancelAnimationFrame(raf);keys={left:false,right:false};held=0}
- else{last=0;raf=requestAnimationFrame(animate)}
-}
-function goHome(){
- running=false;paused=false;stopLoops();clearBalls();
- screen.classList.add("hidden");result.classList.add("hidden");menu.classList.remove("hidden");
- $("pauseOverlay").classList.add("hidden");
-}
-$("play").addEventListener("click",startGame);
-$("again").addEventListener("click",startGame);
-$("home").addEventListener("click",goHome);
-$("quitPause").addEventListener("click",goHome);
-$("pause").addEventListener("click",pauseGame);
-$("resume").addEventListener("click",pauseGame);
-$("help").addEventListener("click",()=>{
- alert("🚀 CARA BERMAIN\n\n1. Pilih misi Matematik.\n2. Gerakkan kapal dengan ← → atau A / D.\n3. Telefon: tahan butang kiri/kanan atau seret kapal.\n4. Tangkap nombor yang memenuhi syarat misi.\n5. Jawapan betul: +10 mata atau lebih dengan kombo.\n6. Jawapan salah: hilang 1 nyawa.\n7. Terlepas nombor betul: hilang 1 nyawa.\n8. Kumpulkan markah tertinggi dalam 60 saat!\n\nContoh gandaan sepunya 2 dan 3: "+topics.common.example+".");
-});
-document.addEventListener("keydown",e=>{
- if(["ArrowLeft","ArrowRight"," "].includes(e.key))e.preventDefault();
- if(e.key==="ArrowLeft"||e.key.toLowerCase()==="a")keys.left=true;
- if(e.key==="ArrowRight"||e.key.toLowerCase()==="d")keys.right=true;
- if(e.key==="Escape"&&running)pauseGame();
- if(e.key===" "&&running&&!e.repeat)pauseGame();
-});
-document.addEventListener("keyup",e=>{
- if(e.key==="ArrowLeft"||e.key.toLowerCase()==="a")keys.left=false;
- if(e.key==="ArrowRight"||e.key.toLowerCase()==="d")keys.right=false;
-});
-function bindHold(id,dir){
- const el=$(id);
- el.addEventListener("pointerdown",e=>{
-  e.preventDefault();held=dir;
-  try{el.setPointerCapture(e.pointerId)}catch(err){}
- });
- const stop=()=>{if(held===dir)held=0};
- el.addEventListener("pointerup",stop);
- el.addEventListener("pointercancel",stop);
- el.addEventListener("lostpointercapture",stop);
- el.addEventListener("pointerleave",stop);
-}
-bindHold("left",-1);bindHold("right",1);
-let dragging=false;
-ship.addEventListener("pointerdown",e=>{
- if(!running||paused)return;
- dragging=true;ship.setPointerCapture(e.pointerId);
-});
-ship.addEventListener("pointermove",e=>{
- if(!dragging||!running||paused)return;
- const r=area.getBoundingClientRect();
- shipX=e.clientX-r.left-SHIP_W/2;placeShip();
-});
-ship.addEventListener("pointerup",()=>dragging=false);
-ship.addEventListener("pointercancel",()=>dragging=false);
-window.addEventListener("resize",placeShip);
-
-// Animated starfield, drawn on canvas without external dependencies.
-const canvas=$("stars"),ctx=canvas.getContext("2d");
+/* ===== STARFIELD BACKGROUND ===== */
+const starCanvas=document.getElementById('stars');
+const starCtx=starCanvas.getContext('2d');
 let stars=[];
-function initStars(){
- const dpr=Math.min(window.devicePixelRatio||1,2);
- canvas.width=innerWidth*dpr;canvas.height=innerHeight*dpr;
- canvas.style.width=innerWidth+"px";canvas.style.height=innerHeight+"px";
- ctx.setTransform(dpr,0,0,dpr,0,0);
- stars=Array.from({length:Math.min(150,Math.floor(innerWidth/7))},()=>({
+function resizeStars(){
+ starCanvas.width=innerWidth*devicePixelRatio;
+ starCanvas.height=innerHeight*devicePixelRatio;
+ starCtx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+ stars=Array.from({length:Math.min(180,Math.floor(innerWidth/5))},()=>({
   x:Math.random()*innerWidth,y:Math.random()*innerHeight,
-  r:Math.random()*1.5+.3,a:Math.random()*.7+.2,s:Math.random()*.25+.04
+  r:Math.random()*1.7+.3,a:Math.random(),v:Math.random()*.012+.003
  }));
 }
 function drawStars(){
- ctx.clearRect(0,0,innerWidth,innerHeight);
- for(const s of stars){
-  ctx.globalAlpha=s.a;
-  ctx.fillStyle="#d8e5ff";ctx.beginPath();
-  ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();
-  if(!reduced){s.y+=s.s;if(s.y>innerHeight){s.y=0;s.x=Math.random()*innerWidth}}
- }
- ctx.globalAlpha=1;
- if(!reduced)requestAnimationFrame(drawStars);
+ starCtx.clearRect(0,0,innerWidth,innerHeight);
+ stars.forEach(s=>{
+  s.a+=s.v;if(s.a>1||s.a<.15)s.v*=-1;
+  starCtx.globalAlpha=s.a;
+  starCtx.fillStyle='#bdeaff';
+  starCtx.beginPath();starCtx.arc(s.x,s.y,s.r,0,Math.PI*2);starCtx.fill();
+ });
+ starCtx.globalAlpha=1;requestAnimationFrame(drawStars);
 }
-initStars();drawStars();
-window.addEventListener("resize",()=>{
- initStars();
- if(running)placeShip();
- if(!reduced)drawStars();
+addEventListener('resize',resizeStars);resizeStars();drawStars();
+
+/* ===== GAME ENGINE ===== */
+const canvas=document.getElementById('gameCanvas');
+const ctx=canvas.getContext('2d');
+const $=id=>document.getElementById(id);
+let W=800,H=430,dpr=1;
+function resizeGameCanvas(){
+ const r=canvas.getBoundingClientRect();
+ if(!r.width)return;
+ dpr=Math.min(devicePixelRatio||1,2);
+ W=r.width;H=r.height;
+ canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
+ ctx.setTransform(dpr,0,0,dpr,0,0);
+ if(ship)ship.x=Math.max(28,Math.min(W-28,ship.x));
+}
+let running=false,paused=false,ended=false;
+let score=0,lives=3,level=1,timeLeft=60,correct=0,combo=0,caught=0;
+let target=3,ship=null,objects=[],particles=[],last=0,spawnClock=0;
+let timer=null,raf=null,keys={},touchDir=0,gameToken=0;
+const levelTargets=[3,4,5,6,7];
+const levelGoals=[5,7,9,11,13];
+
+function showScreen(id){
+ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+ $(id).classList.add('active');
+ if(id!=='game')stopLoops();
+}
+function updateHUD(){
+ $('score').textContent=score;
+ $('lives').textContent='❤️'.repeat(lives)+'🖤'.repeat(3-lives);
+ $('time').textContent=timeLeft;
+ $('level').textContent=`🌌 LEVEL ${level} / 5`;
+ $('caught').textContent=`TANGKAPAN: ${caught}/${levelGoals[level-1]}`;
+ $('combo').textContent=`COMBO ×${Math.max(1,combo)}`;
+ $('question').textContent=`TANGKAP GANDAAN ${target}`;
+ $('progress').style.width=Math.max(0,timeLeft/60*100)+'%';
+}
+function startGame(){
+ stopLoops();gameToken++;
+ score=0;lives=3;level=1;timeLeft=60;correct=0;combo=0;caught=0;
+ objects=[];particles=[];keys={};touchDir=0;
+ showScreen('game');resizeGameCanvas();
+ ship={x:W/2,y:H-42,w:54,h:30,speed:340};
+ newLevel();running=true;paused=false;ended=false;last=performance.now();
+ $('feedback').textContent='🚀 Misi bermula!';$('feedback').className='feedback';
+ $('overlay').classList.add('hidden');
+ const token=gameToken;
+ timer=setInterval(()=>{
+  if(token!==gameToken||!running||paused)return;
+  timeLeft--;updateHUD();
+  if(timeLeft<=0)endGame(false,'Masa telah tamat!');
+ },1000);
+ raf=requestAnimationFrame(loop);
+}
+function newLevel(){
+ target=levelTargets[level-1];caught=0;objects=[];
+ $('feedback').textContent=`🎯 Tangkap ${levelGoals[level-1]} gandaan ${target}!`;
+ updateHUD();
+}
+function stopLoops(){
+ running=false;
+ if(timer)clearInterval(timer);
+ timer=null;
+ if(raf)cancelAnimationFrame(raf);
+ raf=null;
+}
+function pauseGame(){
+ if(!running||ended)return;
+ paused=true;
+ $('overlayTitle').textContent='⏸ MISI DIJEDA';
+ $('overlayText').textContent='Tarik nafas, angkasawan. Sambung bila bersedia.';
+ $('overlayBtn').textContent='▶ SAMBUNG';
+ $('overlay').classList.remove('hidden');
+}
+function resumeGame(){
+ if(ended)return;
+ paused=false;last=performance.now();
+ $('overlay').classList.add('hidden');
+ if(!raf)raf=requestAnimationFrame(loop);
+}
+function quitGame(){
+ stopLoops();gameToken++;showScreen('home');
+}
+function endGame(won,message){
+ if(ended)return;
+ ended=true;stopLoops();gameToken++;
+ showScreen('result');
+ $('resultIcon').textContent=won?'🏆':'🛸';
+ $('resultTitle').textContent=won?'MISSION ACCOMPLISHED!':'MISI TAMAT';
+ $('resultText').textContent=message;
+ $('finalScore').textContent=score;
+ $('finalCorrect').textContent=correct;
+ $('finalLevel').textContent=won?'5/5':`${level}/5`;
+}
+function nextLevel(){
+ if(level>=5){endGame(true,'Hebat! Kamu berjaya menamatkan semua 5 level.');return;}
+ level++;newLevel();
+ ship.x=W/2;
+ $('feedback').textContent=`✨ LEVEL ${level}! Kelajuan meningkat!`;
+}
+
+/* Nombor dijana dengan gandaan sasaran dan nombor bukan gandaan. */
+function spawnObject(){
+ const valid=Math.random()<.48;
+ let n;
+ if(valid)n=target*(1+Math.floor(Math.random()*Math.max(2,Math.floor(30/target))));
+ else{
+  do{n=2+Math.floor(Math.random()*35)}while(n%target===0);
+ }
+ const radius=18+Math.min(4,level);
+ objects.push({
+  x:28+Math.random()*(W-56),y:-30,n,r:radius,
+  speed:95+level*25+Math.random()*70,
+  good:n%target===0,rot:Math.random()*6.28,
+  hue:valid?175:Math.random()*45
+ });
+}
+function burst(x,y,color){
+ for(let i=0;i<12;i++){
+  const a=Math.random()*Math.PI*2,v=40+Math.random()*150;
+  particles.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,life:.5+Math.random()*.4,color});
+ }
+}
+function drawShip(){
+ if(!ship)return;
+ ctx.save();ctx.translate(ship.x,ship.y);
+ ctx.shadowBlur=20;ctx.shadowColor='#4df4ff';
+ ctx.fillStyle='#4df4ff';
+ ctx.beginPath();ctx.moveTo(-13,7);ctx.lineTo(-24,17);ctx.lineTo(-8,15);ctx.fill();
+ ctx.beginPath();ctx.moveTo(13,7);ctx.lineTo(24,17);ctx.lineTo(8,15);ctx.fill();
+ ctx.fillStyle='#e8f7ff';ctx.strokeStyle='#65dfff';ctx.lineWidth=2;
+ ctx.beginPath();ctx.moveTo(0,-19);ctx.quadraticCurveTo(20,-2,14,12);ctx.lineTo(-14,12);ctx.quadraticCurveTo(-20,-2,0,-19);ctx.fill();ctx.stroke();
+ ctx.fillStyle='#3678ff';ctx.beginPath();ctx.ellipse(0,-3,7,9,0,0,Math.PI*2);ctx.fill();
+ ctx.fillStyle='#ffb947';ctx.beginPath();ctx.moveTo(-7,12);ctx.lineTo(0,26+Math.random()*7);ctx.lineTo(7,12);ctx.fill();
+ ctx.restore();
+}
+function drawObject(o){
+ ctx.save();ctx.translate(o.x,o.y);o.rot+=.01;
+ ctx.shadowBlur=15;ctx.shadowColor=o.good?'#39ffce':'#ff668e';
+ ctx.fillStyle=o.good?'#124b55':'#56213f';
+ ctx.strokeStyle=o.good?'#48ffda':'#ff79a7';ctx.lineWidth=2;
+ ctx.beginPath();ctx.arc(0,0,o.r,0,Math.PI*2);ctx.fill();ctx.stroke();
+ ctx.shadowBlur=0;ctx.fillStyle='#fff';ctx.font=`900 ${Math.max(13,o.r*.8)}px Orbitron`;
+ ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(o.n,0,1);
+ ctx.restore();
+}
+function loop(now){
+ raf=null;
+ if(!running||paused||ended)return;
+ const dt=Math.min((now-last)/1000,.04);last=now;
+ ctx.clearRect(0,0,W,H);
+ const bg=ctx.createLinearGradient(0,0,0,H);
+ bg.addColorStop(0,'#07183b');bg.addColorStop(1,'#073a4b');
+ ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+ // grid and stars
+ ctx.strokeStyle='#8dcaff0b';ctx.lineWidth=1;
+ for(let x=0;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke()}
+ for(let y=0;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}
+ for(let i=0;i<24;i++){
+  const x=(i*127+37)%W,y=(i*83+now*.012)%H;
+  ctx.fillStyle='#b4dfff99';ctx.fillRect(x,y,2,2);
+ }
+ if(keys.ArrowLeft||keys.a||touchDir===-1)ship.x-=ship.speed*dt;
+ if(keys.ArrowRight||keys.d||touchDir===1)ship.x+=ship.speed*dt;
+ ship.x=Math.max(27,Math.min(W-27,ship.x));
+ spawnClock+=dt;
+ if(spawnClock>.72-Math.min(.35,level*.045)){spawnClock=0;spawnObject()}
+ objects.forEach((o,i)=>{
+  o.y+=o.speed*dt;drawObject(o);
+  const near=Math.abs(o.y-ship.y)<o.r+13&&Math.abs(o.x-ship.x)<o.r+ship.w*.35;
+  if(near){
+   if(o.good){
+    score+=10;correct++;combo++;caught++;
+    $('feedback').textContent=`✨ BETUL! +10 mata · Gandaan ${target}`;
+    $('feedback').className='feedback good';
+    burst(o.x,o.y,'#4dffcf');
+    if(caught>=levelGoals[level-1]){
+     if(level===5){updateHUD();endGame(true,'Hebat! Semua misi berjaya diselesaikan!');return}
+     nextLevel();
+    }
+   }else{
+    score=Math.max(0,score-5);lives=Math.max(0,lives-1);combo=0;
+    $('feedback').textContent=`💥 ${o.n} bukan gandaan ${target}! −5 mata`;
+    $('feedback').className='feedback bad';
+    burst(o.x,o.y,'#ff629f');
+    if(lives<=0){updateHUD();endGame(false,'Nyawa habis! Cuba lagi untuk menjadi juara.');return}
+   }
+   objects.splice(i,1);updateHUD();return;
+  }
+  if(o.y>H+30)objects.splice(i,1);
+ });
+ particles.forEach((p,i)=>{
+  p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;
+  ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle=p.color;
+  ctx.fillRect(p.x,p.y,4,4);ctx.globalAlpha=1;
+  if(p.life<=0)particles.splice(i,1);
+ });
+ drawShip();
+ raf=requestAnimationFrame(loop);
+}
+
+/* Keyboard */
+addEventListener('keydown',e=>{
+ if(['ArrowLeft','ArrowRight',' '].includes(e.key))e.preventDefault();
+ keys[e.key]=true;keys[e.key.toLowerCase()]=true;
+ if(e.key==='Escape'&&running&&!paused)pauseGame();
 });
-})();
+addEventListener('keyup',e=>{keys[e.key]=false;keys[e.key.toLowerCase()]=false});
+
+/* Mobile buttons: hold to move */
+function bindMove(id,dir){
+ const b=$(id);
+ const start=e=>{e.preventDefault();touchDir=dir};
+ const stop=e=>{e.preventDefault();if(touchDir===dir)touchDir=0};
+ b.addEventListener('pointerdown',start);
+ b.addEventListener('pointerup',stop);
+ b.addEventListener('pointercancel',stop);
+ b.addEventListener('pointerleave',stop);
+}
+bindMove('left',-1);bindMove('right',1);
+
+/* Touch-drag movement */
+canvas.addEventListener('pointermove',e=>{
+ if(e.pointerType==='touch'&&running&&!paused&&ship){
+  const r=canvas.getBoundingClientRect();
+  ship.x=(e.clientX-r.left)/r.width*W;
+ }
+});
+canvas.addEventListener('pointerdown',e=>{
+ if(e.pointerType==='touch')canvas.setPointerCapture(e.pointerId);
+});
+
+/* Prevent stuck movement when browser loses focus */
+addEventListener('blur',()=>{keys={};touchDir=0});
+document.addEventListener('visibilitychange',()=>{
+ if(document.hidden&&running&&!paused)pauseGame();
+});
 </script>
 </body>
 </html>
