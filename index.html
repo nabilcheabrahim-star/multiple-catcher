@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="ms">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Multiple Catcher | Common Multiples Academy</title>
+<title>Multiple Catcher Sound Edition</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Nunito:wght@400;600;700;800;900&display=swap');
 :root{--cyan:#4df4ff;--blue:#3678ff;--purple:#a855f7;--pink:#ff4db8;--gold:#ffe66d}
@@ -57,127 +58,231 @@ canvas#gameCanvas{display:block;width:100%;height:min(54vh,480px);min-height:300
 .controls{display:flex;justify-content:center;gap:12px;margin-top:12px}
 .move{width:90px;height:53px;border-radius:14px;border:1px solid #5476ca;background:#162758;color:white;font-size:25px;touch-action:none}
 footer{text-align:center;padding:22px 10px;color:#8ba0d4;font-size:12px}
-@media(max-width:650px){.wrap{padding:9px}.panel{padding:13px;border-radius:17px}.grid{gap:7px}.stat{padding:10px 2px}.instructions{grid-template-columns:1fr}canvas#gameCanvas{min-height:310px;height:43vh}.logo{letter-spacing:-1px}.tagline{letter-spacing:1px}}
+.soundbar{display:flex;justify-content:center;align-items:center;gap:10px;margin:12px 0}
+.sound-toggle{border:1px solid #4262a5;border-radius:999px;padding:9px 14px;background:#101c48;color:white;font-weight:900}
+@media(max-width:650px){
+.wrap{padding:9px}.panel{padding:13px;border-radius:17px}
+.grid{gap:7px}.stat{padding:10px 2px}
+.instructions{grid-template-columns:1fr}
+canvas#gameCanvas{min-height:310px;height:43vh}
+.logo{letter-spacing:-1px}.tagline{letter-spacing:1px}
+}
 </style>
 </head>
 <body>
 <canvas id="stars"></canvas>
-
 <header>
- <div class="logo">MULTIPLE <span>CATCHER</span></div>
- <div class="tagline">✦ SPACE ACADEMY · COMMON MULTIPLES CHALLENGE ✦</div>
+<div class="logo">MULTIPLE <span>CATCHER</span></div>
+<div class="tagline">✦ SPACE ACADEMY · COMMON MULTIPLES CHALLENGE ✦</div>
 </header>
 
 <main class="wrap">
 <section id="home" class="screen active panel">
- <div class="menu-hero">
-  <div class="planet">🪐</div>
-  <h1>MISSION <em>MULTIPLE</em></h1>
-  <p>Jadilah angkasawan matematik! Tangkap nombor yang merupakan gandaan sepunya bagi dua nombor sasaran. Kumpul mata, belajar daripada hint dan buktikan jawapan kamu!</p>
-  <button class="btn green" onclick="startGame()">🚀 MULA MISI</button>
-  <button class="btn pink" onclick="showScreen('guide')">📖 CARA BERMAIN</button>
-  <div class="grid">
-   <div class="stat"><small>LEVEL</small><strong>1–5</strong></div>
-   <div class="stat"><small>MASA MISI</small><strong>60s</strong></div>
-   <div class="stat"><small>JAWAPAN BETUL</small><strong style="color:#54ffbc">+10</strong></div>
-  </div>
- </div>
+<div class="menu-hero">
+<div class="planet">🪐</div>
+<h1>MISSION <em>MULTIPLE</em></h1>
+<p>Jadilah angkasawan matematik! Tangkap nombor yang merupakan gandaan sepunya bagi dua nombor sasaran. Kumpul mata, dengar kesan bunyi dan belajar daripada hint.</p>
+<button class="btn green" onclick="startGame()">🚀 MULA MISI</button>
+<button class="btn pink" onclick="showScreen('guide')">📖 CARA BERMAIN</button>
+<div class="soundbar">
+<button id="soundToggle" class="sound-toggle" onclick="toggleSound()">🔊 SOUND: ON</button>
+<button class="sound-toggle" onclick="testSound()">🎵 TEST SOUND</button>
+</div>
+<div class="grid">
+<div class="stat"><small>LEVEL</small><strong>1–5</strong></div>
+<div class="stat"><small>MASA MISI</small><strong>60s</strong></div>
+<div class="stat"><small>JAWAPAN BETUL</small><strong style="color:#54ffbc">+10</strong></div>
+</div>
+</div>
 </section>
 
 <section id="guide" class="screen panel">
- <h2>📡 ARAHAN MISI</h2>
- <div class="instructions">
-  <div class="info"><h3>🎯 01 — SASARAN</h3><p>Cari nombor yang boleh dibahagi tepat dengan KEDUA-DUA nombor sasaran. Contoh: 12 ialah gandaan sepunya 3 dan 4.</p></div>
-  <div class="info"><h3>🛸 02 — TANGKAP</h3><p>Tangkap gandaan sepunya sahaja. Nombor yang hanya gandaan salah satu sasaran bukan jawapan yang betul.</p></div>
-  <div class="info"><h3>⚡ 03 — SKOR & HINT</h3><p>Jawapan betul +10 mata. Jika salah, kamu akan dapat hint untuk memahami kenapa nombor itu bukan gandaan sepunya.</p></div>
- </div>
- <p>💻 Komputer: guna kekunci ← → atau A / D. Telefon: tekan butang kiri dan kanan atau seret kapal pada skrin.</p>
- <p>❤️ Kamu bermula dengan 3 nyawa. Selesaikan 5 level dan gunakan hint untuk memahami jawapan.</p>
- <button class="btn green" onclick="startGame()">🚀 MULA MISI</button>
- <button class="btn" onclick="showScreen('home')">KEMBALI KE MENU</button>
+<h2>📡 ARAHAN MISI</h2>
+<div class="instructions">
+<div class="info"><h3>🎯 01 — SASARAN</h3><p>Cari nombor yang boleh dibahagi tepat dengan KEDUA-DUA nombor sasaran. Contoh: 12 ialah gandaan sepunya 3 dan 4.</p></div>
+<div class="info"><h3>🛸 02 — TANGKAP</h3><p>Tangkap gandaan sepunya sahaja. Nombor yang hanya gandaan salah satu sasaran bukan jawapan yang betul.</p></div>
+<div class="info"><h3>⚡ 03 — SKOR & SOUND</h3><p>Jawapan betul +10 mata. Jika salah, kamu akan dengar bunyi amaran dan menerima hint pembelajaran.</p></div>
+</div>
+<p>💻 Komputer: guna kekunci ← → atau A / D. Telefon: tekan butang kiri dan kanan atau seret kapal pada skrin.</p>
+<p>❤️ Kamu bermula dengan 3 nyawa. Selesaikan 5 level untuk menamatkan misi!</p>
+<button class="btn green" onclick="startGame()">🚀 MULA MISI</button>
+<button class="btn" onclick="showScreen('home')">KEMBALI KE MENU</button>
 </section>
 
 <section id="game" class="screen panel">
- <div class="grid">
-  <div class="stat"><small>MARKAH</small><strong id="score">0</strong></div>
-  <div class="stat"><small>NYAWA</small><strong id="lives">❤️❤️❤️</strong></div>
-  <div class="stat"><small>MASA</small><strong id="time">60</strong></div>
- </div>
- <div class="hud-row">
-  <span class="pill" id="level">🌌 LEVEL 1 / 5</span>
-  <span class="pill" id="caught">TANGKAPAN: 0/5</span>
-  <span class="pill" id="combo">COMBO ×1</span>
- </div>
- <div id="question">TANGKAP GANDAAN SEPUNYA 2 DAN 3</div>
- <div class="progress"><div id="progress"></div></div>
- <div class="game-shell">
-  <canvas id="gameCanvas" aria-label="Permainan tangkap nombor gandaan"></canvas>
-  <div id="overlay" class="game-overlay hidden">
-   <div class="overlay-card">
-    <h2 id="overlayTitle">MISI DIREHATKAN</h2>
-    <p id="overlayText">Berehat sebentar, angkasawan. Teruskan apabila bersedia.</p>
-    <button id="overlayBtn" class="btn green" onclick="resumeGame()">▶ TERUSKAN MISI</button>
-   </div>
-  </div>
- </div>
- <div class="controls">
-  <button class="move" id="left" aria-label="Gerak ke kiri">◀</button>
-  <button class="move" id="right" aria-label="Gerak ke kanan">▶</button>
- </div>
- <p class="feedback" id="feedback">🚀 Misi bermula!</p>
- <div class="info" id="learningHint" style="margin-top:10px;text-align:center"><b>TIP MATEMATIK:</b> Gandaan sepunya mesti boleh dibahagi tepat dengan kedua-dua nombor sasaran.</div>
- <div style="text-align:center">
-  <button class="btn" onclick="pauseGame()">☕ REHAT</button>
-  <button class="btn pink" onclick="quitGame()">🏠 MENU UTAMA</button>
- </div>
+<div class="grid">
+<div class="stat"><small>MARKAH</small><strong id="score">0</strong></div>
+<div class="stat"><small>NYAWA</small><strong id="lives">❤️❤️❤️</strong></div>
+<div class="stat"><small>MASA</small><strong id="time">60</strong></div>
+</div>
+<div class="hud-row">
+<span class="pill" id="level">🌌 LEVEL 1 / 5</span>
+<span class="pill" id="caught">TANGKAPAN: 0/5</span>
+<span class="pill" id="combo">COMBO ×1</span>
+</div>
+<div id="question">TANGKAP GANDAAN SEPUNYA 2 DAN 3</div>
+<div class="progress"><div id="progress"></div></div>
+<div class="game-shell">
+<canvas id="gameCanvas" aria-label="Permainan tangkap nombor gandaan sepunya"></canvas>
+<div id="overlay" class="game-overlay hidden">
+<div class="overlay-card">
+<h2 id="overlayTitle">MISI DIREHATKAN</h2>
+<p id="overlayText">Berehat sebentar, angkasawan.</p>
+<button id="overlayBtn" class="btn green" onclick="resumeGame()">▶ TERUSKAN MISI</button>
+</div>
+</div>
+</div>
+<div class="controls">
+<button class="move" id="left" aria-label="Gerak ke kiri">◀</button>
+<button class="move" id="right" aria-label="Gerak ke kanan">▶</button>
+</div>
+<p class="feedback" id="feedback">🚀 Misi bermula!</p>
+<div class="info" id="learningHint" style="margin-top:10px;text-align:center"><b>TIP MATEMATIK:</b> Gandaan sepunya mesti boleh dibahagi tepat dengan kedua-dua nombor sasaran.</div>
+<div class="soundbar"><button class="sound-toggle" onclick="toggleSound()" id="soundToggleGame">🔊 SOUND: ON</button></div>
+<div style="text-align:center">
+<button class="btn" onclick="pauseGame()">☕ REHAT</button>
+<button class="btn pink" onclick="quitGame()">🏠 MENU UTAMA</button>
+</div>
 </section>
 
 <section id="result" class="screen panel" style="text-align:center">
- <div class="planet" id="resultIcon">🏆</div>
- <h2 id="resultTitle">MISI SELESAI!</h2>
- <p id="resultText">Tahniah, angkasawan!</p>
- <div class="grid">
-  <div class="stat"><small>SKOR AKHIR</small><strong id="finalScore">0</strong></div>
-  <div class="stat"><small>JAWAPAN BETUL</small><strong id="finalCorrect">0</strong></div>
-  <div class="stat"><small>LEVEL</small><strong id="finalLevel">1/5</strong></div>
- </div>
- <button class="btn green" onclick="startGame()">🔄 CUBA LAGI</button>
- <button class="btn" onclick="showScreen('home')">🏠 MENU UTAMA</button>
+<div class="planet" id="resultIcon">🏆</div>
+<h2 id="resultTitle">MISI SELESAI!</h2>
+<p id="resultText">Tahniah, angkasawan!</p>
+<div class="grid">
+<div class="stat"><small>SKOR AKHIR</small><strong id="finalScore">0</strong></div>
+<div class="stat"><small>JAWAPAN BETUL</small><strong id="finalCorrect">0</strong></div>
+<div class="stat"><small>LEVEL</small><strong id="finalLevel">1/5</strong></div>
+</div>
+<button class="btn green" onclick="startGame()">🔄 CUBA LAGI</button>
+<button class="btn" onclick="showScreen('home')">🏠 MENU UTAMA</button>
 </section>
 </main>
 
 <footer>SPACE ACADEMY © MULTIPLE CATCHER · BELAJAR SAMBIL BERMAIN ✦</footer>
 
 <script>
+/* SOUND EFFECTS: dijana dengan Web Audio API. Tiada fail audio tambahan. */
+let audioCtx=null,soundOn=true;
+
+function getAudio(){
+try{
+if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+if(audioCtx.state==='suspended')audioCtx.resume();
+return audioCtx;
+}catch(e){return null}
+}
+
+function tone(freq,duration=0.12,type='sine',volume=0.12,delay=0,endFreq=null){
+if(!soundOn)return;
+const ac=getAudio();
+if(!ac)return;
+const start=ac.currentTime+delay;
+const osc=ac.createOscillator();
+const gain=ac.createGain();
+osc.type=type;
+osc.frequency.setValueAtTime(freq,start);
+if(endFreq)osc.frequency.exponentialRampToValueAtTime(Math.max(1,endFreq),start+duration);
+gain.gain.setValueAtTime(0.0001,start);
+gain.gain.exponentialRampToValueAtTime(volume,start+0.012);
+gain.gain.exponentialRampToValueAtTime(0.0001,start+duration);
+osc.connect(gain);
+gain.connect(ac.destination);
+osc.start(start);
+osc.stop(start+duration+0.02);
+}
+
+function sfx(name){
+if(!soundOn)return;
+switch(name){
+case 'click':
+tone(650,.045,'square',.045);
+break;
+case 'start':
+tone(440,.11,'triangle',.09);
+tone(660,.13,'triangle',.09,.1);
+tone(880,.2,'triangle',.1,.22);
+break;
+case 'catch':
+tone(760,.09,'square',.07);
+tone(1100,.15,'sine',.09,.07);
+break;
+case 'wrong':
+tone(260,.16,'sawtooth',.07,0,150);
+tone(180,.2,'triangle',.07,.12,100);
+break;
+case 'level':
+tone(523,.12,'triangle',.09);
+tone(659,.12,'triangle',.09,.12);
+tone(784,.12,'triangle',.09,.24);
+tone(1046,.25,'triangle',.1,.36);
+break;
+case 'win':
+[523,659,784,1046].forEach((f,i)=>tone(f,.24,'triangle',.1,i*.13));
+break;
+case 'lose':
+tone(392,.2,'triangle',.09);
+tone(330,.2,'triangle',.09,.2);
+tone(262,.4,'triangle',.1,.4);
+break;
+case 'pause':
+tone(440,.09,'sine',.06);
+tone(330,.12,'sine',.06,.1);
+break;
+}
+}
+
+function toggleSound(){
+soundOn=!soundOn;
+['soundToggle','soundToggleGame'].forEach(id=>{
+const b=document.getElementById(id);
+if(b)b.textContent=soundOn?'🔊 SOUND: ON':'🔇 SOUND: OFF';
+});
+if(soundOn){getAudio();sfx('click')}
+}
+function testSound(){
+getAudio();
+if(!soundOn){soundOn=true;toggleSound()}
+sfx('start');
+}
+document.addEventListener('pointerdown',()=>{if(soundOn)getAudio()},{once:true});
+
+/* BACKGROUND STARS */
 const starCanvas=document.getElementById('stars');
 const starCtx=starCanvas.getContext('2d');
 let stars=[];
 
 function resizeStars(){
- starCanvas.width=innerWidth*devicePixelRatio;
- starCanvas.height=innerHeight*devicePixelRatio;
- starCtx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
- stars=Array.from({length:Math.min(180,Math.floor(innerWidth/5))},()=>({
-  x:Math.random()*innerWidth,y:Math.random()*innerHeight,
-  r:Math.random()*1.7+.3,a:Math.random(),v:Math.random()*.012+.003
- }));
+starCanvas.width=innerWidth*devicePixelRatio;
+starCanvas.height=innerHeight*devicePixelRatio;
+starCtx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+stars=Array.from({length:Math.min(180,Math.floor(innerWidth/5))},()=>({
+x:Math.random()*innerWidth,
+y:Math.random()*innerHeight,
+r:Math.random()*1.7+.3,
+a:Math.random(),
+v:Math.random()*.012+.003
+}));
 }
 function drawStars(){
- starCtx.clearRect(0,0,innerWidth,innerHeight);
- stars.forEach(s=>{
-  s.a+=s.v;
-  if(s.a>1||s.a<.15)s.v*=-1;
-  starCtx.globalAlpha=s.a;
-  starCtx.fillStyle='#bdeaff';
-  starCtx.beginPath();starCtx.arc(s.x,s.y,s.r,0,Math.PI*2);starCtx.fill();
- });
- starCtx.globalAlpha=1;
- requestAnimationFrame(drawStars);
+starCtx.clearRect(0,0,innerWidth,innerHeight);
+stars.forEach(s=>{
+s.a+=s.v;
+if(s.a>1||s.a<.15)s.v*=-1;
+starCtx.globalAlpha=s.a;
+starCtx.fillStyle='#bdeaff';
+starCtx.beginPath();
+starCtx.arc(s.x,s.y,s.r,0,Math.PI*2);
+starCtx.fill();
+});
+starCtx.globalAlpha=1;
+requestAnimationFrame(drawStars);
 }
 addEventListener('resize',resizeStars);
 resizeStars();
 drawStars();
 
+/* GAME SYSTEM */
 const canvas=document.getElementById('gameCanvas');
 const ctx=canvas.getContext('2d');
 const $=id=>document.getElementById(id);
@@ -193,313 +298,305 @@ const levelTargets=[[2,3],[3,4],[4,6],[3,5],[4,5]];
 const levelGoals=[5,7,9,11,13];
 
 function resizeGameCanvas(){
- const r=canvas.getBoundingClientRect();
- if(!r.width)return;
- dpr=Math.min(devicePixelRatio||1,2);
- W=r.width;H=r.height;
- canvas.width=Math.round(W*dpr);
- canvas.height=Math.round(H*dpr);
- ctx.setTransform(dpr,0,0,dpr,0,0);
- if(ship)ship.x=Math.max(28,Math.min(W-28,ship.x));
+const r=canvas.getBoundingClientRect();
+if(!r.width)return;
+dpr=Math.min(devicePixelRatio||1,2);
+W=r.width;H=r.height;
+canvas.width=Math.round(W*dpr);
+canvas.height=Math.round(H*dpr);
+ctx.setTransform(dpr,0,0,dpr,0,0);
+if(ship)ship.x=Math.max(28,Math.min(W-28,ship.x));
 }
 
 function showScreen(id){
- document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
- $(id).classList.add('active');
- if(id!=='game')stopLoops();
+document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+$(id).classList.add('active');
+if(id!=='game')stopLoops();
+const b=$('soundToggleGame');
+if(b)b.textContent=soundOn?'🔊 SOUND: ON':'🔇 SOUND: OFF';
 }
 
 function updateHUD(){
- $('score').textContent=score;
- $('lives').textContent='❤️'.repeat(lives)+'🖤'.repeat(3-lives);
- $('time').textContent=timeLeft;
- $('level').textContent=`🌌 LEVEL ${level} / 5`;
- $('caught').textContent=`TANGKAPAN: ${caught}/${levelGoals[level-1]}`;
- $('combo').textContent=`COMBO ×${Math.max(1,combo)}`;
- $('question').textContent=`TANGKAP GANDAAN SEPUNYA ${targets[0]} DAN ${targets[1]}`;
- $('progress').style.width=Math.max(0,timeLeft/60*100)+'%';
+$('score').textContent=score;
+$('lives').textContent='❤️'.repeat(lives)+'🖤'.repeat(3-lives);
+$('time').textContent=timeLeft;
+$('level').textContent=`🌌 LEVEL ${level} / 5`;
+$('caught').textContent=`TANGKAPAN: ${caught}/${levelGoals[level-1]}`;
+$('combo').textContent=`COMBO ×${Math.max(1,combo)}`;
+$('question').textContent=`TANGKAP GANDAAN SEPUNYA ${targets[0]} DAN ${targets[1]}`;
+$('progress').style.width=Math.max(0,timeLeft/60*100)+'%';
 }
 
 function startGame(){
- stopLoops();
- gameToken++;
- score=0;lives=3;level=1;timeLeft=60;
- correct=0;combo=0;caught=0;
- objects=[];particles=[];keys={};touchDir=0;
- showScreen('game');
- resizeGameCanvas();
- ship={x:W/2,y:H-42,w:54,h:30,speed:340};
- newLevel();
- running=true;paused=false;ended=false;
- last=performance.now();
- $('feedback').textContent='🚀 Misi bermula!';
- $('feedback').className='feedback';
- $('learningHint').innerHTML='<b>TIP MATEMATIK:</b> Gandaan sepunya mesti boleh dibahagi tepat dengan kedua-dua nombor sasaran.';
- $('overlay').classList.add('hidden');
-
- const token=gameToken;
- timer=setInterval(()=>{
-  if(token!==gameToken||!running||paused)return;
-  timeLeft--;
-  updateHUD();
-  if(timeLeft<=0)endGame(false,'Masa misi telah tamat!');
- },1000);
- raf=requestAnimationFrame(loop);
+getAudio();
+sfx('start');
+stopLoops();
+gameToken++;
+score=0;lives=3;level=1;timeLeft=60;
+correct=0;combo=0;caught=0;
+objects=[];particles=[];keys={};touchDir=0;
+showScreen('game');
+resizeGameCanvas();
+ship={x:W/2,y:H-42,w:54,h:30,speed:340};
+newLevel();
+running=true;paused=false;ended=false;
+last=performance.now();
+$('feedback').textContent='🚀 Misi bermula!';
+$('feedback').className='feedback';
+$('overlay').classList.add('hidden');
+const token=gameToken;
+timer=setInterval(()=>{
+if(token!==gameToken||!running||paused)return;
+timeLeft--;
+updateHUD();
+if(timeLeft<=0)endGame(false,'Masa misi telah tamat!');
+},1000);
+raf=requestAnimationFrame(loop);
 }
 
 function newLevel(){
- targets=[...levelTargets[level-1]];
- caught=0;objects=[];spawnClock=0;
- $('feedback').textContent=`🎯 Tangkap ${levelGoals[level-1]} gandaan sepunya ${targets[0]} dan ${targets[1]}!`;
- $('learningHint').innerHTML=`<b>TIP MATEMATIK:</b> Nombor yang betul mesti boleh dibahagi tepat dengan ${targets[0]} DAN ${targets[1]}.`;
- updateHUD();
+targets=[...levelTargets[level-1]];
+caught=0;objects=[];spawnClock=0;
+$('feedback').textContent=`🎯 Tangkap ${levelGoals[level-1]} gandaan sepunya ${targets[0]} dan ${targets[1]}!`;
+$('learningHint').innerHTML=`<b>TIP MATEMATIK:</b> Nombor yang betul mesti boleh dibahagi tepat dengan ${targets[0]} DAN ${targets[1]}.`;
+updateHUD();
 }
 
 function isCommonMultiple(n){
- return n%targets[0]===0 && n%targets[1]===0;
+return n%targets[0]===0&&n%targets[1]===0;
 }
 
 function showWrongHint(n){
- const a=targets[0],b=targets[1];
- if(n%a===0&&n%b!==0)return `${n} boleh dibahagi tepat dengan ${a}, tetapi bukan dengan ${b}.`;
- if(n%b===0&&n%a!==0)return `${n} boleh dibahagi tepat dengan ${b}, tetapi bukan dengan ${a}.`;
- return `${n} bukan gandaan sepunya ${a} dan ${b}. Semak sama ada kedua-dua nombor boleh membahagi ${n} tanpa baki.`;
+const a=targets[0],b=targets[1];
+if(n%a===0&&n%b!==0)return `${n} boleh dibahagi tepat dengan ${a}, tetapi bukan dengan ${b}.`;
+if(n%b===0&&n%a!==0)return `${n} boleh dibahagi tepat dengan ${b}, tetapi bukan dengan ${a}.`;
+return `${n} bukan gandaan sepunya ${a} dan ${b}. Semak sama ada kedua-dua nombor boleh membahagi ${n} tanpa baki.`;
 }
 
 function stopLoops(){
- running=false;
- if(timer)clearInterval(timer);
- timer=null;
- if(raf)cancelAnimationFrame(raf);
- raf=null;
+running=false;
+if(timer)clearInterval(timer);
+timer=null;
+if(raf)cancelAnimationFrame(raf);
+raf=null;
 }
 
 function pauseGame(){
- if(!running||ended||paused)return;
- paused=true;
- $('overlayTitle').textContent='☕ MISI DIREHATKAN';
- $('overlayText').textContent='Berehat sebentar, angkasawan. Teruskan apabila bersedia.';
- $('overlayBtn').textContent='▶ TERUSKAN MISI';
- $('overlay').classList.remove('hidden');
+if(!running||ended||paused)return;
+paused=true;
+sfx('pause');
+$('overlayTitle').textContent='☕ MISI DIREHATKAN';
+$('overlayText').textContent='Berehat sebentar, angkasawan. Teruskan apabila bersedia.';
+$('overlayBtn').textContent='▶ TERUSKAN MISI';
+$('overlay').classList.remove('hidden');
 }
 
 function resumeGame(){
- if(ended||!running)return;
- paused=false;
- last=performance.now();
- $('overlay').classList.add('hidden');
- if(!raf)raf=requestAnimationFrame(loop);
+if(ended||!running)return;
+getAudio();
+paused=false;
+last=performance.now();
+$('overlay').classList.add('hidden');
+if(!raf)raf=requestAnimationFrame(loop);
 }
 
 function quitGame(){
- stopLoops();
- gameToken++;
- showScreen('home');
+sfx('click');
+stopLoops();
+gameToken++;
+showScreen('home');
 }
 
 function endGame(won,message){
- if(ended)return;
- ended=true;
- stopLoops();
- gameToken++;
- showScreen('result');
- $('resultIcon').textContent=won?'🏆':'🛸';
- $('resultTitle').textContent=won?'MISI BERJAYA!':'MISI TAMAT';
- $('resultText').textContent=message;
- $('finalScore').textContent=score;
- $('finalCorrect').textContent=correct;
- $('finalLevel').textContent=won?'5/5':`${level}/5`;
+if(ended)return;
+ended=true;
+sfx(won?'win':'lose');
+stopLoops();
+gameToken++;
+showScreen('result');
+$('resultIcon').textContent=won?'🏆':'🛸';
+$('resultTitle').textContent=won?'MISI BERJAYA!':'MISI TAMAT';
+$('resultText').textContent=message;
+$('finalScore').textContent=score;
+$('finalCorrect').textContent=correct;
+$('finalLevel').textContent=won?'5/5':`${level}/5`;
 }
 
 function nextLevel(){
- if(level>=5){
-  endGame(true,'Tahniah! Semua misi berjaya diselesaikan!');
-  return;
- }
- level++;
- newLevel();
- ship.x=W/2;
- $('feedback').textContent=`✨ LEVEL ${level}! Cabaran semakin pantas!`;
+if(level>=5){
+endGame(true,'Tahniah! Semua misi berjaya diselesaikan!');
+return;
+}
+level++;
+sfx('level');
+newLevel();
+ship.x=W/2;
+$('feedback').textContent=`✨ LEVEL ${level}! Cabaran semakin pantas!`;
 }
 
 function gcd(a,b){
- while(b){const t=b;b=a%b;a=t;}
- return a;
+while(b){const t=b;b=a%b;a=t}
+return a;
 }
 
 function spawnObject(){
- let n;
- const valid=Math.random()<.42;
- if(valid){
-  const lcm=targets[0]*targets[1]/gcd(targets[0],targets[1]);
-  n=lcm*(1+Math.floor(Math.random()*Math.max(2,Math.floor(60/lcm))));
- }else{
-  let attempts=0;
-  do{
-   n=2+Math.floor(Math.random()*58);
-   attempts++;
-  }while(isCommonMultiple(n)&&attempts<100);
-  if(isCommonMultiple(n))n+=1;
- }
- objects.push({
-  x:28+Math.random()*(W-56),y:-30,n,
-  r:18+Math.min(4,level),
-  speed:95+level*25+Math.random()*70,
-  good:isCommonMultiple(n),rot:Math.random()*6.28
- });
+let n;
+const valid=Math.random()<.42;
+if(valid){
+const lcm=targets[0]*targets[1]/gcd(targets[0],targets[1]);
+n=lcm*(1+Math.floor(Math.random()*Math.max(2,Math.floor(60/lcm))));
+}else{
+let attempts=0;
+do{
+n=2+Math.floor(Math.random()*58);
+attempts++;
+}while(isCommonMultiple(n)&&attempts<100);
+if(isCommonMultiple(n))n++;
+}
+objects.push({
+x:28+Math.random()*(W-56),y:-30,n,
+r:18+Math.min(4,level),
+speed:95+level*25+Math.random()*70,
+good:isCommonMultiple(n),rot:Math.random()*6.28
+});
 }
 
 function burst(x,y,color){
- for(let i=0;i<12;i++){
-  const a=Math.random()*Math.PI*2,v=40+Math.random()*150;
-  particles.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,life:.5+Math.random()*.4,color});
- }
+for(let i=0;i<12;i++){
+const a=Math.random()*Math.PI*2,v=40+Math.random()*150;
+particles.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,life:.5+Math.random()*.4,color});
+}
 }
 
 function drawShip(){
- if(!ship)return;
- ctx.save();
- ctx.translate(ship.x,ship.y);
- ctx.shadowBlur=20;ctx.shadowColor='#4df4ff';
- ctx.fillStyle='#4df4ff';
- ctx.beginPath();ctx.moveTo(-13,7);ctx.lineTo(-24,17);ctx.lineTo(-8,15);ctx.fill();
- ctx.beginPath();ctx.moveTo(13,7);ctx.lineTo(24,17);ctx.lineTo(8,15);ctx.fill();
- ctx.fillStyle='#e8f7ff';ctx.strokeStyle='#65dfff';ctx.lineWidth=2;
- ctx.beginPath();ctx.moveTo(0,-19);ctx.quadraticCurveTo(20,-2,14,12);
- ctx.lineTo(-14,12);ctx.quadraticCurveTo(-20,-2,0,-19);ctx.fill();ctx.stroke();
- ctx.fillStyle='#3678ff';
- ctx.beginPath();ctx.ellipse(0,-3,7,9,0,0,Math.PI*2);ctx.fill();
- ctx.fillStyle='#ffb947';
- ctx.beginPath();ctx.moveTo(-7,12);ctx.lineTo(0,26+Math.random()*7);ctx.lineTo(7,12);ctx.fill();
- ctx.restore();
+if(!ship)return;
+ctx.save();
+ctx.translate(ship.x,ship.y);
+ctx.shadowBlur=20;ctx.shadowColor='#4df4ff';
+ctx.fillStyle='#4df4ff';
+ctx.beginPath();ctx.moveTo(-13,7);ctx.lineTo(-24,17);ctx.lineTo(-8,15);ctx.fill();
+ctx.beginPath();ctx.moveTo(13,7);ctx.lineTo(24,17);ctx.lineTo(8,15);ctx.fill();
+ctx.fillStyle='#e8f7ff';ctx.strokeStyle='#65dfff';ctx.lineWidth=2;
+ctx.beginPath();ctx.moveTo(0,-19);ctx.quadraticCurveTo(20,-2,14,12);ctx.lineTo(-14,12);ctx.quadraticCurveTo(-20,-2,0,-19);ctx.fill();ctx.stroke();
+ctx.fillStyle='#3678ff';
+ctx.beginPath();ctx.ellipse(0,-3,7,9,0,0,Math.PI*2);ctx.fill();
+ctx.fillStyle='#ffb947';
+ctx.beginPath();ctx.moveTo(-7,12);ctx.lineTo(0,26+Math.random()*7);ctx.lineTo(7,12);ctx.fill();
+ctx.restore();
 }
 
 function drawObject(o){
- ctx.save();
- ctx.translate(o.x,o.y);
- o.rot+=.01;
- ctx.shadowBlur=15;
- ctx.shadowColor=o.good?'#39ffce':'#ff668e';
- ctx.fillStyle=o.good?'#124b55':'#56213f';
- ctx.strokeStyle=o.good?'#48ffda':'#ff79a7';
- ctx.lineWidth=2;
- ctx.beginPath();ctx.arc(0,0,o.r,0,Math.PI*2);ctx.fill();ctx.stroke();
- ctx.shadowBlur=0;ctx.fillStyle='#fff';
- ctx.font=`900 ${Math.max(13,o.r*.8)}px Orbitron`;
- ctx.textAlign='center';ctx.textBaseline='middle';
- ctx.fillText(o.n,0,1);
- ctx.restore();
+ctx.save();ctx.translate(o.x,o.y);o.rot+=.01;
+ctx.shadowBlur=15;ctx.shadowColor=o.good?'#39ffce':'#ff668e';
+ctx.fillStyle=o.good?'#124b55':'#56213f';
+ctx.strokeStyle=o.good?'#48ffda':'#ff79a7';ctx.lineWidth=2;
+ctx.beginPath();ctx.arc(0,0,o.r,0,Math.PI*2);ctx.fill();ctx.stroke();
+ctx.shadowBlur=0;ctx.fillStyle='#fff';
+ctx.font=`900 ${Math.max(13,o.r*.8)}px Orbitron`;
+ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(o.n,0,1);
+ctx.restore();
 }
 
 function loop(now){
- raf=null;
- if(!running||paused||ended)return;
- const dt=Math.min((now-last)/1000,.04);
- last=now;
+raf=null;
+if(!running||paused||ended)return;
+const dt=Math.min((now-last)/1000,.04);
+last=now;
+ctx.clearRect(0,0,W,H);
+const bg=ctx.createLinearGradient(0,0,0,H);
+bg.addColorStop(0,'#07183b');bg.addColorStop(1,'#073a4b');
+ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
 
- ctx.clearRect(0,0,W,H);
- const bg=ctx.createLinearGradient(0,0,0,H);
- bg.addColorStop(0,'#07183b');bg.addColorStop(1,'#073a4b');
- ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-
- ctx.strokeStyle='#8dcaff0b';ctx.lineWidth=1;
- for(let x=0;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
- for(let y=0;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
- for(let i=0;i<24;i++){
-  const x=(i*127+37)%W,y=(i*83+now*.012)%H;
-  ctx.fillStyle='#b4dfff99';ctx.fillRect(x,y,2,2);
- }
-
- if(keys.ArrowLeft||keys.a||touchDir===-1)ship.x-=ship.speed*dt;
- if(keys.ArrowRight||keys.d||touchDir===1)ship.x+=ship.speed*dt;
- ship.x=Math.max(27,Math.min(W-27,ship.x));
-
- spawnClock+=dt;
- if(spawnClock>.72-Math.min(.35,level*.045)){spawnClock=0;spawnObject();}
-
- for(let i=objects.length-1;i>=0;i--){
-  const o=objects[i];
-  o.y+=o.speed*dt;
-  drawObject(o);
-  const near=Math.abs(o.y-ship.y)<o.r+13&&Math.abs(o.x-ship.x)<o.r+ship.w*.35;
-
-  if(near){
-   if(o.good){
-    score+=10;correct++;combo++;caught++;
-    $('feedback').textContent=`✨ BETUL! +10 mata · ${o.n} ialah gandaan sepunya ${targets[0]} dan ${targets[1]}.`;
-    $('feedback').className='feedback good';
-    $('learningHint').innerHTML=`<b>BETUL!</b> ${o.n} ÷ ${targets[0]} dan ${o.n} ÷ ${targets[1]} menghasilkan nombor bulat tanpa baki.`;
-    burst(o.x,o.y,'#4dffcf');
-    objects.splice(i,1);
-    updateHUD();
-
-    if(caught>=levelGoals[level-1]){
-     if(level===5){endGame(true,'Tahniah! Semua misi berjaya diselesaikan!');return;}
-     nextLevel();
-    }
-   }else{
-    score=Math.max(0,score-5);
-    lives=Math.max(0,lives-1);
-    combo=0;
-    $('feedback').textContent=`💥 ${o.n} bukan gandaan sepunya! −5 mata`;
-    $('feedback').className='feedback bad';
-    $('learningHint').innerHTML=`<b>HINT:</b> ${showWrongHint(o.n)}`;
-    burst(o.x,o.y,'#ff629f');
-    objects.splice(i,1);
-    updateHUD();
-
-    if(lives<=0){endGame(false,'Nyawa habis! Cuba lagi untuk menjadi juara.');return;}
-   }
-   continue;
-  }
-  if(o.y>H+30)objects.splice(i,1);
- }
-
- for(let i=particles.length-1;i>=0;i--){
-  const p=particles[i];
-  p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;
-  ctx.globalAlpha=Math.max(0,p.life);
-  ctx.fillStyle=p.color;ctx.fillRect(p.x,p.y,4,4);
-  ctx.globalAlpha=1;
-  if(p.life<=0)particles.splice(i,1);
- }
- drawShip();
- raf=requestAnimationFrame(loop);
+ctx.strokeStyle='#8dcaff0b';ctx.lineWidth=1;
+for(let x=0;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke()}
+for(let y=0;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}
+for(let i=0;i<24;i++){
+const x=(i*127+37)%W,y=(i*83+now*.012)%H;
+ctx.fillStyle='#b4dfff99';ctx.fillRect(x,y,2,2);
 }
 
+if(keys.ArrowLeft||keys.a||touchDir===-1)ship.x-=ship.speed*dt;
+if(keys.ArrowRight||keys.d||touchDir===1)ship.x+=ship.speed*dt;
+ship.x=Math.max(27,Math.min(W-27,ship.x));
+
+spawnClock+=dt;
+if(spawnClock>.72-Math.min(.35,level*.045)){spawnClock=0;spawnObject()}
+
+for(let i=objects.length-1;i>=0;i--){
+const o=objects[i];o.y+=o.speed*dt;drawObject(o);
+const near=Math.abs(o.y-ship.y)<o.r+13&&Math.abs(o.x-ship.x)<o.r+ship.w*.35;
+if(near){
+if(o.good){
+score+=10;correct++;combo++;caught++;
+sfx('catch');
+$('feedback').textContent=`✨ BETUL! +10 mata · ${o.n} ialah gandaan sepunya ${targets[0]} dan ${targets[1]}.`;
+$('feedback').className='feedback good';
+$('learningHint').innerHTML=`<b>BETUL!</b> ${o.n} ÷ ${targets[0]} dan ${o.n} ÷ ${targets[1]} menghasilkan nombor bulat tanpa baki.`;
+burst(o.x,o.y,'#4dffcf');
+objects.splice(i,1);updateHUD();
+if(caught>=levelGoals[level-1]){
+if(level===5){endGame(true,'Tahniah! Semua misi berjaya diselesaikan!');return}
+nextLevel();
+}
+}else{
+score=Math.max(0,score-5);lives=Math.max(0,lives-1);combo=0;
+sfx('wrong');
+$('feedback').textContent=`💥 ${o.n} bukan gandaan sepunya! −5 mata`;
+$('feedback').className='feedback bad';
+$('learningHint').innerHTML=`<b>HINT:</b> ${showWrongHint(o.n)}`;
+burst(o.x,o.y,'#ff629f');
+objects.splice(i,1);updateHUD();
+if(lives<=0){endGame(false,'Nyawa habis! Cuba lagi untuk menjadi juara.');return}
+}
+continue;
+}
+if(o.y>H+30)objects.splice(i,1);
+}
+
+for(let i=particles.length-1;i>=0;i--){
+const p=particles[i];
+p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;
+ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle=p.color;
+ctx.fillRect(p.x,p.y,4,4);ctx.globalAlpha=1;
+if(p.life<=0)particles.splice(i,1);
+}
+drawShip();
+raf=requestAnimationFrame(loop);
+}
+
+/* KEYBOARD CONTROLS */
 addEventListener('keydown',e=>{
- if(['ArrowLeft','ArrowRight',' '].includes(e.key))e.preventDefault();
- keys[e.key]=true;keys[e.key.toLowerCase()]=true;
- if(e.key==='Escape'&&running&&!paused)pauseGame();
+if(['ArrowLeft','ArrowRight',' '].includes(e.key))e.preventDefault();
+keys[e.key]=true;keys[e.key.toLowerCase()]=true;
+if(e.key==='Escape'&&running&&!paused)pauseGame();
 });
-addEventListener('keyup',e=>{
- keys[e.key]=false;keys[e.key.toLowerCase()]=false;
-});
+addEventListener('keyup',e=>{keys[e.key]=false;keys[e.key.toLowerCase()]=false});
 
+/* MOBILE BUTTONS */
 function bindMove(id,dir){
- const b=$(id);
- const start=e=>{e.preventDefault();touchDir=dir};
- const stop=e=>{e.preventDefault();if(touchDir===dir)touchDir=0};
- b.addEventListener('pointerdown',start);
- b.addEventListener('pointerup',stop);
- b.addEventListener('pointercancel',stop);
- b.addEventListener('pointerleave',stop);
+const b=$(id);
+const start=e=>{e.preventDefault();touchDir=dir};
+const stop=e=>{e.preventDefault();if(touchDir===dir)touchDir=0};
+b.addEventListener('pointerdown',start);
+b.addEventListener('pointerup',stop);
+b.addEventListener('pointercancel',stop);
+b.addEventListener('pointerleave',stop);
 }
-bindMove('left',-1);
-bindMove('right',1);
+bindMove('left',-1);bindMove('right',1);
 
+/* TOUCH TO MOVE */
 canvas.addEventListener('pointermove',e=>{
- if(e.pointerType==='touch'&&running&&!paused&&ship){
-  const r=canvas.getBoundingClientRect();
-  ship.x=(e.clientX-r.left)/r.width*W;
- }
+if(e.pointerType==='touch'&&running&&!paused&&ship){
+const r=canvas.getBoundingClientRect();
+ship.x=(e.clientX-r.left)/r.width*W;
+}
 });
 canvas.addEventListener('pointerdown',e=>{
- if(e.pointerType==='touch')canvas.setPointerCapture(e.pointerId);
+if(e.pointerType==='touch')canvas.setPointerCapture(e.pointerId);
 });
-addEventListener('blur',()=>{keys={};touchDir=0;});
+addEventListener('blur',()=>{keys={};touchDir=0});
 document.addEventListener('visibilitychange',()=>{
- if(document.hidden&&running&&!paused)pauseGame();
+if(document.hidden&&running&&!paused)pauseGame();
 });
 </script>
 </body>
