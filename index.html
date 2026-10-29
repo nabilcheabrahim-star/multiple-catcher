@@ -1,148 +1,520 @@
+
 <!DOCTYPE html>
 <html lang="ms">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Multiple Catcher</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multiple Catcher - Ultimate Edition</title>
+
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@600;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Nunito:wght@600;800;900&display=swap');
+
 *{box-sizing:border-box}
-body{margin:0;background:radial-gradient(ellipse at top,#193a82,#090e30 55%,#030511);color:white;font-family:Nunito,sans-serif}
+
+body{
+ margin:0;
+ min-height:100vh;
+ overflow-x:hidden;
+ color:white;
+ font-family:Nunito,sans-serif;
+ background:radial-gradient(ellipse at top,#193a82,#090e30 55%,#030511);
+}
+
+button{font:inherit;cursor:pointer}
+
 header{text-align:center;padding:22px 8px}
-.logo{font:900 clamp(32px,7vw,64px) Orbitron;color:#ffe66d;text-shadow:3px 4px #ff4c87,0 0 30px #427dff}
-.logo span{display:block;color:white;font-size:.65em;letter-spacing:5px}
-.tagline{font-size:11px;color:#a8c9ff;letter-spacing:2px;margin-top:10px}
+
+.logo{
+ font:900 clamp(30px,7vw,64px) Orbitron;
+ color:#ffe66d;
+ text-shadow:3px 4px #ff4c87,0 0 30px #427dff;
+}
+
+.logo span{
+ display:block;
+ color:white;
+ font-size:.65em;
+ letter-spacing:5px;
+}
+
+.tagline{
+ font-size:11px;
+ color:#a8c9ff;
+ letter-spacing:2px;
+ margin-top:10px;
+}
+
 .wrap{max-width:1050px;margin:auto;padding:10px}
-.panel{background:linear-gradient(145deg,#15285fee,#080d2bf2);border:1px solid #4266a866;border-radius:20px;padding:18px}
-.screen{display:none}.screen.active{display:block}
+
+.panel{
+ background:linear-gradient(145deg,#15285fee,#080d2bf2);
+ border:1px solid #4266a866;
+ border-radius:20px;
+ padding:18px;
+ box-shadow:0 12px 35px #0005;
+}
+
+.screen{display:none}
+.screen.active{display:block}
+
 .menu{text-align:center;padding:25px 8px}
-.planet{font-size:75px;animation:float 3s infinite ease-in-out}
-@keyframes float{50%{transform:translateY(-10px) rotate(5deg)}}
+
+.planet{
+ font-size:75px;
+ animation:float 3s infinite ease-in-out;
+}
+
+@keyframes float{
+ 50%{transform:translateY(-10px) rotate(5deg)}
+}
+
 h1,h2{font-family:Orbitron,sans-serif}
 h1 em{color:#ffe66d;font-style:normal}
 h2{color:#4df4ff}
 p{color:#dce6ff;line-height:1.6}
-button{font:inherit;cursor:pointer}
-.btn{border:0;border-radius:12px;padding:12px 18px;margin:5px;background:linear-gradient(135deg,#397bff,#823eff);color:white;font-weight:900;box-shadow:0 4px #222c70}
-.green{background:linear-gradient(135deg,#00d8a2,#00a9d7);box-shadow:0 4px #075a75}
-.pink{background:linear-gradient(135deg,#ff4da6,#a343ff);box-shadow:0 4px #5b247c}
+
+.btn{
+ border:0;
+ border-radius:12px;
+ padding:12px 18px;
+ margin:5px;
+ background:linear-gradient(135deg,#397bff,#823eff);
+ color:white;
+ font-weight:900;
+ box-shadow:0 4px #222c70;
+}
+
+.green{
+ background:linear-gradient(135deg,#00d8a2,#00a9d7);
+ box-shadow:0 4px #075a75;
+}
+
+.pink{
+ background:linear-gradient(135deg,#ff4da6,#a343ff);
+ box-shadow:0 4px #5b247c;
+}
+
 .soundbar{text-align:center;margin:12px}
-.sound-toggle{border:1px solid #4262a5;border-radius:30px;padding:9px 14px;background:#101c48;color:white;font-weight:900}
-.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:13px 0}
-.stat{text-align:center;padding:11px 4px;background:#080e2d;border:1px solid #273b7a;border-radius:12px}
-.stat small{display:block;color:#91a9e8;font-size:10px;font-weight:900;letter-spacing:1px}
-.stat strong{display:block;font:700 clamp(16px,3vw,24px) Orbitron;margin-top:6px}
-#score{color:#ffe66d}#lives{color:#ff629f}#time{color:#4df4ff}
-.hud{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin:12px 0}
-.pill{border:1px solid #344c8e;background:#101c48;padding:8px 12px;border-radius:30px;font-size:12px;font-weight:900}
-#question{text-align:center;font:900 clamp(16px,3vw,25px) Orbitron;color:#ffe66d;margin:17px 0}
-.progress{height:7px;background:#131c46;border-radius:20px;overflow:hidden}
-#progress{height:100%;width:100%;background:linear-gradient(90deg,#36e9ff,#a35cff)}
+
+.sound-toggle{
+ border:1px solid #4262a5;
+ border-radius:30px;
+ padding:9px 14px;
+ background:#101c48;
+ color:white;
+ font-weight:900;
+}
+
+.grid{
+ display:grid;
+ grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:9px;
+ margin:13px 0;
+}
+
+.stat{
+ text-align:center;
+ padding:11px 4px;
+ background:#080e2d;
+ border:1px solid #273b7a;
+ border-radius:12px;
+}
+
+.stat small{
+ display:block;
+ color:#91a9e8;
+ font-size:10px;
+ font-weight:900;
+ letter-spacing:1px;
+}
+
+.stat strong{
+ display:block;
+ font:700 clamp(16px,3vw,24px) Orbitron;
+ margin-top:6px;
+}
+
+#score{color:#ffe66d}
+#lives{color:#ff629f}
+#time{color:#4df4ff}
+
+.hud{
+ display:flex;
+ justify-content:space-between;
+ gap:8px;
+ flex-wrap:wrap;
+ margin:12px 0;
+}
+
+.pill{
+ border:1px solid #344c8e;
+ background:#101c48;
+ padding:8px 12px;
+ border-radius:30px;
+ font-size:12px;
+ font-weight:900;
+}
+
+#question{
+ text-align:center;
+ font:900 clamp(16px,3vw,25px) Orbitron;
+ color:#ffe66d;
+ margin:17px 0;
+}
+
+.progress{
+ height:7px;
+ background:#131c46;
+ border-radius:20px;
+ overflow:hidden;
+}
+
+#progress{
+ height:100%;
+ width:100%;
+ background:linear-gradient(90deg,#36e9ff,#a35cff);
+}
+
 .game-shell{position:relative}
-#gameCanvas{display:block;width:100%;height:min(54vh,480px);min-height:300px;background:#06122c;border:2px solid #436dcb;border-radius:15px;touch-action:none}
-.overlay{position:absolute;inset:0;background:#05091ddd;display:flex;align-items:center;justify-content:center;text-align:center;border-radius:15px}
+
+#gameCanvas{
+ display:block;
+ width:100%;
+ height:min(54vh,480px);
+ min-height:300px;
+ background:#06122c;
+ border:2px solid #436dcb;
+ border-radius:15px;
+ touch-action:none;
+}
+
+.overlay{
+ position:absolute;
+ inset:0;
+ background:#05091ddd;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ text-align:center;
+ border-radius:15px;
+ padding:20px;
+}
+
 .overlay.hidden{display:none}
-.controls{display:flex;justify-content:center;gap:12px;margin:12px}
-.move{width:90px;height:53px;border-radius:14px;border:1px solid #5476ca;background:#162758;color:white;font-size:25px;touch-action:none}
-.info{background:#0b1439;border:1px solid #263c79;padding:14px;border-radius:14px}
+
+.controls{
+ display:flex;
+ justify-content:center;
+ gap:12px;
+ margin:12px;
+}
+
+.move{
+ width:90px;
+ height:53px;
+ border-radius:14px;
+ border:1px solid #5476ca;
+ background:#162758;
+ color:white;
+ font-size:25px;
+ touch-action:none;
+}
+
+.info{
+ background:#0b1439;
+ border:1px solid #263c79;
+ padding:14px;
+ border-radius:14px;
+}
+
 .feedback{text-align:center;min-height:25px;font-weight:900}
+
 footer{text-align:center;padding:20px;color:#8ba0d4;font-size:12px}
-@media(max-width:600px){.panel{padding:11px}.grid{gap:5px}.stat{padding:9px 2px}#gameCanvas{height:43vh;min-height:300px}}
+
+/* VICTORY SCREEN */
+
+#victory{
+ position:fixed;
+ inset:0;
+ z-index:1000;
+ display:none;
+ overflow:hidden;
+ text-align:center;
+ align-items:center;
+ justify-content:center;
+ background:
+ radial-gradient(circle at 50% 45%,#4420a8 0%,#130a42 40%,#020515 100%);
+}
+
+#victory.show{display:flex}
+
+#victoryCanvas{
+ position:absolute;
+ inset:0;
+ width:100%;
+ height:100%;
+}
+
+.victory-content{
+ position:relative;
+ z-index:2;
+ width:min(95%,750px);
+ padding:25px 10px;
+ animation:victoryEntrance 1.1s cubic-bezier(.17,.89,.32,1.49) both;
+}
+
+@keyframes victoryEntrance{
+ 0%{opacity:0;transform:scale(.1) rotate(-12deg)}
+ 60%{opacity:1;transform:scale(1.13) rotate(2deg)}
+ 100%{opacity:1;transform:scale(1) rotate(0)}
+}
+
+.victory-crown{
+ font-size:clamp(65px,15vw,120px);
+ filter:drop-shadow(0 0 30px gold);
+ animation:crownFloat 1.4s infinite alternate ease-in-out;
+}
+
+@keyframes crownFloat{
+ from{transform:translateY(0) rotate(-5deg)}
+ to{transform:translateY(-20px) rotate(5deg)}
+}
+
+.victory-title{
+ font:900 clamp(42px,12vw,100px) Orbitron;
+ margin:5px 0;
+ color:#fff;
+ background:linear-gradient(180deg,#fffde0 0%,#ffe66d 35%,#ff8c00 65%,#ff2e88 100%);
+ -webkit-background-clip:text;
+ background-clip:text;
+ color:transparent;
+ -webkit-text-stroke:1px #fff7b0;
+ filter:drop-shadow(0 0 12px #ffb300);
+ animation:titlePulse .8s infinite alternate;
+}
+
+@keyframes titlePulse{
+ from{filter:drop-shadow(0 0 8px #ffb300)}
+ to{filter:drop-shadow(0 0 30px #ff38c7)}
+}
+
+.victory-subtitle{
+ font:700 clamp(15px,3vw,23px) Orbitron;
+ letter-spacing:3px;
+ color:#68faff;
+ text-shadow:0 0 18px #00d9ff;
+}
+
+.victory-message{
+ font-size:clamp(14px,3vw,20px);
+ font-weight:900;
+ color:white;
+}
+
+.victory-score{
+ display:inline-block;
+ margin:12px auto;
+ padding:15px 28px;
+ border:2px solid #ffe66d;
+ border-radius:20px;
+ background:#130b3dcc;
+ box-shadow:0 0 35px #ffb30066,inset 0 0 25px #ffb30022;
+ animation:scorePulse 1s infinite alternate;
+}
+
+@keyframes scorePulse{
+ from{transform:scale(1)}
+ to{transform:scale(1.05)}
+}
+
+.victory-score small{
+ display:block;
+ font-size:12px;
+ color:#ffe66d;
+ letter-spacing:3px;
+}
+
+.victory-score strong{
+ display:block;
+ font:900 clamp(30px,8vw,55px) Orbitron;
+ color:white;
+ text-shadow:0 0 18px #fff;
+}
+
+.victory-buttons{margin-top:15px}
+
+.victory-buttons .btn{
+ font-size:15px;
+ padding:14px 20px;
+}
+
+#victorySkip{
+ position:absolute;
+ z-index:3;
+ bottom:18px;
+ right:18px;
+ background:#ffffff18;
+ color:white;
+ border:1px solid #ffffff55;
+ border-radius:30px;
+ padding:10px 15px;
+}
+
+@media(max-width:600px){
+ .panel{padding:11px}
+ .grid{gap:5px}
+ .stat{padding:9px 2px}
+ #gameCanvas{height:43vh;min-height:300px}
+ .victory-subtitle{letter-spacing:1px}
+}
 </style>
 </head>
+
 <body>
+
 <header>
-<div class="logo">MULTIPLE <span>CATCHER</span></div>
-<div class="tagline">✦ SPACE ACADEMY · COMMON MULTIPLES CHALLENGE ✦</div>
+ <div class="logo">MULTIPLE <span>CATCHER</span></div>
+ <div class="tagline">✦ SPACE ACADEMY · COMMON MULTIPLES CHALLENGE ✦</div>
 </header>
 
 <main class="wrap">
+
 <section id="home" class="screen active panel">
-<div class="menu">
-<div class="planet">🪐</div>
-<h1>MISSION <em>MULTIPLE</em></h1>
-<p>Tangkap gandaan sepunya yang betul. Elakkan nombor yang salah. Berjaya dalam lima level untuk menamatkan misi!</p>
-<button class="btn green" onclick="startGame()">🚀 MULA MISI</button>
-<button class="btn pink" onclick="showScreen('guide')">📖 CARA BERMAIN</button>
-<div class="soundbar">
-<button class="sound-toggle" id="soundHome" onclick="toggleSound()">🔊 SOUND: ON</button>
-<button class="sound-toggle" onclick="testSound()">🎵 TEST SOUND</button>
-</div>
-<div class="grid">
-<div class="stat"><small>LEVEL</small><strong>1–5</strong></div>
-<div class="stat"><small>MASA MISI</small><strong>100s</strong></div>
-<div class="stat"><small>JAWAPAN BETUL</small><strong>+10</strong></div>
-</div>
-</div>
+ <div class="menu">
+  <div class="planet">🪐</div>
+  <h1>MISSION <em>MULTIPLE</em></h1>
+  <p>Tangkap gandaan sepunya yang betul. Elakkan nombor yang salah. Selesaikan lima level untuk menjadi juara matematik!</p>
+  <button class="btn green" onclick="startGame()">🚀 MULA MISI</button>
+  <button class="btn pink" onclick="showScreen('guide')">📖 CARA BERMAIN</button>
+
+  <div class="soundbar">
+   <button class="sound-toggle" id="soundHome" onclick="toggleSound()">🔊 SOUND: ON</button>
+   <button class="sound-toggle" onclick="testSound()">🎵 TEST SOUND</button>
+  </div>
+
+  <div class="grid">
+   <div class="stat"><small>LEVEL</small><strong>1–5</strong></div>
+   <div class="stat"><small>MASA MISI</small><strong>100s</strong></div>
+   <div class="stat"><small>JAWAPAN BETUL</small><strong>+10</strong></div>
+  </div>
+ </div>
 </section>
 
 <section id="guide" class="screen panel">
-<h2>📡 ARAHAN MISI</h2>
-<div class="info">
-<p>🎯 Tangkap nombor yang boleh dibahagi tepat dengan KEDUA-DUA nombor sasaran.</p>
-<p>🛸 Contoh: 12 ialah gandaan sepunya 3 dan 4.</p>
-<p>⭐ Jawapan betul: +10 mata. Jawapan salah: −5 mata dan hilang satu nyawa.</p>
-<p>💻 Komputer: gunakan kekunci ← → atau A / D.</p>
-<p>📱 Telefon: gunakan butang kiri/kanan atau seret kapal.</p>
-<p>❤️ Kamu bermula dengan 3 nyawa.</p>
-</div>
-<button class="btn green" onclick="startGame()">🚀 MULA MISI</button>
-<button class="btn" onclick="showScreen('home')">KEMBALI</button>
+ <h2>📡 ARAHAN MISI</h2>
+ <div class="info">
+  <p>🎯 Tangkap nombor yang boleh dibahagi tepat dengan KEDUA-DUA nombor sasaran.</p>
+  <p>🛸 Contoh: 12 ialah gandaan sepunya bagi 3 dan 4.</p>
+  <p>⭐ Jawapan betul: +10 mata. Jawapan salah: −5 mata dan hilang satu nyawa.</p>
+  <p>💻 Komputer: gunakan kekunci ← → atau A / D.</p>
+  <p>📱 Telefon: gunakan butang kiri/kanan atau seret kapal.</p>
+  <p>❤️ Kamu bermula dengan 3 nyawa.</p>
+ </div>
+ <button class="btn green" onclick="startGame()">🚀 MULA MISI</button>
+ <button class="btn" onclick="showScreen('home')">KEMBALI</button>
 </section>
 
 <section id="game" class="screen panel">
-<div class="grid">
-<div class="stat"><small>MARKAH</small><strong id="score">0</strong></div>
-<div class="stat"><small>NYAWA</small><strong id="lives">❤️❤️❤️</strong></div>
-<div class="stat"><small>MASA</small><strong id="time">100</strong></div>
-</div>
-<div class="hud">
-<span class="pill" id="level">LEVEL 1 / 5</span>
-<span class="pill" id="caught">TANGKAPAN: 0/5</span>
-<span class="pill" id="combo">COMBO ×1</span>
-</div>
-<div id="question">TANGKAP GANDAAN SEPUNYA 2 DAN 3</div>
-<div class="progress"><div id="progress"></div></div>
-<div class="game-shell">
-<canvas id="gameCanvas"></canvas>
-<div id="overlay" class="overlay hidden">
-<div>
-<h2 id="overlayTitle">MISI DIREHATKAN</h2>
-<p id="overlayText">Berehat sebentar, angkasawan.</p>
-<button class="btn green" onclick="resumeGame()">▶ TERUSKAN</button>
-</div>
-</div>
-</div>
-<div class="controls">
-<button class="move" id="left">◀</button>
-<button class="move" id="right">▶</button>
-</div>
-<p class="feedback" id="feedback">🚀 Misi bermula!</p>
-<div class="info" id="hint"><b>TIP:</b> Jawapan mesti boleh dibahagi tepat dengan kedua-dua nombor sasaran.</div>
-<div class="soundbar"><button class="sound-toggle" id="soundGame" onclick="toggleSound()">🔊 SOUND: ON</button></div>
-<div style="text-align:center">
-<button class="btn" onclick="pauseGame()">☕ REHAT</button>
-<button class="btn pink" onclick="quitGame()">🏠 MENU UTAMA</button>
-</div>
+ <div class="grid">
+  <div class="stat"><small>MARKAH</small><strong id="score">0</strong></div>
+  <div class="stat"><small>NYAWA</small><strong id="lives">❤️❤️❤️</strong></div>
+  <div class="stat"><small>MASA</small><strong id="time">100</strong></div>
+ </div>
+
+ <div class="hud">
+  <span class="pill" id="level">LEVEL 1 / 5</span>
+  <span class="pill" id="caught">TANGKAPAN: 0/5</span>
+  <span class="pill" id="combo">COMBO ×1</span>
+ </div>
+
+ <div id="question">TANGKAP GANDAAN SEPUNYA 2 DAN 3</div>
+ <div class="progress"><div id="progress"></div></div>
+
+ <div class="game-shell">
+  <canvas id="gameCanvas"></canvas>
+  <div id="overlay" class="overlay hidden">
+   <div>
+    <h2 id="overlayTitle">MISI DIREHATKAN</h2>
+    <p id="overlayText">Berehat sebentar, angkasawan.</p>
+    <button class="btn green" onclick="resumeGame()">▶ TERUSKAN</button>
+   </div>
+  </div>
+ </div>
+
+ <div class="controls">
+  <button class="move" id="left">◀</button>
+  <button class="move" id="right">▶</button>
+ </div>
+
+ <p class="feedback" id="feedback">🚀 Misi bermula!</p>
+
+ <div class="info" id="hint">
+  <b>TIP:</b> Jawapan mesti boleh dibahagi tepat dengan kedua-dua nombor sasaran.
+ </div>
+
+ <div class="soundbar">
+  <button class="sound-toggle" id="soundGame" onclick="toggleSound()">🔊 SOUND: ON</button>
+ </div>
+
+ <div style="text-align:center">
+  <button class="btn" onclick="pauseGame()">☕ REHAT</button>
+  <button class="btn pink" onclick="quitGame()">🏠 MENU UTAMA</button>
+ </div>
 </section>
 
 <section id="result" class="screen panel" style="text-align:center">
-<div class="planet" id="resultIcon">🏆</div>
-<h2 id="resultTitle">MISI SELESAI!</h2>
-<p id="resultText"></p>
-<div class="grid">
-<div class="stat"><small>SKOR AKHIR</small><strong id="finalScore">0</strong></div>
-<div class="stat"><small>JAWAPAN BETUL</small><strong id="finalCorrect">0</strong></div>
-<div class="stat"><small>LEVEL</small><strong id="finalLevel">1/5</strong></div>
-</div>
-<button class="btn green" onclick="startGame()">🔄 CUBA LAGI</button>
-<button class="btn" onclick="showScreen('home')">🏠 MENU UTAMA</button>
+ <div style="font-size:75px">💥</div>
+ <h2 id="resultTitle">MISI TAMAT</h2>
+ <p id="resultText"></p>
+ <div class="grid">
+  <div class="stat"><small>SKOR AKHIR</small><strong id="finalScore">0</strong></div>
+  <div class="stat"><small>JAWAPAN BETUL</small><strong id="finalCorrect">0</strong></div>
+  <div class="stat"><small>LEVEL</small><strong id="finalLevel">1/5</strong></div>
+ </div>
+ <button class="btn green" onclick="startGame()">🔄 CUBA LAGI</button>
+ <button class="btn" onclick="showScreen('home')">🏠 MENU UTAMA</button>
 </section>
+
 </main>
+
 <footer>MULTIPLE CATCHER · BELAJAR SAMBIL BERMAIN ✦</footer>
 
+<!-- VICTORY ANIMATION -->
+<div id="victory">
+ <canvas id="victoryCanvas"></canvas>
+
+ <div class="victory-content">
+  <div class="victory-crown">🏆</div>
+  <div class="victory-title">VICTORY!</div>
+  <div class="victory-subtitle">MISSION COMPLETED</div>
+
+  <p class="victory-message">
+   🚀 TAHNIAH, ANGKASAWAN! 🚀<br>
+   KAU TELAH MENAKLUKI MATHVERSE!
+  </p>
+
+  <div class="victory-score">
+   <small>FINAL SCORE</small>
+   <strong id="victoryScore">0</strong>
+  </div>
+
+  <p class="victory-message">
+   🌟 SEMUA 5 LEVEL SELESAI! 🌟
+  </p>
+
+  <div class="victory-buttons">
+   <button class="btn green" onclick="restartFromVictory()">🚀 MAIN LAGI</button>
+   <button class="btn pink" onclick="closeVictory()">🏠 MENU UTAMA</button>
+  </div>
+ </div>
+
+ <button id="victorySkip" onclick="closeVictory()">SKIP ANIMATION ✕</button>
+</div>
+
 <script>
+/* SOUND EFFECTS */
 let audioCtx=null,soundOn=true;
+
 function getAudio(){
  try{
   if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();
@@ -150,21 +522,34 @@ function getAudio(){
   return audioCtx;
  }catch(e){return null}
 }
+
 function tone(freq,duration=.12,type="sine",volume=.1,delay=0,endFreq=null){
  if(!soundOn)return;
  const ac=getAudio();if(!ac)return;
- const t=ac.currentTime+delay,o=ac.createOscillator(),g=ac.createGain();
- o.type=type;o.frequency.setValueAtTime(freq,t);
+ const t=ac.currentTime+delay;
+ const o=ac.createOscillator(),g=ac.createGain();
+ o.type=type;
+ o.frequency.setValueAtTime(freq,t);
  if(endFreq)o.frequency.exponentialRampToValueAtTime(Math.max(1,endFreq),t+duration);
  g.gain.setValueAtTime(.0001,t);
  g.gain.exponentialRampToValueAtTime(volume,t+.012);
  g.gain.exponentialRampToValueAtTime(.0001,t+duration);
- o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+duration+.02);
+ o.connect(g);g.connect(ac.destination);
+ o.start(t);o.stop(t+duration+.02);
 }
+
 function sfx(type){
  if(!soundOn)return;
- if(type==="start"){[440,660,880].forEach((f,i)=>tone(f,.17,"triangle",.09,i*.12))}
- if(type==="catch"){tone(760,.09,"square",.07);tone(1100,.15,"sine",.09,.07)}
+
+ if(type==="start"){
+  [440,660,880].forEach((f,i)=>tone(f,.17,"triangle",.09,i*.12));
+ }
+
+ if(type==="catch"){
+  tone(760,.09,"square",.07);
+  tone(1100,.15,"sine",.09,.07);
+ }
+
  if(type==="wrong"){
   tone(90,.65,"sawtooth",.2,0,25);
   tone(55,.7,"triangle",.22,.02,20);
@@ -172,26 +557,55 @@ function sfx(type){
   tone(900,.2,"square",.06,.05,160);
   tone(420,.3,"sawtooth",.08,.18,50);
  }
- if(type==="level")[523,659,784,1046].forEach((f,i)=>tone(f,.2,"triangle",.1,i*.12));
- if(type==="win")[523,659,784,1046].forEach((f,i)=>tone(f,.25,"triangle",.1,i*.13));
- if(type==="lose"){tone(392,.2);tone(330,.2,"triangle",.1,.2);tone(262,.4,"triangle",.1,.4)}
+
+ if(type==="level"){
+  [523,659,784,1046].forEach((f,i)=>tone(f,.2,"triangle",.1,i*.12));
+ }
+
+ if(type==="win"){
+  [523,659,784,1046,1318,1568,2093].forEach((f,i)=>{
+   tone(f,.55,"triangle",.12,i*.18);
+  });
+  [392,523,659,784].forEach((f,i)=>{
+   tone(f,.7,"sine",.045,1.1+i*.22);
+  });
+ }
+
+ if(type==="lose"){
+  tone(392,.2);
+  tone(330,.2,"triangle",.1,.2);
+  tone(262,.4,"triangle",.1,.4);
+ }
+
  if(type==="pause")tone(330,.12);
 }
+
 function toggleSound(){
  soundOn=!soundOn;
- document.querySelectorAll("#soundHome,#soundGame").forEach(b=>b.textContent=soundOn?"🔊 SOUND: ON":"🔇 SOUND: OFF");
+
+ document.querySelectorAll("#soundHome,#soundGame").forEach(b=>{
+  b.textContent=soundOn?"🔊 SOUND: ON":"🔇 SOUND: OFF";
+ });
+
  if(soundOn){getAudio();tone(700,.08)}
 }
-function testSound(){if(!soundOn)toggleSound();sfx("start")}
 
+function testSound(){
+ if(!soundOn)toggleSound();
+ sfx("start");
+}
+
+/* GAME */
 const $=id=>document.getElementById(id);
 const canvas=$("gameCanvas"),ctx=canvas.getContext("2d");
+
 let W=800,H=430,dpr=1;
 let running=false,paused=false,ended=false;
 let score=0,lives=3,level=1,timeLeft=100,correct=0,combo=0,caught=0;
-let targets=[2,3],ship=null,objects=[],particles=[],rings=[],timer=null,raf=null;
-let last=0,spawnClock=0,keys={},touchDir=0,gameToken=0;
-let shake=0,flash=0;
+let targets=[2,3],ship=null,objects=[],particles=[],rings=[];
+let timer=null,raf=null,last=0,spawnClock=0,keys={},touchDir=0;
+let gameToken=0,shake=0,flash=0;
+
 const levelTargets=[[2,3],[3,4],[4,6],[3,5],[4,5]];
 const levelGoals=[5,7,9,11,13];
 
@@ -200,11 +614,17 @@ function showScreen(id){
  $(id).classList.add("active");
  if(id!=="game")stopLoops();
 }
+
 function resize(){
- const r=canvas.getBoundingClientRect();if(!r.width)return;
- dpr=Math.min(devicePixelRatio||1,2);W=r.width;H=r.height;
- canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
+ const r=canvas.getBoundingClientRect();
+ if(!r.width)return;
+
+ dpr=Math.min(devicePixelRatio||1,2);
+ W=r.width;H=r.height;
+ canvas.width=Math.round(W*dpr);
+ canvas.height=Math.round(H*dpr);
  ctx.setTransform(dpr,0,0,dpr,0,0);
+
  if(ship)ship.x=Math.max(28,Math.min(W-28,ship.x));
 }
 addEventListener("resize",resize);
@@ -219,63 +639,124 @@ function updateHUD(){
  $("question").textContent=`TANGKAP GANDAAN SEPUNYA ${targets[0]} DAN ${targets[1]}`;
  $("progress").style.width=timeLeft+"%";
 }
+
 function startGame(){
- getAudio();sfx("start");stopLoops();gameToken++;
- score=0;lives=3;level=1;timeLeft=100;correct=0;combo=0;caught=0;
- objects=[];particles=[];rings=[];shake=0;flash=0;keys={};touchDir=0;
- showScreen("game");resize();
+ closeVictory();
+ getAudio();sfx("start");
+ stopLoops();gameToken++;
+
+ score=0;lives=3;level=1;timeLeft=100;
+ correct=0;combo=0;caught=0;
+ objects=[];particles=[];rings=[];
+ shake=0;flash=0;keys={};touchDir=0;
+
+ showScreen("game");
+ resize();
+
  ship={x:W/2,y:H-42,w:54,h:30,speed:340};
- newLevel();running=true;paused=false;ended=false;last=performance.now();
+
+ newLevel();
+ running=true;paused=false;ended=false;
+ last=performance.now();
+
  $("feedback").textContent="🚀 Misi bermula!";
  $("overlay").classList.add("hidden");
+
  const token=gameToken;
+
  timer=setInterval(()=>{
   if(token!==gameToken||!running||paused)return;
-  timeLeft--;updateHUD();
+  timeLeft--;
+  updateHUD();
   if(timeLeft<=0)endGame(false,"Masa misi telah tamat!");
  },1000);
+
  raf=requestAnimationFrame(loop);
 }
+
 function newLevel(){
- targets=[...levelTargets[level-1]];caught=0;objects=[];spawnClock=0;
- $("feedback").textContent=`🎯 Tangkap ${levelGoals[level-1]} gandaan sepunya ${targets[0]} dan ${targets[1]}!`;
- $("hint").innerHTML=`<b>TIP:</b> Nombor mesti boleh dibahagi tepat dengan ${targets[0]} DAN ${targets[1]}.`;
+ targets=[...levelTargets[level-1]];
+ caught=0;objects=[];spawnClock=0;
+
+ $("feedback").textContent=
+ `🎯 Tangkap ${levelGoals[level-1]} gandaan sepunya ${targets[0]} dan ${targets[1]}!`;
+
+ $("hint").innerHTML=
+ `<b>TIP:</b> Nombor mesti boleh dibahagi tepat dengan ${targets[0]} DAN ${targets[1]}.`;
+
  updateHUD();
 }
-function gcd(a,b){while(b){let t=b;b=a%b;a=t}return a}
-function isCommon(n){return n%targets[0]===0&&n%targets[1]===0}
+
+function gcd(a,b){
+ while(b){let t=b;b=a%b;a=t}
+ return a;
+}
+
+function isCommon(n){
+ return n%targets[0]===0&&n%targets[1]===0;
+}
+
 function wrongHint(n){
- if(n%targets[0]===0)return `${n} boleh dibahagi dengan ${targets[0]}, tetapi bukan dengan ${targets[1]}.`;
- if(n%targets[1]===0)return `${n} boleh dibahagi dengan ${targets[1]}, tetapi bukan dengan ${targets[0]}.`;
+ if(n%targets[0]===0)
+  return `${n} boleh dibahagi dengan ${targets[0]}, tetapi bukan dengan ${targets[1]}.`;
+
+ if(n%targets[1]===0)
+  return `${n} boleh dibahagi dengan ${targets[1]}, tetapi bukan dengan ${targets[0]}.`;
+
  return `${n} bukan gandaan sepunya ${targets[0]} dan ${targets[1]}.`;
 }
+
 function spawnObject(){
  let n;
+
  if(Math.random()<.42){
   const lcm=targets[0]*targets[1]/gcd(targets[0],targets[1]);
   n=lcm*(1+Math.floor(Math.random()*Math.max(2,Math.floor(60/lcm))));
  }else{
   let tries=0;
-  do{n=2+Math.floor(Math.random()*58);tries++}while(isCommon(n)&&tries<100);
+  do{
+   n=2+Math.floor(Math.random()*58);
+   tries++;
+  }while(isCommon(n)&&tries<100);
+
   if(isCommon(n))n++;
  }
+
  let speed;
- if(level===4)speed=65+Math.random()*35;
- else if(level===5)speed=330+Math.random()*120;
- else speed=95+level*25+Math.random()*70;
- objects.push({x:28+Math.random()*(W-56),y:-30,n,r:18+Math.min(4,level),speed,good:isCommon(n)});
+
+ if(level===4){
+  speed=65+Math.random()*35;
+ }else if(level===5){
+  speed=330+Math.random()*120;
+ }else{
+  speed=95+level*25+Math.random()*70;
+ }
+
+ objects.push({
+  x:28+Math.random()*(W-56),
+  y:-30,
+  n,
+  r:18+Math.min(4,level),
+  speed,
+  good:isCommon(n)
+ });
 }
 
-/* LETUPAN BESAR UNTUK JAWAPAN SALAH */
+/* BIG WRONG-ANSWER EXPLOSION */
 function bigExplosion(x,y){
- const colors=["#ff1744","#ff3d00","#ff9100","#ffe600","#ff4fc3","#ffffff","#ff6b6b","#ffb3c6","#ffecb3"];
+ const colors=[
+  "#ff1744","#ff3d00","#ff9100","#ffe600",
+  "#ff4fc3","#ffffff","#ff6b6b","#ffb3c6","#ffecb3"
+ ];
 
- // 190 percikan besar terbang ke semua arah.
  for(let i=0;i<190;i++){
   const a=Math.random()*Math.PI*2;
   const v=100+Math.random()*570;
+
   particles.push({
-   x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,
+   x,y,
+   vx:Math.cos(a)*v,
+   vy:Math.sin(a)*v,
    life:.7+Math.random()*1.2,
    color:colors[Math.floor(Math.random()*colors.length)],
    size:2+Math.random()*8,
@@ -283,19 +764,22 @@ function bigExplosion(x,y){
   });
  }
 
- // 45 serpihan api panjang.
  for(let i=0;i<45;i++){
   const a=Math.random()*Math.PI*2;
   const v=180+Math.random()*470;
+
   particles.push({
-   x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,
+   x,y,
+   vx:Math.cos(a)*v,
+   vy:Math.sin(a)*v,
    life:.5+Math.random()*.9,
    color:["#fff7a8","#ff3b20","#ff2d75"][i%3],
-   size:5+Math.random()*11,gravity:65,streak:true
+   size:5+Math.random()*11,
+   gravity:65,
+   streak:true
   });
  }
 
- // Gelombang letupan bercahaya.
  rings.push({x,y,r:5,max:Math.max(W,H)*.85,life:1,color:"#ff1744",width:13});
  rings.push({x,y,r:2,max:Math.max(W,H)*.65,life:.8,color:"#fff4c2",width:9});
  rings.push({x,y,r:1,max:Math.max(W,H)*.45,life:.65,color:"#ff8a00",width:5});
@@ -303,195 +787,617 @@ function bigExplosion(x,y){
  shake=22;
  flash=.95;
 }
+
 function drawEffects(dt){
  for(let i=rings.length-1;i>=0;i--){
   const r=rings[i];
   r.r+=(r.max-r.r)*Math.min(1,dt*5);
   r.life-=dt;
-  if(r.life<=0){rings.splice(i,1);continue}
+
+  if(r.life<=0){
+   rings.splice(i,1);
+   continue;
+  }
+
   ctx.save();
   ctx.globalAlpha=Math.max(0,r.life);
-  ctx.strokeStyle=r.color;ctx.lineWidth=r.width*r.life+1;
-  ctx.shadowBlur=30;ctx.shadowColor=r.color;
-  ctx.beginPath();ctx.arc(r.x,r.y,r.r,0,Math.PI*2);ctx.stroke();
+  ctx.strokeStyle=r.color;
+  ctx.lineWidth=r.width*r.life+1;
+  ctx.shadowBlur=30;
+  ctx.shadowColor=r.color;
+  ctx.beginPath();
+  ctx.arc(r.x,r.y,r.r,0,Math.PI*2);
+  ctx.stroke();
   ctx.restore();
  }
+
  if(flash>0){
-  ctx.save();ctx.globalAlpha=flash;ctx.fillStyle="#fff0d5";
-  ctx.fillRect(0,0,W,H);ctx.restore();
+  ctx.save();
+  ctx.globalAlpha=flash;
+  ctx.fillStyle="#fff0d5";
+  ctx.fillRect(0,0,W,H);
+  ctx.restore();
   flash=Math.max(0,flash-dt*3);
  }
- shake=Math.max(0,shake-dt*38);
 }
+
+function drawShip(){
+ if(!ship)return;
+
+ ctx.save();
+ ctx.translate(ship.x,ship.y);
+ ctx.shadowBlur=20;
+ ctx.shadowColor="#4df4ff";
+ ctx.fillStyle="#4df4ff";
+
+ ctx.beginPath();
+ ctx.moveTo(-13,7);ctx.lineTo(-24,17);ctx.lineTo(-8,15);
+ ctx.fill();
+
+ ctx.beginPath();
+ ctx.moveTo(13,7);ctx.lineTo(24,17);ctx.lineTo(8,15);
+ ctx.fill();
+
+ ctx.fillStyle="#e8f7ff";
+ ctx.strokeStyle="#65dfff";
+ ctx.lineWidth=2;
+
+ ctx.beginPath();
+ ctx.moveTo(0,-19);
+ ctx.quadraticCurveTo(20,-2,14,12);
+ ctx.lineTo(-14,12);
+ ctx.quadraticCurveTo(-20,-2,0,-19);
+ ctx.fill();ctx.stroke();
+
+ ctx.fillStyle="#3678ff";
+ ctx.beginPath();
+ ctx.ellipse(0,-3,7,9,0,0,Math.PI*2);
+ ctx.fill();
+
+ ctx.fillStyle="#ffb947";
+ ctx.beginPath();
+ ctx.moveTo(-7,12);
+ ctx.lineTo(0,26+Math.random()*7);
+ ctx.lineTo(7,12);
+ ctx.fill();
+
+ ctx.restore();
+}
+
+function drawObject(o){
+ const red=level===4||level===5;
+
+ ctx.save();
+ ctx.translate(o.x,o.y);
+ ctx.shadowBlur=18;
+ ctx.shadowColor=red?"#ff1744":(o.good?"#39ffce":"#ff668e");
+ ctx.fillStyle=red?"#6b1026":(o.good?"#124b55":"#56213f");
+ ctx.strokeStyle=red?"#ff354f":(o.good?"#48ffda":"#ff79a7");
+ ctx.lineWidth=2;
+
+ ctx.beginPath();
+ ctx.arc(0,0,o.r,0,Math.PI*2);
+ ctx.fill();ctx.stroke();
+
+ ctx.shadowBlur=0;
+ ctx.fillStyle="#fff";
+ ctx.font=`900 ${Math.max(13,o.r*.8)}px Orbitron`;
+ ctx.textAlign="center";
+ ctx.textBaseline="middle";
+ ctx.fillText(o.n,0,1);
+ ctx.restore();
+}
+
 function stopLoops(){
  running=false;
+
  if(timer)clearInterval(timer);
  timer=null;
+
  if(raf)cancelAnimationFrame(raf);
  raf=null;
 }
+
 function pauseGame(){
  if(!running||ended||paused)return;
+
  paused=true;sfx("pause");
  $("overlayTitle").textContent="☕ MISI DIREHATKAN";
  $("overlayText").textContent="Berehat sebentar, angkasawan.";
  $("overlay").classList.remove("hidden");
 }
+
 function resumeGame(){
  if(ended||!running)return;
- getAudio();paused=false;last=performance.now();
+
+ getAudio();
+ paused=false;
+ last=performance.now();
  $("overlay").classList.add("hidden");
+
  if(!raf)raf=requestAnimationFrame(loop);
 }
-function quitGame(){stopLoops();gameToken++;showScreen("home")}
+
+function quitGame(){
+ stopLoops();
+ gameToken++;
+ showScreen("home");
+}
+
+/* SHOW FINAL VICTORY ANIMATION */
 function endGame(won,message){
  if(ended)return;
- ended=true;sfx(won?"win":"lose");stopLoops();gameToken++;
+
+ ended=true;
+ stopLoops();
+
+ if(won){
+  sfx("win");
+  showScreen("game");
+  $("overlay").classList.add("hidden");
+  $("victoryScore").textContent=score;
+  launchVictory();
+  return;
+ }
+
+ sfx("lose");
  showScreen("result");
- $("resultIcon").textContent=won?"🏆":"💥";
- $("resultTitle").textContent=won?"MISI BERJAYA!":"MISI TAMAT";
+
+ $("resultTitle").textContent="MISI TAMAT";
  $("resultText").textContent=message;
  $("finalScore").textContent=score;
  $("finalCorrect").textContent=correct;
- $("finalLevel").textContent=won?"5/5":`${level}/5`;
+ $("finalLevel").textContent=`${level}/5`;
 }
+
 function nextLevel(){
- if(level>=5){endGame(true,"Tahniah! Semua misi berjaya diselesaikan!");return}
- level++;sfx("level");newLevel();ship.x=W/2;
- $("feedback").textContent=`✨ LEVEL ${level}! Cabaran semakin pantas!`;
+ if(level>=5){
+  endGame(true,"Semua misi selesai!");
+  return;
+ }
+
+ level++;
+ sfx("level");
+ newLevel();
+ ship.x=W/2;
+
+ $("feedback").textContent=
+ `✨ LEVEL ${level}! Cabaran semakin pantas!`;
 }
-function drawShip(){
- if(!ship)return;
- ctx.save();ctx.translate(ship.x,ship.y);
- ctx.shadowBlur=20;ctx.shadowColor="#4df4ff";ctx.fillStyle="#4df4ff";
- ctx.beginPath();ctx.moveTo(-13,7);ctx.lineTo(-24,17);ctx.lineTo(-8,15);ctx.fill();
- ctx.beginPath();ctx.moveTo(13,7);ctx.lineTo(24,17);ctx.lineTo(8,15);ctx.fill();
- ctx.fillStyle="#e8f7ff";ctx.strokeStyle="#65dfff";ctx.lineWidth=2;
- ctx.beginPath();ctx.moveTo(0,-19);ctx.quadraticCurveTo(20,-2,14,12);
- ctx.lineTo(-14,12);ctx.quadraticCurveTo(-20,-2,0,-19);ctx.fill();ctx.stroke();
- ctx.fillStyle="#3678ff";ctx.beginPath();ctx.ellipse(0,-3,7,9,0,0,Math.PI*2);ctx.fill();
- ctx.fillStyle="#ffb947";ctx.beginPath();ctx.moveTo(-7,12);ctx.lineTo(0,26+Math.random()*7);ctx.lineTo(7,12);ctx.fill();
- ctx.restore();
-}
-function drawObject(o){
- const red=level===4||level===5;
- ctx.save();ctx.translate(o.x,o.y);
- ctx.shadowBlur=18;
- ctx.shadowColor=red?"#ff1744":(o.good?"#39ffce":"#ff668e");
- ctx.fillStyle=red?"#6b1026":(o.good?"#124b55":"#56213f");
- ctx.strokeStyle=red?"#ff354f":(o.good?"#48ffda":"#ff79a7");
- ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,0,o.r,0,Math.PI*2);ctx.fill();ctx.stroke();
- ctx.shadowBlur=0;ctx.fillStyle="#fff";
- ctx.font=`900 ${Math.max(13,o.r*.8)}px Orbitron`;
- ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(o.n,0,1);
- ctx.restore();
-}
+
+/* MAIN GAME LOOP */
 function loop(now){
  raf=null;
  if(!running||paused||ended)return;
- const dt=Math.min((now-last)/1000,.04);last=now;
- ctx.clearRect(0,0,W,H);
 
+ const dt=Math.min((now-last)/1000,.04);
+ last=now;
+
+ ctx.clearRect(0,0,W,H);
  ctx.save();
- if(shake>0)ctx.translate((Math.random()-.5)*shake,(Math.random()-.5)*shake);
+
+ if(shake>0){
+  ctx.translate((Math.random()-.5)*shake,(Math.random()-.5)*shake);
+ }
 
  const bg=ctx.createLinearGradient(0,0,0,H);
- bg.addColorStop(0,"#07183b");bg.addColorStop(1,"#073a4b");
- ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
- ctx.strokeStyle="#8dcaff0b";ctx.lineWidth=1;
- for(let x=0;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke()}
- for(let y=0;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}
+ bg.addColorStop(0,"#07183b");
+ bg.addColorStop(1,"#073a4b");
+ ctx.fillStyle=bg;
+ ctx.fillRect(0,0,W,H);
 
- if(keys.ArrowLeft||keys.a||touchDir===-1)ship.x-=ship.speed*dt;
- if(keys.ArrowRight||keys.d||touchDir===1)ship.x+=ship.speed*dt;
+ ctx.strokeStyle="#8dcaff0b";
+ ctx.lineWidth=1;
+
+ for(let x=0;x<W;x+=40){
+  ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();
+ }
+
+ for(let y=0;y<H;y+=40){
+  ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();
+ }
+
+ if(keys.ArrowLeft||keys.a||touchDir===-1)
+  ship.x-=ship.speed*dt;
+
+ if(keys.ArrowRight||keys.d||touchDir===1)
+  ship.x+=ship.speed*dt;
+
  ship.x=Math.max(27,Math.min(W-27,ship.x));
 
  spawnClock+=dt;
- if(spawnClock>.72-Math.min(.35,level*.045)){spawnClock=0;spawnObject()}
+
+ if(spawnClock>.72-Math.min(.35,level*.045)){
+  spawnClock=0;
+  spawnObject();
+ }
 
  for(let i=objects.length-1;i>=0;i--){
-  const o=objects[i];o.y+=o.speed*dt;drawObject(o);
-  const near=Math.abs(o.y-ship.y)<o.r+13&&Math.abs(o.x-ship.x)<o.r+ship.w*.35;
+  const o=objects[i];
+
+  o.y+=o.speed*dt;
+  drawObject(o);
+
+  const near=
+   Math.abs(o.y-ship.y)<o.r+13&&
+   Math.abs(o.x-ship.x)<o.r+ship.w*.35;
+
   if(near){
    if(o.good){
-    score+=10;correct++;combo++;caught++;sfx("catch");
-    $("feedback").textContent=`✨ BETUL! +10 mata · ${o.n} ialah gandaan sepunya.`;
-    $("hint").innerHTML=`<b>BETUL!</b> ${o.n} boleh dibahagi tepat dengan ${targets[0]} dan ${targets[1]}.`;
+    score+=10;
+    correct++;
+    combo++;
+    caught++;
+
+    sfx("catch");
+
+    $("feedback").textContent=
+     `✨ BETUL! +10 mata · ${o.n} ialah gandaan sepunya.`;
+
+    $("hint").innerHTML=
+     `<b>BETUL!</b> ${o.n} boleh dibahagi tepat dengan ${targets[0]} dan ${targets[1]}.`;
+
     for(let j=0;j<18;j++){
-     const a=Math.random()*Math.PI*2,v=40+Math.random()*180;
-     particles.push({x:o.x,y:o.y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,life:.5,color:"#4dffcf",size:4});
+     const a=Math.random()*Math.PI*2;
+     const v=40+Math.random()*180;
+
+     particles.push({
+      x:o.x,y:o.y,
+      vx:Math.cos(a)*v,
+      vy:Math.sin(a)*v,
+      life:.5,
+      color:"#4dffcf",
+      size:4,
+      gravity:0
+     });
     }
-    objects.splice(i,1);updateHUD();
+
+    objects.splice(i,1);
+    updateHUD();
+
     if(caught>=levelGoals[level-1]){
-     if(level===5){endGame(true,"Tahniah! Semua misi berjaya diselesaikan!");return}
+     if(level===5){
+      endGame(true,"Tahniah!");
+      return;
+     }
+
      nextLevel();
     }
    }else{
-    score=Math.max(0,score-5);lives=Math.max(0,lives-1);combo=0;
+    score=Math.max(0,score-5);
+    lives=Math.max(0,lives-1);
+    combo=0;
+
     sfx("wrong");
+
     $("feedback").textContent=`💥 BOOM! ${o.n} SALAH! −5 MATA`;
     $("hint").innerHTML=`<b>HINT:</b> ${wrongHint(o.n)}`;
+
     bigExplosion(o.x,o.y);
-    objects.splice(i,1);updateHUD();
-    if(lives<=0){endGame(false,"Nyawa habis! Cuba lagi.");return}
+    objects.splice(i,1);
+    updateHUD();
+
+    if(lives<=0){
+     endGame(false,"Nyawa habis! Cuba lagi.");
+     return;
+    }
    }
+
    continue;
   }
+
   if(o.y>H+30)objects.splice(i,1);
  }
 
- // Lukis serpihan letupan dan percikan.
  for(let i=particles.length-1;i>=0;i--){
   const p=particles[i];
-  p.x+=p.vx*dt;p.y+=p.vy*dt+(p.gravity||0)*dt;
-  p.vx*=Math.max(.2,1-dt*.45);p.vy*=Math.max(.2,1-dt*.45);
+
+  p.x+=p.vx*dt;
+  p.y+=p.vy*dt+(p.gravity||0)*dt;
+  p.vx*=Math.max(.2,1-dt*.45);
+  p.vy*=Math.max(.2,1-dt*.45);
   p.life-=dt;
+
   ctx.globalAlpha=Math.max(0,Math.min(1,p.life));
-  ctx.fillStyle=p.color;ctx.shadowBlur=p.size||4;ctx.shadowColor=p.color;
+  ctx.fillStyle=p.color;
+  ctx.shadowBlur=p.size||4;
+  ctx.shadowColor=p.color;
+
   if(p.streak){
-   ctx.strokeStyle=p.color;ctx.lineWidth=p.size/2;
-   ctx.beginPath();ctx.moveTo(p.x,p.y);
-   ctx.lineTo(p.x-p.vx*.035,p.y-p.vy*.035);ctx.stroke();
+   ctx.strokeStyle=p.color;
+   ctx.lineWidth=p.size/2;
+   ctx.beginPath();
+   ctx.moveTo(p.x,p.y);
+   ctx.lineTo(p.x-p.vx*.035,p.y-p.vy*.035);
+   ctx.stroke();
   }else{
-   ctx.beginPath();ctx.arc(p.x,p.y,p.size||4,0,Math.PI*2);ctx.fill();
+   ctx.beginPath();
+   ctx.arc(p.x,p.y,p.size||4,0,Math.PI*2);
+   ctx.fill();
   }
-  ctx.shadowBlur=0;ctx.globalAlpha=1;
+
+  ctx.shadowBlur=0;
+  ctx.globalAlpha=1;
+
   if(p.life<=0)particles.splice(i,1);
  }
 
  drawEffects(dt);
  drawShip();
  ctx.restore();
+
  raf=requestAnimationFrame(loop);
 }
 
+/* VICTORY FIREWORKS AND CONFETTI */
+const victory=$("victory");
+const vc=$("victoryCanvas");
+const vctx=vc.getContext("2d");
+
+let victoryRAF=null;
+let victoryParticles=[];
+let victoryRockets=[];
+let victoryRunning=false;
+let victoryLast=0;
+let victoryTime=0;
+
+function resizeVictory(){
+ vc.width=innerWidth*devicePixelRatio;
+ vc.height=innerHeight*devicePixelRatio;
+ vctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+}
+
+addEventListener("resize",resizeVictory);
+resizeVictory();
+
+function launchRocket(){
+ victoryRockets.push({
+  x:Math.random()*innerWidth,
+  y:innerHeight+10,
+  targetY:innerHeight*(.12+Math.random()*.45),
+  speed:350+Math.random()*400,
+  hue:Math.random()*360
+ });
+}
+
+function fireworksBurst(x,y,hue){
+ const count=100+Math.floor(Math.random()*100);
+
+ for(let i=0;i<count;i++){
+  const a=Math.random()*Math.PI*2;
+  const speed=60+Math.random()*400;
+  const shape=Math.random();
+
+  victoryParticles.push({
+   x,y,
+   vx:Math.cos(a)*speed,
+   vy:Math.sin(a)*speed,
+   life:1+Math.random()*1.8,
+   maxLife:1+Math.random()*1.8,
+   hue:(hue+Math.random()*80-40+360)%360,
+   size:1.5+Math.random()*4,
+   gravity:70+Math.random()*80,
+   confetti:shape>.7,
+   rotation:Math.random()*6,
+   spin:(Math.random()-.5)*12
+  });
+ }
+
+ // Bright center flash.
+ victoryParticles.push({
+  x,y,vx:0,vy:0,
+  life:.22,maxLife:.22,
+  hue,size:30,gravity:0,flash:true
+ });
+}
+
+function launchVictory(){
+ victory.classList.add("show");
+ victoryRunning=true;
+ victoryTime=0;
+ victoryLast=performance.now();
+ victoryParticles=[];
+ victoryRockets=[];
+
+ resizeVictory();
+
+ // Initial fireworks.
+ for(let i=0;i<9;i++){
+  setTimeout(()=>{
+   if(victoryRunning){
+    fireworksBurst(
+     innerWidth*(.08+Math.random()*.84),
+     innerHeight*(.12+Math.random()*.55),
+     Math.random()*360
+    );
+   }
+  },i*170);
+ }
+
+ if(victoryRAF)cancelAnimationFrame(victoryRAF);
+ victoryRAF=requestAnimationFrame(victoryLoop);
+}
+
+function victoryLoop(now){
+ if(!victoryRunning)return;
+
+ const dt=Math.min((now-victoryLast)/1000,.04);
+ victoryLast=now;
+ victoryTime+=dt;
+
+ vctx.clearRect(0,0,innerWidth,innerHeight);
+
+ // Starfield.
+ for(let i=0;i<85;i++){
+  const x=(i*193)%innerWidth;
+  const y=(i*97+victoryTime*12)%innerHeight;
+
+  vctx.fillStyle=`rgba(255,255,255,${.25+Math.random()*.65})`;
+  vctx.beginPath();
+  vctx.arc(x,y,Math.random()*1.7+.3,0,Math.PI*2);
+  vctx.fill();
+ }
+
+ // Launch a new rocket regularly.
+ if(Math.random()<dt*2.8)launchRocket();
+
+ // Rockets travel upwards before exploding.
+ for(let i=victoryRockets.length-1;i>=0;i--){
+  const r=victoryRockets[i];
+  r.y-=r.speed*dt;
+
+  vctx.save();
+  vctx.shadowBlur=20;
+  vctx.shadowColor=`hsl(${r.hue},100%,65%)`;
+  vctx.fillStyle=`hsl(${r.hue},100%,75%)`;
+  vctx.beginPath();
+  vctx.arc(r.x,r.y,4,0,Math.PI*2);
+  vctx.fill();
+  vctx.restore();
+
+  if(r.y<=r.targetY){
+   fireworksBurst(r.x,r.y,r.hue);
+   victoryRockets.splice(i,1);
+  }
+ }
+
+ // Fireworks and falling confetti.
+ for(let i=victoryParticles.length-1;i>=0;i--){
+  const p=victoryParticles[i];
+
+  p.x+=p.vx*dt;
+  p.y+=p.vy*dt;
+  p.vy+=p.gravity*dt;
+  p.vx*=Math.max(0,1-dt*.3);
+  p.life-=dt;
+
+  if(p.life<=0){
+   victoryParticles.splice(i,1);
+   continue;
+  }
+
+  const alpha=Math.max(0,Math.min(1,p.life/(p.maxLife||1)));
+
+  vctx.save();
+  vctx.globalAlpha=alpha;
+  vctx.shadowBlur=p.flash?35:12;
+  vctx.shadowColor=`hsl(${p.hue},100%,60%)`;
+  vctx.fillStyle=`hsl(${p.hue},100%,${p.flash?95:65}%)`;
+
+  if(p.flash){
+   vctx.beginPath();
+   vctx.arc(p.x,p.y,p.size*alpha,0,Math.PI*2);
+   vctx.fill();
+  }else if(p.confetti){
+   p.rotation+=p.spin*dt;
+   vctx.translate(p.x,p.y);
+   vctx.rotate(p.rotation);
+   vctx.fillRect(-p.size,-p.size/2,p.size*2,p.size);
+  }else{
+   vctx.beginPath();
+   vctx.arc(p.x,p.y,p.size*alpha,0,Math.PI*2);
+   vctx.fill();
+  }
+
+  vctx.restore();
+ }
+
+ victoryRAF=requestAnimationFrame(victoryLoop);
+}
+
+function closeVictory(){
+ victoryRunning=false;
+ victory.classList.remove("show");
+
+ if(victoryRAF){
+  cancelAnimationFrame(victoryRAF);
+  victoryRAF=null;
+ }
+}
+
+function restartFromVictory(){
+ closeVictory();
+ startGame();
+}
+
+function showVictoryMenu(){
+ closeVictory();
+ showScreen("home");
+}
+
+function quitVictory(){
+ showVictoryMenu();
+}
+
+$("victorySkip").addEventListener("click",()=>{
+ // Skip the celebration visuals but keep the victory screen.
+ victoryRunning=false;
+
+ if(victoryRAF){
+  cancelAnimationFrame(victoryRAF);
+  victoryRAF=null;
+ }
+
+ vctx.clearRect(0,0,innerWidth,innerHeight);
+});
+
+$("victory").addEventListener("keydown",e=>{
+ if(e.key==="Escape")closeVictory();
+});
+
+/* INPUT CONTROLS */
 addEventListener("keydown",e=>{
  if(["ArrowLeft","ArrowRight"," "].includes(e.key))e.preventDefault();
- keys[e.key]=true;keys[e.key.toLowerCase()]=true;
+
+ keys[e.key]=true;
+ keys[e.key.toLowerCase()]=true;
+
  if(e.key==="Escape"&&running&&!paused)pauseGame();
 });
-addEventListener("keyup",e=>{keys[e.key]=false;keys[e.key.toLowerCase()]=false});
+
+addEventListener("keyup",e=>{
+ keys[e.key]=false;
+ keys[e.key.toLowerCase()]=false;
+});
 
 function bindMove(id,dir){
  const b=$(id);
- const start=e=>{e.preventDefault();touchDir=dir};
- const stop=e=>{e.preventDefault();if(touchDir===dir)touchDir=0};
+
+ const start=e=>{
+  e.preventDefault();
+  touchDir=dir;
+ };
+
+ const stop=e=>{
+  e.preventDefault();
+  if(touchDir===dir)touchDir=0;
+ };
+
  b.addEventListener("pointerdown",start);
  b.addEventListener("pointerup",stop);
  b.addEventListener("pointercancel",stop);
  b.addEventListener("pointerleave",stop);
 }
-bindMove("left",-1);bindMove("right",1);
+
+bindMove("left",-1);
+bindMove("right",1);
+
 canvas.addEventListener("pointermove",e=>{
  if(e.pointerType==="touch"&&running&&!paused&&ship){
   const r=canvas.getBoundingClientRect();
   ship.x=(e.clientX-r.left)/r.width*W;
  }
 });
+
 canvas.addEventListener("pointerdown",e=>{
  if(e.pointerType==="touch")canvas.setPointerCapture(e.pointerId);
 });
-addEventListener("blur",()=>{keys={};touchDir=0});
+
+addEventListener("blur",()=>{
+ keys={};
+ touchDir=0;
+});
+
 document.addEventListener("visibilitychange",()=>{
  if(document.hidden&&running&&!paused)pauseGame();
 });
